@@ -30,23 +30,22 @@ public class MainActivity extends Activity{
 
 	public static NotesDbAdapter getDb(){
 		return mDbHelper;
-
 	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.test);
 		mDbHelper = new NotesDbAdapter(this);
 		mDbHelper.open();
-//		mDbHelper.dropTable() ;
-//		mDbHelper.createTable() ;
+		//		mDbHelper.dropTable() ;
+		//		mDbHelper.createTable() ;
 		//		drawAllNotes();
 		//		mDbHelper.deleteAll();
-//		mDbHelper.dropTable();
+		//		mDbHelper.dropTable();
 		list = (ListView) findViewById(R.id.listView);
 		Button b1 = (Button) findViewById(R.id.b1);
 		b1.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View arg0) {
 				Intent intent =  new Intent(MainActivity.this, addNote.class);
@@ -127,7 +126,7 @@ public class MainActivity extends Activity{
 			Note note =  new Note(cursor.getInt(0), cursor.getString(1),cursor.getString(2) );	
 			MainActivity.mla.add(note,cursor.getString(3));
 			cursor.moveToNext();
-			
+
 
 		}
 
@@ -182,31 +181,31 @@ public class MainActivity extends Activity{
 		super.onActivityResult(requestCode, resultCode, data);
 		switch(requestCode){
 		case 1 : if (resultCode==RESULT_OK);
-		//mla.remove(object)
 		}
 	}
-//	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-//		@Override
-//		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-//			// TODO Auto-generated method stub
-//			return false;
-//		}
-//		@Override
-//		public void onDestroyActionMode(ActionMode mode) {
-//			// TODO Auto-generated method stub
-//		}
-//		@Override
-//		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-//			// TODO Auto-generated method stub
-//			getMenuInflater().inflate(R.menu.main, menu);
-//			return true;
-//		}
-//		@Override
-//		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-//			// TODO Auto-generated method stub
-//			return false;
-//		}
-//	};
+	
+	//	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+	//		@Override
+	//		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+	//			// TODO Auto-generated method stub
+	//			return false;
+	//		}
+	//		@Override
+	//		public void onDestroyActionMode(ActionMode mode) {
+	//			// TODO Auto-generated method stub
+	//		}
+	//		@Override
+	//		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+	//			// TODO Auto-generated method stub
+	//			getMenuInflater().inflate(R.menu.main, menu);
+	//			return true;
+	//		}
+	//		@Override
+	//		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+	//			// TODO Auto-generated method stub
+	//			return false;
+	//		}
+	//	};
 
 
 }

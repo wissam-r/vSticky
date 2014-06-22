@@ -28,34 +28,25 @@ public class editNote extends Activity{
 			return;
 		t1.setText(cursor.getString(1));
 		t2.setText(cursor.getString(2));
-			
+
 		b1.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				MainActivity.getDb().updateNote(id, t1.getText().toString(), t2.getText().toString());
-//				MainActivity.mla.notifyDataSetChanged();
-//				Cursor cursor = MainActivity.getDb().getNote(id);
-//				Note note = new Note(cursor.getInt(0), cursor.getString(1), cursor.getString(2));
-//				MainActivity.mla.add(note);
 				finish();
-				
-				
-				
 			}
 		});
-		
+
 		b2.setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View arg0) {
-						
-						finish();
-						
-					}
-				});
-		
+
+			@Override
+			public void onClick(View arg0) {
+				finish();	
+			}
+		});
+
 	}
 
 }

@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:gravity="right"
-                android:textSize="25sp" />
+                android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
 
