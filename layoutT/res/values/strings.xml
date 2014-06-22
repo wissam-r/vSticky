@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">layoutT</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="Add">Add</string>
+    <string name="Title">Title</string>
+    <string name="Con">Con</string>
+    <string name="note">Put note Here</string>
+    <string name="cancel">Cancel</string>
+    <string name="noto">Note</string>
+    <string name="remove">Remove</string>
+    <string name="menu">Menu</string>
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
+
+</resources>
