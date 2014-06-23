@@ -64,7 +64,7 @@ public class MainActivity extends Activity{
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(MainActivity.this, editNote.class);
+				Intent intent = new Intent(MainActivity.this, ViewNote.class);
 				Note note = (Note) mla.getItem(arg2);
 				intent.putExtra("id", note.getId());
 				startActivity(intent);

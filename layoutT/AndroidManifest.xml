@@ -36,6 +36,10 @@
             android:name="com.example.layoutt.menu"
             android:label="@string/menu" >           
         </activity>
+                <activity 
+            android:name="com.example.layoutt.ViewNote"
+            android:label="@string/noto" >           
+        </activity>
     </application>
 
 </manifest>
