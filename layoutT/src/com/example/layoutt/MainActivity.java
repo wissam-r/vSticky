@@ -21,6 +21,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity{
@@ -125,6 +126,8 @@ public class MainActivity extends Activity{
 		Cursor cursor = mDbHelper.getAllNotes();
 		if (cursor == null)
 			return;
+		TextView t1 = (TextView) findViewById(R.id.notes_n) ;
+		t1.setText("Memo ("+cursor.getCount()+")");
 		int i =1 ;
 		while(i <= cursor.getCount()){
 			i++;
