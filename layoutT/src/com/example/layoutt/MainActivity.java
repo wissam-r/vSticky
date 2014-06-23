@@ -1,6 +1,8 @@
 package com.example.layoutt;
 
 
+import java.util.Scanner;
+
 import com.example.layoutt.NotesDbAdapter;
 
 import android.os.Bundle;
@@ -38,7 +40,7 @@ public class MainActivity extends Activity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.test);
+		setContentView(R.layout.main);
 		mDbHelper = new NotesDbAdapter(this);
 		mDbHelper.open();
 		//		mDbHelper.dropTable() ;
@@ -131,12 +133,15 @@ public class MainActivity extends Activity{
 		int i =1 ;
 		while(i <= cursor.getCount()){
 			i++;
-			Note note =  new Note(cursor.getInt(0), cursor.getString(1),cursor.getString(2) );	
+			Scanner con = new Scanner(cursor.getString(2));
+			Note note =  new Note(cursor.getInt(0), cursor.getString(1),con.nextLine() );	
 			MainActivity.mla.add(note,cursor.getString(3));
 			cursor.moveToNext();
+			con.close() ;
 
 
 		}
+		
 
 
 

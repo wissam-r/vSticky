@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="@android:drawable/btn_default"
+        android:orientation="horizontal"
+        android:weightSum="1.0" >
+
+        <Button
+            android:id="@+id/b1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/btn_plus"
+            android:textSize="20sp" />
+
+        <LinearLayout 
+        	android:layout_width="0dip" 
+        	android:layout_height="match_parent"
+        	android:gravity="right|center_vertical"
+        	android:layout_weight="1"
+        	>
+        	<TextView 
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="match_parent"
+        	    android:gravity="left|center_vertical"
+        	    android:textSize="25sp"
+        	    android:id="@+id/notes_n"
+        	    />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_margin="5dp"
+        android:layout_weight="1" >
+    </ListView>
+
+</LinearLayout>

@@ -1,52 +1,31 @@
 package com.example.layoutt;
 
-import android.app.Activity;
+
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
-
-public class editNote extends Activity{
 
 
-
-
+public class editNote extends NoteEditer{
+	int id ;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.addnote);
-
-		final EditText t1 = (EditText) findViewById(R.id.titleo);
-		final EditText t2 = (EditText) findViewById(R.id.conto);
-		Button b1 = (Button) findViewById(R.id.b2);
-		Button b2 = (Button) findViewById(R.id.b3);
-		final int id = getIntent().getExtras().getInt("id");
+		id = getIntent().getExtras().getInt("id");
 		Cursor cursor = MainActivity.getDb().getNote(id);
 		if (cursor == null)
 			return;
 		t1.setText(cursor.getString(1));
 		t2.setText(cursor.getString(2));
+	}
+	
+	@Override
+	void save() {
+		// TODO Auto-generated method stub
+		MainActivity.getDb().updateNote(id, t1.getText().toString(), t2.getText().toString());
 
-		b1.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				MainActivity.getDb().updateNote(id, t1.getText().toString(), t2.getText().toString());
-				finish();
-			}
-		});
-
-		b2.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				finish();	
-			}
-		});
-
+		
+		
 	}
 
 }

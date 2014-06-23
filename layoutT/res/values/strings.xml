@@ -14,5 +14,9 @@
     <string name="menu">Menu</string>
     <string name="edit">Edit</string>
     <string name="save">Save</string>
+    <string name="share">Share</string>
+    <string name="back">Back</string>
+    <string name="memo">Memo</string>
+    
 
 </resources>
