@@ -1,5 +1,6 @@
 package com.example.layoutt;
 
+
 import com.example.layoutt.NotesDbAdapter;
 
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity{
 
@@ -87,6 +89,7 @@ public class MainActivity extends Activity{
 		super.onCreateContextMenu(menu, v, menuInfo);		
 		menu.setHeaderTitle("Menu");
 		getMenuInflater().inflate(R.menu.submenu, menu);
+		
 
 
 	}
@@ -105,6 +108,8 @@ public class MainActivity extends Activity{
 			mla = new listAdap(this, 0);
 			list.setAdapter(mla);
 			drawAllNotes();
+			Toast.makeText(getApplicationContext(), "Deleted",
+			Toast.LENGTH_LONG).show();
 			return (true) ;
 		case R.id.menu_edit:
 			Intent intent = new Intent(MainActivity.this, editNote.class);

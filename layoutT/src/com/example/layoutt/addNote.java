@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import android.view.View.OnClickListener;
 
 public class addNote extends Activity{
@@ -19,26 +20,28 @@ public class addNote extends Activity{
 		final EditText t2 = (EditText) findViewById(R.id.conto);
 		Button b1 = (Button) findViewById(R.id.b2);
 		Button b2 = (Button) findViewById(R.id.b3);
-		
-		
+
+
 		b1.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				MainActivity.getDb().insertNote(t1.getText().toString(), t2.getText().toString());
+				Toast.makeText(getApplicationContext(), "Saved",
+						Toast.LENGTH_LONG).show();
 				finish();
 			}
 		});
-		
+
 		b2.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {	
 				finish();			
 			}
 		});
-		
+
 	}
-	
+
 
 }
