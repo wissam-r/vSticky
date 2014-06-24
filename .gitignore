@@ -58,3 +58,6 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+########## Android gitignore ###########
+*.apk
+*.ap_
