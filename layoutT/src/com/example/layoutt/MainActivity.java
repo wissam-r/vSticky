@@ -126,18 +126,16 @@ public class MainActivity extends Activity{
 
 	private void drawAllNotes(){
 		Cursor cursor = mDbHelper.getAllNotes();
-		if (cursor == null)
-			return;
 		TextView t1 = (TextView) findViewById(R.id.notes_n) ;
 		t1.setText("Memo ("+cursor.getCount()+")");
 		int i =1 ;
 		while(i <= cursor.getCount()){
-			i++;
 			Scanner con = new Scanner(cursor.getString(2));
 			Note note =  new Note(cursor.getInt(0), cursor.getString(1),con.nextLine() );	
 			MainActivity.mla.add(note,cursor.getString(3));
 			cursor.moveToNext();
 			con.close() ;
+			i++;
 
 
 		}

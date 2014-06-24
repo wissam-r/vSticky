@@ -102,7 +102,7 @@ public class NotesDbAdapter {
 		return mDb.delete(TABLE_NAME,
 				where, whereArgs) > 0;              
 	}
-	
+
 	public boolean deleteID(int id) 
 	{
 		String where = COLUMN_ID+" =?";
@@ -114,7 +114,7 @@ public class NotesDbAdapter {
 	public boolean deleteAll(){
 		return mDb.delete(TABLE_NAME, null, null)>0; 
 	}
-	
+
 	public Cursor getNote(int id){
 		String[] FROM = {COLUMN_ID,COLUMN_TITLE,COLUMN_BODY,COLUMN_DATE};
 
@@ -153,12 +153,9 @@ public class NotesDbAdapter {
 		if (cursor.getCount()>0){
 			cursor.moveToFirst() ;
 
-			return cursor;
 		}
-		else
-			return null ;
+		return cursor ;}
 
-	}
 	public void updateNote(int id,String title,String body){
 
 		try{

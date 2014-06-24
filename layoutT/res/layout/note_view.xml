@@ -6,17 +6,37 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/darker_gray"
-        android:gravity="left"
-        android:orientation="horizontal" >
+        android:layout_height="50dp"
+        android:background="@android:drawable/btn_default"
+        android:gravity="left|center_vertical"
+        android:orientation="horizontal" 
+        >
 
         <Button
             android:id="@+id/backv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_action_back"
-            android:textSize="20sp" />
+            android:textSize="20sp" 
+            android:background="@drawable/btn"
+            android:drawableLeft="@drawable/ic_action_back"
+            />
+        <Button
+            android:id="@+id/deletev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" 
+            android:background="@drawable/btn"
+            android:drawableLeft="@drawable/ic_action_delete"
+            />
+        <Button
+            android:id="@+id/sharev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" 
+
+            android:background="@drawable/btn"
+            android:drawableLeft="@drawable/ic_action_share"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,8 +48,10 @@
                 android:id="@+id/datev"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/hello_world"
-                android:textSize="20sp" />
+                android:text="@string/date"
+                android:gravity="right"
+                android:textSize="12sp"
+                android:paddingRight="10dp" />
         </LinearLayout>
     </LinearLayout>
 

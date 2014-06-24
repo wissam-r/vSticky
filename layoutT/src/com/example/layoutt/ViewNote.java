@@ -1,6 +1,7 @@
 package com.example.layoutt;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -9,36 +10,66 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class ViewNote extends Activity{
-	
+
+	int id ;
+	TextView t1 ;
+	TextView t2 ;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.note_view);
 		Button b1  = (Button) findViewById(R.id.backv) ;
-		TextView t1 = (TextView) findViewById(R.id.titlev);
-		TextView t2 = (TextView) findViewById(R.id.contentv);
+		Button b2  = (Button) findViewById(R.id.deletev) ;
+		Button b3  = (Button) findViewById(R.id.sharev) ;
+
+
+		t1 = (TextView) findViewById(R.id.titlev);
+		t2 = (TextView) findViewById(R.id.contentv);
 		TextView t3 = (TextView) findViewById(R.id.datev);
-		int id = getIntent().getExtras().getInt("id");
+		id = getIntent().getExtras().getInt("id");
 		Cursor cursor = MainActivity.getDb().getNote(id);
 		if (cursor == null)
 			return;
 		t1.setText(cursor.getString(1));
 		t2.setText(cursor.getString(2));
 		t3.setText(cursor.getString(3));
-		
+
 		b1.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				finish() ;
-				
+
+			}
+		}) ;
+		b2.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				MainActivity.getDb().deleteID(id) ;
+				finish() ;
+			}
+		}) ;
+		b3.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND); 
+				sharingIntent.setType("text/plain");
+				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, t1.getText().toString());
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, t2.getText().toString());
+				startActivity(Intent.createChooser(sharingIntent, "Share via"));
+
 			}
 		}) ;
 
-		
-		
+
+
+
 	}
 
 }
