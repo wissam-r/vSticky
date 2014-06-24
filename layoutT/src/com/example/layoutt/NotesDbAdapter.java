@@ -31,7 +31,7 @@ public class NotesDbAdapter {
 			"create table notes ("+COLUMN_ID+" integer primary key autoincrement, "
 					+COLUMN_TITLE+" text not null, "
 					+COLUMN_BODY+" text not null , "
-					+COLUMN_BODY+" DATETIME not null );";
+					+COLUMN_DATE+" DATETIME not null );";
 	//	DEFAULT CURRENT_TIMESTAMP
 
 	private final Context mContext;
