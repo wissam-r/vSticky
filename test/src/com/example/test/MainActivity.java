@@ -1,13 +1,15 @@
 package com.example.test;
 
 
-
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.Menu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,31 +28,18 @@ public class MainActivity extends Activity implements LocationListener  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        
+        toggleGPS(true);
 
         /********** get Gps location service LocationManager object ***********/
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        
-        try{
-        myLocationNetwork = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        t2 = (TextView) findViewById(com.example.test.R.id.testv2) ;
-        t2.setText("L + "+myLocationNetwork.getLatitude()+" Lo + "+myLocationNetwork.getLongitude()) ;
-        }
-        catch(NullPointerException ex){
-            t2.setText("NO NETWORK") ;
-        }
-        
-        try{
         myLocationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        t1 = (TextView) findViewById(com.example.test.R.id.testv1) ;
-        t1.setText("L + "+myLocationGPS.getLatitude()+" Lo + "+myLocationGPS.getLongitude()) ;
-        
-        }
-        catch(NullPointerException ex){
-            t1.setText("NO GPS") ;
+        myLocationNetwork = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-        }
+        t1 = (TextView) findViewById(com.example.test.R.id.testv1) ;
+        t2 = (TextView) findViewById(com.example.test.R.id.testv2) ;
+
+        t1.setText("L + "+myLocationGPS.getLatitude()+" Lo + "+myLocationGPS.getLongitude()) ;
+        t2.setText("L + "+myLocationNetwork.getLatitude()+" Lo + "+myLocationNetwork.getLongitude()) ;
 
          
         /* CAL METHOD requestLocationUpdates */
@@ -67,14 +56,12 @@ public class MainActivity extends Activity implements LocationListener  {
         
          
         locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER,
-                1000,   // 1 sec
+                1000,   // 3 sec
                 1, this);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, this);
          
         /********* After registration onLocationChanged method  ********/
-        /********* called periodically after each 1 sec ***********/
-        
-  
+        /********* called periodically after each 3 sec ***********/
     }
     
     
@@ -84,7 +71,7 @@ public class MainActivity extends Activity implements LocationListener  {
             
         String str = "Latitude: "+location.getLatitude()+" Longitude: "+location.getLongitude();
 
-        Toast.makeText(getBaseContext(), "   GPS OR NETWORK "+str, Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), "   GPS  "+str, Toast.LENGTH_LONG).show();
     }
  
     @Override
@@ -116,6 +103,20 @@ public class MainActivity extends Activity implements LocationListener  {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-  
+    private void toggleGPS(boolean enable) {
+        String provider = Settings.Secure.getString(getContentResolver(), 
+            Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+
+        if(provider.contains("gps") == enable) {
+            return; // the GPS is already in the requested state
+        }
+
+        final Intent poke = new Intent();
+        poke.setClassName("com.android.settings", 
+            "com.android.settings.widget.SettingsAppWidgetProvider");
+        poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
+        poke.setData(Uri.parse("3"));
+        this.sendBroadcast(poke);
+    }
     
 }
