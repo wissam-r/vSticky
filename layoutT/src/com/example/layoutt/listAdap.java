@@ -2,6 +2,8 @@ package com.example.layoutt;
 
 import java.util.ArrayList;
 
+import note.Note;
+
 import android.app.Activity;
 //import android.app.Service;
 import android.content.Context;
@@ -24,22 +26,7 @@ public class listAdap extends BaseAdapter{
 		mInflater =  ((Activity)context).getLayoutInflater();
 	}
 	@Override
-	public View getView(int position , View convertV, ViewGroup parent ){
-		//		View view = convertV ;
-		//		if (view == null){
-		//			view=LayoutInflater.from(getContext()).inflate(R.layout.row, null);			
-		//		
-		//		//long time = getItem(position);
-		//		TextView textv = (TextView) view.findViewById(R.id.titleId) ;
-		//		//String taskname = getContext().getResources().getString(R.string.Title);
-		//		textv.setText(getItem(position).getT()) ;
-		//		TextView textv1 = (TextView) view.findViewById(R.id.titleCon);
-		//		//textv1.setText(String.valueOf(time));
-		//		textv1.setText(getItem(position).getC());
-		//		}
-		//		
-		//		return view ;
-		//		
+	public View getView(int position , View convertV, ViewGroup parent ){		
 		
 		ViewHolder holder = null;
 		if (convertV == null) {

@@ -3,14 +3,16 @@ package com.example.layoutt;
 
 import java.util.Scanner;
 
-import com.example.layoutt.NotesDbAdapter;
+import note.Note;
+import note.NoteEditer;
+import note.ViewNote;
+
+import dp.NotesDbAdapter;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-//import android.text.format.DateUtils;
-//import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,7 +55,9 @@ public class MainActivity extends Activity{
 		b1.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				Intent intent =  new Intent(MainActivity.this, addNote.class);
+				
+				Intent intent =  new Intent(MainActivity.this, NoteEditer.class);
+				intent.putExtra("mode", "add") ;
 				startActivity(intent) ;
 
 			}
@@ -107,7 +111,7 @@ public class MainActivity extends Activity{
 		Note note  = (Note) mla.getItem(info.position);
 		switch (item.getItemId()) {
 		case R.id.menu_delete:
-			mDbHelper.deleteID(note.getId());
+			buttons.Buttons.delete(note.getId(), getDb()) ;
 			mla = new listAdap(this, 0);
 			list.setAdapter(mla);
 			drawAllNotes();
@@ -115,7 +119,8 @@ public class MainActivity extends Activity{
 			Toast.LENGTH_LONG).show();
 			return (true) ;
 		case R.id.menu_edit:
-			Intent intent = new Intent(MainActivity.this, editNote.class);
+			Intent intent = new Intent(MainActivity.this, NoteEditer.class);
+			intent.putExtra("mode", "edit") ;
 			intent.putExtra("id", note.getId());
 			startActivity(intent);
 			return true ;

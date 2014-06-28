@@ -1,7 +1,9 @@
-package com.example.layoutt;
+package note;
+
+import com.example.layoutt.MainActivity;
+import com.example.layoutt.R;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -40,7 +42,7 @@ public class ViewNote extends Activity{
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				finish() ;
+				buttons.Buttons.done(ViewNote.this) ;
 
 			}
 		}) ;
@@ -49,8 +51,8 @@ public class ViewNote extends Activity{
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				MainActivity.getDb().deleteID(id) ;
-				finish() ;
+				buttons.Buttons.delete(id, MainActivity.getDb()) ;
+				buttons.Buttons.done(ViewNote.this) ;
 			}
 		}) ;
 		b3.setOnClickListener(new OnClickListener() {
@@ -58,11 +60,7 @@ public class ViewNote extends Activity{
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND); 
-				sharingIntent.setType("text/plain");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, t1.getText().toString());
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, t2.getText().toString());
-				startActivity(Intent.createChooser(sharingIntent, "Share via"));
+				buttons.Buttons.share(t1.getText().toString(), t2.getText().toString(), ViewNote.this) ;
 
 			}
 		}) ;

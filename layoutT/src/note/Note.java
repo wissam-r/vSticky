@@ -1,4 +1,4 @@
-package com.example.layoutt;
+package note;
 
 public class Note {
 	
