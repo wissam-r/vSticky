@@ -58,8 +58,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            android:hint="@string/Title"
             android:inputType="text"
-            android:text="@string/Title"
             android:textSize="25sp" />
     </LinearLayout>
 
@@ -76,7 +76,7 @@
             android:layout_margin="5dp"
             android:gravity="top"
             android:inputType="textMultiLine"
-            android:text="@string/Con"
+            android:hint="@string/Con"
             android:textSize="20sp" />
     </LinearLayout>
 

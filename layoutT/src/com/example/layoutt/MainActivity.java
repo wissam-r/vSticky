@@ -24,6 +24,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ public class MainActivity extends Activity{
 	private static NotesDbAdapter mDbHelper;
 	Menu myMenu =  null ;
 	ListView list ;
+	CheckBox c1 ;
 
 	public static NotesDbAdapter getDb(){
 		return mDbHelper;
@@ -43,14 +45,16 @@ public class MainActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		c1 = (CheckBox) findViewById(R.id.textViewc) ;
 		mDbHelper = new NotesDbAdapter(this);
 		mDbHelper.open();
-		//		mDbHelper.dropTable() ;
-		//		mDbHelper.createTable() ;
+//				mDbHelper.dropTable() ;
+//				mDbHelper.createTable() ;
 		//		drawAllNotes();
 		//		mDbHelper.deleteAll();
 		//		mDbHelper.dropTable();
 		list = (ListView) findViewById(R.id.listView);
+		
 		Button b1 = (Button) findViewById(R.id.b1);
 		b1.setOnClickListener(new OnClickListener() {
 			@Override
@@ -59,7 +63,8 @@ public class MainActivity extends Activity{
 				Intent intent =  new Intent(MainActivity.this, NoteEditer.class);
 				intent.putExtra("mode", "add") ;
 				startActivity(intent) ;
-
+//				Intent intent = new Intent(MainActivity.this,Delete_Activity.class);
+//				startActivity(intent) ;
 			}
 		});
 		list.setOnItemClickListener(new OnItemClickListener() {
@@ -163,7 +168,21 @@ public class MainActivity extends Activity{
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		myMenu = menu ;
+		
 		return true;
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch (item.getItemId()) {
+		case R.id.menu_remove:
+			Intent intent = new Intent(MainActivity.this,Delete_Activity.class);
+			startActivity(intent) ;
+			return true ;
+
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 	@Override
 	protected void onStart() {

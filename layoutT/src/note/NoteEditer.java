@@ -37,6 +37,12 @@ public class NoteEditer extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
+				if (t1.getText().toString().equals("")||t2.getText().toString().equals(""))
+				{
+					Toast.makeText(getApplicationContext(), "Plz fill the Boxes",
+							Toast.LENGTH_LONG).show();
+					return ;
+				}
 				try{
 					if (getIntent().getExtras().getString("mode").equals("edit")) {
 						buttons.Buttons.save(getIntent().getExtras().getInt("id"), t1.getText().toString(), t2.getText().toString(),MainActivity.getDb());
