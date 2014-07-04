@@ -32,6 +32,11 @@ public class UserTakeActivity5 extends Activity implements CvCameraViewListener2
 	private CameraBridgeVeiwCustom mOpenCvCameraView;
 	//private DetectionFilter filter;
 	private DetectionFilterThreading filter;
+	
+	private int[] ids;
+	private final String IDS = "IDS";
+	private ArrayList<String> paths;
+	private final String PATHS = "PATHS";
 
 	//private Mat lastMat;
 
@@ -62,8 +67,6 @@ public class UserTakeActivity5 extends Activity implements CvCameraViewListener2
 	
 						@Override
 						public void run() {
-							int[] ids = getIntent().getIntArrayExtra("id");
-							ArrayList<String> paths = getIntent().getStringArrayListExtra("images");
 							if(ids.length!= paths.size()) throw new IllegalArgumentException("ids.length!= paths.size()");
 							for(int i = 0;i<ids.length;i++){
 								String path = paths.get(i);
@@ -92,6 +95,14 @@ public class UserTakeActivity5 extends Activity implements CvCameraViewListener2
 		super.onCreate(savedInstanceState);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+		if(savedInstanceState == null){
+	        ids = getIntent().getIntArrayExtra("id");
+	        paths = getIntent().getStringArrayListExtra("images");
+        }else{
+        	ids = savedInstanceState.getIntArray(IDS);
+        	paths = savedInstanceState.getStringArrayList(PATHS);
+        }
+		
 		Log.d(TAG, "Creating and setting view");
 		mOpenCvCameraView = (CameraBridgeVeiwCustom) new CameraBridgeVeiwCustom(this, -1);
 		setContentView(mOpenCvCameraView);
@@ -99,6 +110,13 @@ public class UserTakeActivity5 extends Activity implements CvCameraViewListener2
 		mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
 		mOpenCvCameraView.enableFpsMeter();
 
+	}
+	
+    @Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putStringArrayList(PATHS, paths);
+		outState.putIntArray(IDS, ids);
+		super.onSaveInstanceState(outState);
 	}
 
 	@Override
