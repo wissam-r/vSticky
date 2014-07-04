@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/note_view_upa"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@android:drawable/btn_default"
+        android:gravity="left|center_vertical"
+        android:orientation="horizontal"
+        android:padding="0dp" >
+
+        <Button
+            android:id="@+id/backv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:drawableLeft="@drawable/ic_action_back" />
+
+        <Button
+            android:id="@+id/deletev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/backv"
+            android:drawableLeft="@drawable/ic_action_delete" />
+
+        <Button
+            android:id="@+id/sharev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/deletev"
+            android:drawableLeft="@drawable/ic_action_share" />
+
+        <TextView
+            android:id="@+id/datev"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center_vertical|center_horizontal"
+            android:paddingRight="10dp"
+            android:text="@string/date"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/view_note_overflow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@id/datev"
+            android:drawableLeft="@drawable/ic_action_overflow"
+            android:drawablePadding="5dp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/titlev"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/note_view_upa"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/view_text_bord"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/contentv"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/titlev"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textSize="17sp" />
+
+</RelativeLayout>
