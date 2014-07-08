@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <group>
+        <item
+            android:id="@+id/overfow_setting"
+            android:title="@string/action_settings">
+        </item>
+        <item
+            android:id="@+id/overfow_remove"
+            android:title="@string/remove">
+        </item>
+        <item
+            android:id="@+id/new_place"
+            android:title="@string/new_plce">
+        </item>
+        <item
+            android:id="@+id/new_mode"
+            android:title="@string/new_mode">
+        </item>
+        <item android:id="@+id/sync"
+            android:title="@string/sync"></item>
+    </group>
+
+</menu>

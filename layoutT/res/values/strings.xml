@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">layoutT</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="Add">Add</string>
+    <string name="Title">Title</string>
+    <string name="Con">Con</string>
+    <string name="note">Put note Here</string>
+    <string name="cancel">Cancel</string>
+    <string name="noto">Note</string>
+    <string name="remove">Remove</string>
+    <string name="menu">Menu</string>
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
+    <string name="share">Share</string>
+    <string name="back">Back</string>
+    <string name="memo">Memo</string>
+    <string name="date">Date</string>
+    <string name="new_note">New note</string>
+    <string name="title">Title</string>
+    <string name="all_notes">All ntoes</string>
+    <string name="tag">Tags</string>
+    <string name="new_mode">New mode</string>
+    <string name="mode">Mode</string>
+	<string name="location_mode">LocatMode</string>
+	<string name="chose_loc">Chose Loc</string>
+	<string name="picfg">pick form gal</string>
+	<string name="tack_pic">take pic</string>
+	<string name="current_pos">Current Pos</string>
+	<string name="range">Range</string>
+	<string name="place_name">Place name</string>
+	<string name="new_plce">New place</string>
+	<string name="Search_cam">Search by cam</string>
+	<string name="current_pos_byGPS">GPS Position</string>
+	<string name="current_pos_byNetwork">Network Position</string>
+	<string name="sync">Sync</string>
+	
+    <string-array name="testarray">
+        <item>Array Item One</item>
+        <item>Array Item Two</item>
+        <item>Array Item Three</item>
+    </string-array>
+
+</resources>
