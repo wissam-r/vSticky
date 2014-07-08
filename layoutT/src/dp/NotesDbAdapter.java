@@ -293,7 +293,7 @@ public class NotesDbAdapter {
 		return cursor ;}
 
 	public Cursor getAllNotes(){
-		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE};
+		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,MODE_ID,PHOTO_ID,GPS_ID};
 		Cursor cursor = mDb.query(TABLE_NAME[3], FROM, null, null, null, null, NOTE_DATE+" DESC");
 		//		mDb.query(table, columns, selection, selectionArgs, groupBy, having, orderBy)
 

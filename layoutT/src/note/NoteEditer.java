@@ -48,12 +48,12 @@ public class NoteEditer extends Activity {
 	private File mCurrentPhoto;
 	private ImageView myDImVeiw;
 	private int saving_type  =0;
-	
+
 
 	private Integer mode_ID =null ;
 	private Integer place_ID =null;
 	private Integer photo_ID =null ;
-	
+
 	MyDialog myD;
 
 
@@ -62,7 +62,6 @@ public class NoteEditer extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.note);
 
-		myD = new MyDialog(NoteEditer.this, R.layout.tags_layout) ;
 		final EditText t1 = (EditText) findViewById(R.id.titleo);
 		final EditText t2 = (EditText) findViewById(R.id.conto);
 		Button save = (Button) findViewById(R.id.b2);
@@ -102,14 +101,15 @@ public class NoteEditer extends Activity {
 							if (cursor.getCount()>0)
 								photo_ID = cursor.getInt(0) ;
 						}
-//						buttons.Buttons.save(t1.getText().toString().trim(), t2.getText().toString().trim(),Notepad.getDb());
-						
-//						Cursor cursor = Notepad.getDb().getPhotoByPath(mCurrentPhoto.getAbsolutePath()) ;
-//						int photo_ID = cursor.getInt(0) ;
+						//						buttons.Buttons.save(t1.getText().toString().trim(), t2.getText().toString().trim(),Notepad.getDb());
+
+						//						Cursor cursor = Notepad.getDb().getPhotoByPath(mCurrentPhoto.getAbsolutePath()) ;
+						//						int photo_ID = cursor.getInt(0) ;
 						Notepad.getDb().insertTagedNote(t1.getText().toString(), t2.getText().toString(), photo_ID , place_ID , mode_ID ) ;
 						Cursor cursor   = Notepad.getDb().getAllNotes() ;
-						
-						Toast.makeText(getBaseContext(), cursor.getString(0) +cursor.getString(1)+cursor.getString(2) +cursor.getString(3)+cursor.getString(4), Toast.LENGTH_LONG) ;
+						Cursor cursor2 = Notepad.getDb().getModeById(cursor.getInt(4)) ;
+
+						Toast.makeText(getBaseContext(), cursor.getString(0) +cursor.getString(1)+cursor.getString(2) +cursor.getString(3)+"mode name " +cursor2.getString(1), Toast.LENGTH_LONG).show() ;
 					}
 				}
 				catch(Exception ex){
@@ -139,13 +139,13 @@ public class NoteEditer extends Activity {
 				buttons.Buttons.share(t1.getText().toString(), t2.getText().toString(),NoteEditer.this);
 			}
 		});
-		
+
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK){
@@ -161,7 +161,7 @@ public class NoteEditer extends Activity {
 				myDImVeiw.setImageBitmap(b);
 			}			
 		}else if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK) {
-			
+
 			Uri selectedImage = data.getData();
 			//myDImVeiw.setImageURI(selectedImage);
 			String[] filePathColumn = { MediaStore.Images.Media.DATA };
@@ -251,7 +251,7 @@ public class NoteEditer extends Activity {
 		}
 	};
 
-	
+
 
 	public File getmCurrentPhoto() {
 		return mCurrentPhoto;
@@ -323,7 +323,7 @@ public class NoteEditer extends Activity {
 					Toast.makeText(getBaseContext(), "fail", Toast.LENGTH_LONG).show() ;
 					return;
 				}
-					
+
 				if ((newplace.getRaduis() >= minRaduis)&&(!newplace.getName().equals("")) ){
 					Cursor cursor = Notepad.getDb().getAllPlaces() ;
 					Region  reg;
@@ -357,7 +357,7 @@ public class NoteEditer extends Activity {
 
 		myD.getAlertDialog().show() ;
 	}
-	
+
 	OnMenuItemClickListener placeClick = new OnMenuItemClickListener() {
 
 		@Override
@@ -372,6 +372,7 @@ public class NoteEditer extends Activity {
 		@Override
 		public boolean onMenuItemClick(MenuItem arg0) {	
 			mode_ID = arg0.getItemId() ;
+			Toast.makeText(getBaseContext(), mode_ID + "", Toast.LENGTH_LONG).show();
 			return false;
 		}
 
@@ -382,7 +383,7 @@ public class NoteEditer extends Activity {
 
 		@Override
 		public void onClick(View arg0) {
-//			myD = new MyDialog(NoteEditer.this, R.layout.tags_layout) ;
+			//			myD = new MyDialog(NoteEditer.this, R.layout.tags_layout) ;
 			myDImVeiw = (ImageView) myD.getDialoglayout().findViewById(R.id.showImg);
 			Button takePic = (Button) myD.getDialoglayout().findViewById(R.id.new_pic);
 			takePic.setOnClickListener(new OnClickListener() {
@@ -467,6 +468,13 @@ public class NoteEditer extends Activity {
 			myD.getAlertDialog().show() ;
 		}
 	};
+
+
+	@Override
+	protected void onStart() {
+		myD = new MyDialog(NoteEditer.this, R.layout.tags_layout) ;
+		super.onStart();
+	}
 
 }
 
