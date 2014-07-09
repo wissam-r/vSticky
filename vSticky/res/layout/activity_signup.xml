@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:scrollbars="vertical" >
+
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:layout_marginTop="30dp"
+        android:contentDescription="@string/logoDesc"
+        android:maxHeight="65dp"
+        android:maxWidth="65dp"
+        android:src="@drawable/sticky" />
+
+    <EditText
+        android:id="@+id/etxtUsername"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imgLogo"
+        android:hint="@string/etxtUsername"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/etxtEmail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etxtUsername"
+        android:hint="@string/etxtEmail"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/etxtPassword"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etxtEmail"
+        android:hint="@string/etxtPassword"
+        android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/etxtPassword2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etxtPassword"
+        android:hint="@string/etxtPassword2"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/btnSignup"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etxtPassword2"
+        android:layout_centerHorizontal="true"
+        android:text="@string/btnSignup" />
+
+</RelativeLayout>

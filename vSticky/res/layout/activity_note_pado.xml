@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" 
+    android:padding="0dp"
+    >
+
+    <RelativeLayout
+        android:id="@+id/note_pad_upa"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:background="@android:drawable/btn_default"
+        android:orientation="horizontal"
+        android:padding="0dp"
+         >
+         <Button
+            android:id="@+id/note_pad_s_sortby"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:drawableLeft="@drawable/ic_action_sort_by_size"
+            android:drawablePadding="5dp"
+            android:text="@string/all_notes"
+            android:textSize="20sp" />
+
+       <!--   <Spinner
+            android:id="@+id/note_pad_s_sortby"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center_vertical|center_horizontal"
+            android:padding="5dp"
+            
+            android:spinnerMode="dropdown" />
+            android:entries="@array/testarray" -->
+            
+
+        <TextView
+            android:id="@+id/note_pad_t_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:gravity="left|center_vertical"
+            android:paddingRight="5dp"
+            android:textSize="25sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/note_pad_bota"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="-1dp"
+        android:background="@android:drawable/btn_default"
+        android:orientation="horizontal"
+        android:padding="0dp" >
+
+        <Button
+            android:id="@+id/note_pad_add"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:drawableLeft="@drawable/ic_action_new"
+            android:drawablePadding="5dp"
+            android:text="@string/new_note"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/note_pad_overflow"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="0dp"
+            android:drawableLeft="@drawable/ic_action_overflow"
+            android:drawablePadding="5dp" />
+
+        <Button
+            android:id="@+id/note_pad_search_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="0dp"
+            android:layout_toLeftOf="@id/note_pad_overflow"
+            android:drawableLeft="@drawable/tag" />
+        <Button
+            android:id="@+id/note_pad_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@id/note_pad_search_tag"
+            android:drawableLeft="@drawable/ic_action_search" />
+
+   <!--       <SearchView
+            android:id="@+id/note_pad_search"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_toRightOf="@id/note_pad_add"
+            android:iconifiedByDefault="true"
+            android:layoutMode="clipBounds"
+            android:orientation="vertical"
+            android:queryHint="@string/title" >
+        </SearchView>-->
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/note_pad_noteslist"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@id/note_pad_bota"
+        android:layout_below="@id/note_pad_upa"
+        android:layout_margin="5dp"
+        android:choiceMode="multipleChoice" >
+    </ListView>
+
+</RelativeLayout>
