@@ -43,7 +43,6 @@ public class NoteEditer extends Activity {
 	static final int RESULT_LOAD_IMAGE = 2;
 	private File mCurrentPhoto;
 	private ImageView myDImVeiw;
-	private int saving_type  =0;
 
 
 	private Integer mode_ID =null ;
@@ -51,7 +50,7 @@ public class NoteEditer extends Activity {
 	private Integer photo_ID =null ;
 
 	MyDialog myD;
-	
+
 	GPSProvider gps;
 	NetworkProvider netGPS;
 
@@ -62,7 +61,9 @@ public class NoteEditer extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.note);
-		
+
+
+
 		myD = new MyDialog(NoteEditer.this, R.layout.tags_layout) ;
 		t1 = (EditText) findViewById(R.id.titleo);
 		t2 = (EditText) findViewById(R.id.conto);
@@ -93,8 +94,9 @@ public class NoteEditer extends Activity {
 				}
 				try{
 					if (getIntent().getExtras().getString("mode").equals("edit")) {
-						buttons.Buttons.save(getIntent().getExtras().getInt("id"), t1.getText().toString().trim(), t2.getText().toString().trim(),Notepad.getDb());
-
+//						buttons.Buttons.save(getIntent().getExtras().getInt("id"), t1.getText().toString().trim(), t2.getText().toString().trim(),Notepad.getDb());
+						Notepad.getDb().updateTagedNote(getIntent().getExtras().getInt("id"),t1.getText().toString(), t2.getText().toString(), photo_ID , place_ID , mode_ID ) ;
+						
 					}
 					else {
 						if (mCurrentPhoto!=null)
@@ -153,6 +155,40 @@ public class NoteEditer extends Activity {
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
+		if (myD.getAlertDialog().isShowing())
+			outState.putBoolean("myD", true) ;
+		else
+			outState.putBoolean("myD", false) ;
+		outState.putString("title", t1.getText().toString()) ;
+		outState.putString("body", t2.getText().toString()) ;
+		outState.putSerializable("currentFile", mCurrentPhoto) ;
+		outState.putSerializable("photo_ID", photo_ID);
+		outState.putSerializable("place_ID", place_ID);
+		outState.putSerializable("mode_ID", mode_ID);
+
+
+
+
+	}
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		if (savedInstanceState.getBoolean("myD")){
+			myDL() ;
+			mCurrentPhoto = (File) savedInstanceState.getSerializable("currentFile") ;
+			if (mCurrentPhoto!=null){
+				Bitmap b = BitmapFactory.decodeFile(mCurrentPhoto.getAbsolutePath());
+				myDImVeiw.setImageBitmap(b);}
+		}
+		t1.setText(savedInstanceState.getString("title"));
+		t2.setText(savedInstanceState.getString("body"));
+
+		photo_ID = (Integer) savedInstanceState.getSerializable("photo_ID") ;
+		place_ID = (Integer) savedInstanceState.getSerializable("place_ID") ;
+		mode_ID = (Integer) savedInstanceState.getSerializable("mode_ID") ;
+
+
+		super.onRestoreInstanceState(savedInstanceState);
 	}
 
 	@Override
@@ -186,21 +222,21 @@ public class NoteEditer extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-//	OnClickListener add_place = new OnClickListener() {
-//
-//		@Override
-//		public void onClick(View arg0) {
-//			new_place() ;
-//
-//		}
-//	};
-//	OnClickListener add_mode = new OnClickListener() {
-//
-//		@Override
-//		public void onClick(View arg0) {
-//			new_mode();
-//		}
-//	};
+	//	OnClickListener add_place = new OnClickListener() {
+	//
+	//		@Override
+	//		public void onClick(View arg0) {
+	//			new_place() ;
+	//
+	//		}
+	//	};
+	//	OnClickListener add_mode = new OnClickListener() {
+	//
+	//		@Override
+	//		public void onClick(View arg0) {
+	//			new_mode();
+	//		}
+	//	};
 	OnClickListener choose_mode_l = new OnClickListener() {
 
 		@Override
@@ -288,100 +324,100 @@ public class NoteEditer extends Activity {
 		return place_ID;
 	}
 
-//	public void new_mode(){
-//		final MyDialog myD = new MyDialog(NoteEditer.this, R.layout.new_mode) ;
-//		final EditText mode_name = (EditText) myD.getDialoglayout().findViewById(R.id.new_mode_name) ;
-//		Button save_mode = (Button) myD.getDialoglayout().findViewById(R.id.save_mode) ;
-//		save_mode.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View arg0) {
-//
-//				if (!mode_name.getText().toString().equals("")){
-//					Notepad.getDb().insertMode(mode_name.getText().toString()) ;
-//					Cursor cursor = Notepad.getDb().getAllModes() ;
-//					Toast.makeText(getBaseContext(), String.valueOf(cursor.getCount()), Toast.LENGTH_LONG).show();
-//					myD.getAlertDialog().cancel() ;
-//				}
-//			}
-//		}) ;
-//		myD.getAlertDialog().show() ;
-//	}
+	//	public void new_mode(){
+	//		final MyDialog myD = new MyDialog(NoteEditer.this, R.layout.new_mode) ;
+	//		final EditText mode_name = (EditText) myD.getDialoglayout().findViewById(R.id.new_mode_name) ;
+	//		Button save_mode = (Button) myD.getDialoglayout().findViewById(R.id.save_mode) ;
+	//		save_mode.setOnClickListener(new OnClickListener() {
+	//
+	//			@Override
+	//			public void onClick(View arg0) {
+	//
+	//				if (!mode_name.getText().toString().equals("")){
+	//					Notepad.getDb().insertMode(mode_name.getText().toString()) ;
+	//					Cursor cursor = Notepad.getDb().getAllModes() ;
+	//					Toast.makeText(getBaseContext(), String.valueOf(cursor.getCount()), Toast.LENGTH_LONG).show();
+	//					myD.getAlertDialog().cancel() ;
+	//				}
+	//			}
+	//		}) ;
+	//		myD.getAlertDialog().show() ;
+	//	}
 
-//	public void new_place(){
-//		final MyDialog myD = new MyDialog(NoteEditer.this, R.layout.new_place) ;
-//		TextView currentGps = (TextView) myD.getDialoglayout().findViewById(R.id.current_pos);
-//		TextView currentGpsNet = (TextView) myD.getDialoglayout().findViewById(R.id.current_posnet);
-//		Button saveB =  (Button) myD.getDialoglayout().findViewById(R.id.save_place) ;
-//		final EditText rangeGPS = (EditText) myD.getDialoglayout().findViewById(R.id.range_gps) ;
-//		final EditText placeName = (EditText) myD.getDialoglayout().findViewById(R.id.name_place) ;
-//
-//
-//		final GPSProvider gps = new GPSProvider(NoteEditer.this, currentGps) ;
-//		final NetworkProvider netGPS = new NetworkProvider(NoteEditer.this, currentGpsNet) ;
-//
-//		saveB.setOnClickListener(new OnClickListener() {
-////TODO look here and use it in the other place
-//			@Override
-//			public void onClick(View arg0) {
-//				Place newplace ;
-//				final int minRaduis = 10;
-//				if ((GPSProvider.isGPS_ConToSatil()) && (gps.getLatitude()!=null)&&(gps.getLongitude()!=null))
-//				{
-//					try{
-//						newplace = new Place(-1, placeName.getText().toString(), gps.getLongitude(), gps.getLatitude(), Integer.parseInt(rangeGPS.getText().toString()));
-//					}catch(NumberFormatException e){
-//						Toast.makeText(getBaseContext(), "Plz enter unsigned number net", Toast.LENGTH_LONG).show() ;
-//						return;
-//					}
-//				}
-//				else if ((NetworkProvider.isInternet_con()) && (netGPS.getLatitude()!=null)&&(netGPS.getLongitude()!=null))
-//				{
-//					try{
-//						newplace = new Place(-1, placeName.getText().toString(), netGPS.getLongitude(), netGPS.getLatitude(), Integer.parseInt(rangeGPS.getText().toString()));
-//					}catch(NumberFormatException e){
-//						Toast.makeText(getBaseContext(), "Plz enter unsigned number net", Toast.LENGTH_LONG).show() ;
-//						return;
-//					}
-//				}else{
-//					Toast.makeText(getBaseContext(), "fail", Toast.LENGTH_LONG).show() ;
-//					return;
-//				}
-//
-//				if ((newplace.getRaduis() >= minRaduis)&&(!newplace.getName().equals("")) ){
-//					Cursor cursor = Notepad.getDb().getAllPlaces() ;
-//					Region  reg;
-//
-//					int i = 0 ;
-//					while (i < cursor.getCount())
-//					{
-//						reg = new Region(cursor.getDouble(2), cursor.getDouble(3), cursor.getInt(4));
-//						if (reg.isInside(newplace.getRegion()))
-//						{
-//							if(reg.isInside(newplace.getRegion().getLoc())){
-//								Toast.makeText(getBaseContext(), "fail: you are inside other place: "+cursor.getString(1), Toast.LENGTH_LONG).show();
-//							}else{
-//								Toast.makeText(getBaseContext(), "fail: region collision with "+cursor.getString(1), Toast.LENGTH_LONG).show();
-//							}
-//							return ;
-//						}
-//						if(cursor.getString(1).equals(newplace.getName())){
-//							Toast.makeText(getBaseContext(), "fail: chose other name for this palce", Toast.LENGTH_LONG).show();
-//							return;
-//						}
-//						i++ ;
-//						cursor.moveToNext() ;
-//					}
-//					Notepad.getDb().insertPlace(newplace.getName(), newplace.getX(), newplace.getY(), newplace.getRaduis()) ;
-//					Toast.makeText(getBaseContext(), "success", Toast.LENGTH_LONG).show() ;
-//					myD.getAlertDialog().cancel() ;
-//				}
-//
-//			}
-//		});
-//
-//		myD.getAlertDialog().show() ;
-//	}
+	//	public void new_place(){
+	//		final MyDialog myD = new MyDialog(NoteEditer.this, R.layout.new_place) ;
+	//		TextView currentGps = (TextView) myD.getDialoglayout().findViewById(R.id.current_pos);
+	//		TextView currentGpsNet = (TextView) myD.getDialoglayout().findViewById(R.id.current_posnet);
+	//		Button saveB =  (Button) myD.getDialoglayout().findViewById(R.id.save_place) ;
+	//		final EditText rangeGPS = (EditText) myD.getDialoglayout().findViewById(R.id.range_gps) ;
+	//		final EditText placeName = (EditText) myD.getDialoglayout().findViewById(R.id.name_place) ;
+	//
+	//
+	//		final GPSProvider gps = new GPSProvider(NoteEditer.this, currentGps) ;
+	//		final NetworkProvider netGPS = new NetworkProvider(NoteEditer.this, currentGpsNet) ;
+	//
+	//		saveB.setOnClickListener(new OnClickListener() {
+	////TODO look here and use it in the other place
+	//			@Override
+	//			public void onClick(View arg0) {
+	//				Place newplace ;
+	//				final int minRaduis = 10;
+	//				if ((GPSProvider.isGPS_ConToSatil()) && (gps.getLatitude()!=null)&&(gps.getLongitude()!=null))
+	//				{
+	//					try{
+	//						newplace = new Place(-1, placeName.getText().toString(), gps.getLongitude(), gps.getLatitude(), Integer.parseInt(rangeGPS.getText().toString()));
+	//					}catch(NumberFormatException e){
+	//						Toast.makeText(getBaseContext(), "Plz enter unsigned number net", Toast.LENGTH_LONG).show() ;
+	//						return;
+	//					}
+	//				}
+	//				else if ((NetworkProvider.isInternet_con()) && (netGPS.getLatitude()!=null)&&(netGPS.getLongitude()!=null))
+	//				{
+	//					try{
+	//						newplace = new Place(-1, placeName.getText().toString(), netGPS.getLongitude(), netGPS.getLatitude(), Integer.parseInt(rangeGPS.getText().toString()));
+	//					}catch(NumberFormatException e){
+	//						Toast.makeText(getBaseContext(), "Plz enter unsigned number net", Toast.LENGTH_LONG).show() ;
+	//						return;
+	//					}
+	//				}else{
+	//					Toast.makeText(getBaseContext(), "fail", Toast.LENGTH_LONG).show() ;
+	//					return;
+	//				}
+	//
+	//				if ((newplace.getRaduis() >= minRaduis)&&(!newplace.getName().equals("")) ){
+	//					Cursor cursor = Notepad.getDb().getAllPlaces() ;
+	//					Region  reg;
+	//
+	//					int i = 0 ;
+	//					while (i < cursor.getCount())
+	//					{
+	//						reg = new Region(cursor.getDouble(2), cursor.getDouble(3), cursor.getInt(4));
+	//						if (reg.isInside(newplace.getRegion()))
+	//						{
+	//							if(reg.isInside(newplace.getRegion().getLoc())){
+	//								Toast.makeText(getBaseContext(), "fail: you are inside other place: "+cursor.getString(1), Toast.LENGTH_LONG).show();
+	//							}else{
+	//								Toast.makeText(getBaseContext(), "fail: region collision with "+cursor.getString(1), Toast.LENGTH_LONG).show();
+	//							}
+	//							return ;
+	//						}
+	//						if(cursor.getString(1).equals(newplace.getName())){
+	//							Toast.makeText(getBaseContext(), "fail: chose other name for this palce", Toast.LENGTH_LONG).show();
+	//							return;
+	//						}
+	//						i++ ;
+	//						cursor.moveToNext() ;
+	//					}
+	//					Notepad.getDb().insertPlace(newplace.getName(), newplace.getX(), newplace.getY(), newplace.getRaduis()) ;
+	//					Toast.makeText(getBaseContext(), "success", Toast.LENGTH_LONG).show() ;
+	//					myD.getAlertDialog().cancel() ;
+	//				}
+	//
+	//			}
+	//		});
+	//
+	//		myD.getAlertDialog().show() ;
+	//	}
 
 
 
@@ -390,111 +426,12 @@ public class NoteEditer extends Activity {
 
 		@Override
 		public void onClick(View arg0) {
-			if(t1.getText().toString().isEmpty() || t2.getText().toString().isEmpty())
-				return ;
-			//			myD = new MyDialog(NoteEditer.this, R.layout.tags_layout) ;
-			//TODO here u have to declire the text view and add listener to it
-			myDImVeiw = (ImageView) myD.getDialoglayout().findViewById(R.id.showImg);
-			Button takePic = (Button) myD.getDialoglayout().findViewById(R.id.new_pic);
-			takePic.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					dispatchTakePictureIntent();		
-				}					
-
-				private File createImageFile() throws IOException {
-					// Create an image file name
-					String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-					String imageFileName = "JPEG_" + timeStamp + "_";
-					File storageDir = Environment.getExternalStoragePublicDirectory(
-							Environment.DIRECTORY_PICTURES);
-					File image = File.createTempFile(
-							imageFileName,  /* prefix */
-							".jpg",         /* suffix */
-							storageDir      /* directory */
-							);
-
-					// Save a file: path for use with ACTION_VIEW intents
-					mCurrentPhoto = /*"file:" +*/ image;
-					return image;
-				}
-
-				private void dispatchTakePictureIntent() {
-
-					Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-					// Ensure that there's a camera activity to handle the intent
-					if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-						// Create the File where the photo should go
-						File photoFile = null;
-						try {
-							photoFile = createImageFile();
-						} catch (IOException ex) {
-							// Error occurred while creating the File
-							ex.printStackTrace();
-						}
-						// Continue only if the File was successfully created
-						if (photoFile != null) {
-							takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-									Uri.fromFile(photoFile));
-							startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-						}
-					}
-				}
-			});
-			
-			Button loadPic = (Button) myD.getDialoglayout().findViewById(R.id.picfga);
-			loadPic.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					Intent i = new Intent(
-							Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-					startActivityForResult(i, RESULT_LOAD_IMAGE);						
-				}
-			});
-			
-			TextView usedLocation = (TextView) myD.getDialoglayout().findViewById(R.id.location_mode);
-			
-			Button choose_mode = (Button) myD.getDialoglayout().findViewById(R.id.mode_chose) ;
-			choose_mode.setOnClickListener(choose_mode_l) ;
-			
-			Button choose_place = (Button) myD.getDialoglayout().findViewById(R.id.loc_chose) ;
-			choose_place.setOnClickListener(choose_place_l);
-			
-			Button new_place = (Button) myD.getDialoglayout().findViewById(R.id.new_loc);
-			new_place.setOnClickListener(new NewPlaceAdder(NoteEditer.this, usedLocation)) ;
-			
-			Button new_mode = (Button) myD.getDialoglayout().findViewById(R.id.add_mode) ;
-			new_mode.setOnClickListener(new NewModeAdder(NoteEditer.this, choose_mode)) ;
-			
-			Button done_tag = (Button) myD.getDialoglayout().findViewById(R.id.done_tag);
-			done_tag.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-					myD.getAlertDialog().cancel() ;
-
-				}
-			}) ;
-			
-			
-			
-			place_ID = getGPSID();
-			Log.d("place","getGPSID :: "+place_ID);
-			if(place_ID>-1){
-				new_place.setEnabled(false);
-				choose_place.setEnabled(false);
-				usedLocation.setText(Notepad.getDb().getPlacesById(place_ID).getString(1));
-			}else if(place_ID==-2){//we know our gps locatoin but not where we are
-				choose_place.setEnabled(false);
-			}
-			myD.getAlertDialog().show() ;
+			myDL() ;
 		}
 	};
-	
+
 	public int getGPSID(){
-		
+
 		Location loc;
 		if ((GPSProvider.isGPS_ConToSatil()) && (gps.getLatitude()!=null)&&(gps.getLongitude()!=null)){
 			loc = new Location("");
@@ -511,7 +448,7 @@ public class NoteEditer extends Activity {
 			return -1;
 		}
 		Cursor cursor = Notepad.getDb().getAllPlaces() ;
-		
+
 		Region  reg;
 		if(cursor.moveToFirst()){
 			do{
@@ -534,6 +471,108 @@ public class NoteEditer extends Activity {
 		netGPS = new NetworkProvider(this, new TextView(NoteEditer.this)) ;
 	}
 
+	public void myDL(){
+		//		if(t1.getText().toString().isEmpty() || t2.getText().toString().isEmpty())
+		//			return ;
+		//			myD = new MyDialog(NoteEditer.this, R.layout.tags_layout) ;
+		//TODO here u have to declire the text view and add listener to it
+		myDImVeiw = (ImageView) myD.getDialoglayout().findViewById(R.id.showImg);
+		Button takePic = (Button) myD.getDialoglayout().findViewById(R.id.new_pic);
+		takePic.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				dispatchTakePictureIntent();		
+			}					
+
+			private File createImageFile() throws IOException {
+				// Create an image file name
+				String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+				String imageFileName = "JPEG_" + timeStamp + "_";
+				File storageDir = Environment.getExternalStoragePublicDirectory(
+						Environment.DIRECTORY_PICTURES);
+				File image = File.createTempFile(
+						imageFileName,  /* prefix */
+						".jpg",         /* suffix */
+						storageDir      /* directory */
+						);
+
+				// Save a file: path for use with ACTION_VIEW intents
+				mCurrentPhoto = /*"file:" +*/ image;
+				return image;
+			}
+
+			private void dispatchTakePictureIntent() {
+
+				Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				// Ensure that there's a camera activity to handle the intent
+				if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+					// Create the File where the photo should go
+					File photoFile = null;
+					try {
+						photoFile = createImageFile();
+					} catch (IOException ex) {
+						// Error occurred while creating the File
+						ex.printStackTrace();
+					}
+					// Continue only if the File was successfully created
+					if (photoFile != null) {
+						takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+								Uri.fromFile(photoFile));
+						startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+					}
+				}
+			}
+		});
+
+		Button loadPic = (Button) myD.getDialoglayout().findViewById(R.id.picfga);
+		loadPic.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(
+						Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+				startActivityForResult(i, RESULT_LOAD_IMAGE);						
+			}
+		});
+
+		TextView usedLocation = (TextView) myD.getDialoglayout().findViewById(R.id.location_mode);
+
+		Button choose_mode = (Button) myD.getDialoglayout().findViewById(R.id.mode_chose) ;
+		choose_mode.setOnClickListener(choose_mode_l) ;
+
+		Button choose_place = (Button) myD.getDialoglayout().findViewById(R.id.loc_chose) ;
+		choose_place.setOnClickListener(choose_place_l);
+
+		Button new_place = (Button) myD.getDialoglayout().findViewById(R.id.new_loc);
+		new_place.setOnClickListener(new NewPlaceAdder(NoteEditer.this, usedLocation)) ;
+
+		Button new_mode = (Button) myD.getDialoglayout().findViewById(R.id.add_mode) ;
+		new_mode.setOnClickListener(new NewModeAdder(NoteEditer.this, choose_mode)) ;
+
+		Button done_tag = (Button) myD.getDialoglayout().findViewById(R.id.done_tag);
+		done_tag.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				myD.getAlertDialog().cancel() ;
+
+			}
+		}) ;
+
+
+
+		place_ID = getGPSID();
+		Log.d("place","getGPSID :: "+place_ID);
+		if(place_ID>-1){
+			new_place.setEnabled(false);
+			choose_place.setEnabled(false);
+			usedLocation.setText(Notepad.getDb().getPlacesById(place_ID).getString(1));
+		}else if(place_ID==-2){//we know our gps locatoin but not where we are
+			choose_place.setEnabled(false);
+		}
+		myD.getAlertDialog().show() ;
+	}
 }
 
 class NewModeAdder implements OnClickListener{
@@ -544,7 +583,7 @@ class NewModeAdder implements OnClickListener{
 		button = b;
 		this.activity = activity;
 	}
-	
+
 	Button button;
 	Activity activity;
 	@Override
@@ -569,9 +608,9 @@ class NewModeAdder implements OnClickListener{
 			}
 		}) ;
 		myD.getAlertDialog().show() ;
-		
+
 	}
-	
+
 }
 
 class NewPlaceAdder implements OnClickListener{
@@ -586,7 +625,7 @@ class NewPlaceAdder implements OnClickListener{
 		textview = t;
 		this.activity = activity;
 	}
-	
+
 	Button button;
 	TextView textview;
 	Activity activity;
@@ -666,13 +705,13 @@ class NewPlaceAdder implements OnClickListener{
 					}
 					fv.setEnabled(false);
 				}
-				
+
 			}
 		});
 
 		myD.getAlertDialog().show() ;
-		
+
 	}
-	
+
 }
 

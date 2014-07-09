@@ -12,9 +12,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="40dp"
+
         android:contentDescription="@string/logoDesc"
-        android:src="@drawable/note" />
+        android:src="@drawable/sticky" />
 
     <EditText
         android:id="@+id/etxtUsername"

@@ -49,12 +49,13 @@ public class Notepad extends Activity{
 	private Integer mode_ID =-1 ;
 	private Integer place_ID =-1;
 	private Integer photo_ID =-1 ;
+	MyDialog myDa ;
 
 	//TODO fill this objects
 	final int DETECTE_NOTE = 1;
 	ArrayList<String> photoPaths = new ArrayList<String>();
 	ArrayList<Integer> photoIDs = new ArrayList<Integer>();
-	
+
 	GPSProvider gps;
 	NetworkProvider netGPS;
 
@@ -66,11 +67,14 @@ public class Notepad extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_note_pado);
-		
+
+
+		myDa = new MyDialog(Notepad.this, R.layout.search_tags_layout) ;
+
 		mDbHelper = new NotesDbAdapter(this);
 		mDbHelper.open();
-//		mDbHelper.dropTable() ;
-//		mDbHelper.createTable() ;
+		//		mDbHelper.dropTable() ;
+		//		mDbHelper.createTable() ;
 
 		list = (ListView) findViewById(R.id.note_pad_noteslist);	
 		Button new_note_b  = (Button) findViewById(R.id.note_pad_add);
@@ -191,16 +195,16 @@ public class Notepad extends Activity{
 	@Override
 	protected void onStart() {
 		super.onStart();
-		
+
 		gps = new GPSProvider(this, new TextView(Notepad.this)) ;
 		netGPS = new NetworkProvider(this, new TextView(Notepad.this)) ;
-		
+
 		mla = new listAdap(this, 0);
 		list.setAdapter(mla);
 		Cursor cursor = mDbHelper.getNotesByDate();
 		drawNotes(cursor);
 
-		
+
 	};
 	@Override
 	protected void onPause() {
@@ -261,30 +265,7 @@ public class Notepad extends Activity{
 
 		@Override
 		public void onClick(View arg0) {
-			MyDialog myD = new MyDialog(Notepad.this, R.layout.search_tags_layout) ;
-			
-			TextView placeLocation = (TextView) myD.getDialoglayout().findViewById(R.id.location_modes);
-			
-			Button choose_mode = (Button) myD.getDialoglayout().findViewById(R.id.mode_choses) ;
-			choose_mode.setOnClickListener(choose_mode_l) ;
-			
-			Button choose_place = (Button) myD.getDialoglayout().findViewById(R.id.loc_choses) ;
-			choose_place.setOnClickListener(choose_place_l);
-			
-			Button searchByMode = (Button) myD.getDialoglayout().findViewById(R.id.search_by_mode_palce) ;
-			searchByMode.setOnClickListener(search_By_mode_tag) ;
-			
-			Button searchByCam = (Button) myD.getDialoglayout().findViewById(R.id.search_by_tag) ;
-			searchByCam.setOnClickListener(search_By_cam) ;
-			
-			int thisplace = getGPSID();
-			if(thisplace<0){
-				placeLocation.setText("unknown place");
-			}else{
-				placeLocation.setText("Place: "+Notepad.getDb().getPlacesById(thisplace).getString(1));
-			}
-			
-			myD.getAlertDialog().show() ;
+			myDaL() ;
 		}
 	};
 	OnClickListener sortby_l = new OnClickListener() {
@@ -536,15 +517,15 @@ public class Notepad extends Activity{
 			//			popup.getMenu().addSubMenu(0, mode.getId(), 0, mode.getName()) ;
 
 
-//			if (mode_ID != -1 )
-//				((Button) arg0 ).setText(popup.getMenu().getItem(mode_ID-1).getTitle());
+			//			if (mode_ID != -1 )
+			//				((Button) arg0 ).setText(popup.getMenu().getItem(mode_ID-1).getTitle());
 			OnMenuItemClickListener	modeClick = new OnMenuItemClickListener() {
 				@Override
 				public boolean onMenuItemClick(MenuItem arg1) {	
 					mode_ID = arg1.getItemId() ;
 					Toast.makeText(getBaseContext(), mode_ID + "", Toast.LENGTH_LONG).show();
 					((Button) arg0).setText(arg1.getTitle()) ;
-					
+
 					return false;
 				}
 
@@ -593,8 +574,8 @@ public class Notepad extends Activity{
 
 	};
 
-	
-	
+
+
 
 	OnClickListener search_By_mode_tag =  new OnClickListener(){
 		@Override
@@ -668,13 +649,33 @@ public class Notepad extends Activity{
 
 
 	};
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// TODO Auto-generated method stub
+		if (myDa.getAlertDialog().isShowing())
+			outState.putBoolean("myDa", true) ;
+		else
+			outState.putBoolean("myDa", false) ;
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		if (savedInstanceState.getBoolean("myDa")){
+			myDaL() ;
+		}
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+
+
 	public void sync(){
 		//TODO ammar
 		startService(new Intent(Notepad.this,SyncService.class));
 	}
 
 	public int getGPSID(){
-		
+
 		Location loc;
 		if ((GPSProvider.isGPS_ConToSatil()) && (gps.getLatitude()!=null)&&(gps.getLongitude()!=null)){
 			loc = new Location("");
@@ -691,7 +692,7 @@ public class Notepad extends Activity{
 			return -1;
 		}
 		Cursor cursor = Notepad.getDb().getAllPlaces() ;
-		
+
 		Region  reg;
 		if(cursor.moveToFirst()){
 			do{
@@ -707,6 +708,33 @@ public class Notepad extends Activity{
 		return -2;
 	}
 
+	public void myDaL(){
+
+
+		TextView placeLocation = (TextView) myDa.getDialoglayout().findViewById(R.id.location_modes);
+
+		Button choose_mode = (Button) myDa.getDialoglayout().findViewById(R.id.mode_choses) ;
+		choose_mode.setOnClickListener(choose_mode_l) ;
+
+		Button choose_place = (Button) myDa.getDialoglayout().findViewById(R.id.loc_choses) ;
+		choose_place.setOnClickListener(choose_place_l);
+
+		Button searchByMode = (Button) myDa.getDialoglayout().findViewById(R.id.search_by_mode_palce) ;
+		searchByMode.setOnClickListener(search_By_mode_tag) ;
+
+		Button searchByCam = (Button) myDa.getDialoglayout().findViewById(R.id.search_by_tag) ;
+		searchByCam.setOnClickListener(search_By_cam) ;
+
+		int thisplace = getGPSID();
+		if(thisplace<0){
+			placeLocation.setText("unknown place");
+		}else{
+			placeLocation.setText("Place: "+Notepad.getDb().getPlacesById(thisplace).getString(1));
+		}
+
+		myDa.getAlertDialog().show() ;
+
+	}
 }
 
 

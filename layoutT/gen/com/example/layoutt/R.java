@@ -78,9 +78,10 @@ containing a value of this type.
         public static final int note=0x7f020016;
         public static final int qwe=0x7f020017;
         public static final int qwer=0x7f020018;
-        public static final int tag=0x7f020019;
-        public static final int view_text_bord=0x7f02001a;
-        public static final int whack_notepad=0x7f02001b;
+        public static final int sticky=0x7f020019;
+        public static final int tag=0x7f02001a;
+        public static final int view_text_bord=0x7f02001b;
+        public static final int whack_notepad=0x7f02001c;
     }
     public static final class id {
         public static final int action_settings=0x7f040063;

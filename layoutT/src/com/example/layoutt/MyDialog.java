@@ -1,5 +1,7 @@
 package com.example.layoutt;
 
+import org.apache.http.entity.SerializableEntity;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -8,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
-public class MyDialog {
+public class MyDialog{
 	View dialoglayout ;
 	final AlertDialog alertDialog ;
 	public AlertDialog getAlertDialog() {
@@ -18,7 +20,6 @@ public class MyDialog {
 		return dialoglayout;
 	}
 	public MyDialog(Activity activity , int layoutId) {
-		// TODO Auto-generated constructor stub
 		Context context = activity ;
 		AlertDialog.Builder builder = new Builder(context) ;
 		final FrameLayout frameView = new FrameLayout(context);
