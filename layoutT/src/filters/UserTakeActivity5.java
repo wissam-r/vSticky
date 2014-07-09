@@ -53,7 +53,7 @@ public class UserTakeActivity5 extends Activity implements CvCameraViewListener2
 					Mat rgb,move;
 					rgb = Utils.loadResource(UserTakeActivity5.this, android.R.drawable.ic_menu_add, Highgui.CV_LOAD_IMAGE_COLOR);
 					Imgproc.cvtColor(rgb, rgb, Imgproc.COLOR_BGR2RGBA);
-					move = Utils.loadResource(UserTakeActivity5.this,R.drawable.ic_action_search, Highgui.CV_LOAD_IMAGE_COLOR);
+					move = Utils.loadResource(UserTakeActivity5.this,android.R.drawable.ic_media_play, Highgui.CV_LOAD_IMAGE_COLOR);
 					Imgproc.cvtColor(move, move, Imgproc.COLOR_BGR2RGBA);
 					//filter = new DetectionFilter(rgb, move);
 					filter = new DetectionFilterThreading(rgb, move);
@@ -174,11 +174,13 @@ public class UserTakeActivity5 extends Activity implements CvCameraViewListener2
 		switch(event.getActionMasked()){
 		case MotionEvent.ACTION_DOWN:
 			int id = filter.getTracked(new Point(event.getX(), event.getY()));
-			Toast.makeText(this,  "you want note "+id, Toast.LENGTH_SHORT).show();
-			Intent data = new Intent();
-			data.putExtra("id", id);
-			setResult(RESULT_OK, data);
-			finish();
+			if(id!=-1){
+				Toast.makeText(this,  "you want note "+id, Toast.LENGTH_SHORT).show();
+				Intent data = new Intent();
+				data.putExtra("id", id);
+				setResult(RESULT_OK, data);
+				finish();
+			}			
 			break;
 		default:
 			break;
