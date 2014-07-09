@@ -63,9 +63,6 @@ public class NoteEditer extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.note);
 		
-		gps = new GPSProvider(this, new TextView(NoteEditer.this)) ;
-		netGPS = new NetworkProvider(this, new TextView(NoteEditer.this)) ;
-		
 		myD = new MyDialog(NoteEditer.this, R.layout.tags_layout) ;
 		t1 = (EditText) findViewById(R.id.titleo);
 		t2 = (EditText) findViewById(R.id.conto);
@@ -533,6 +530,8 @@ public class NoteEditer extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
+		gps = new GPSProvider(this, new TextView(NoteEditer.this)) ;
+		netGPS = new NetworkProvider(this, new TextView(NoteEditer.this)) ;
 	}
 
 }

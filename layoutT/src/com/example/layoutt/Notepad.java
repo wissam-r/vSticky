@@ -4,7 +4,6 @@ package com.example.layoutt;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
-import java.util.Set;
 
 import note.Mode;
 import note.Note;
@@ -55,6 +54,9 @@ public class Notepad extends Activity{
 	final int DETECTE_NOTE = 1;
 	ArrayList<String> photoPaths = new ArrayList<String>();
 	ArrayList<Integer> photoIDs = new ArrayList<Integer>();
+	
+	GPSProvider gps;
+	NetworkProvider netGPS;
 
 	public static NotesDbAdapter getDb(){
 		return mDbHelper;
@@ -64,6 +66,7 @@ public class Notepad extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_note_pado);
+		
 		mDbHelper = new NotesDbAdapter(this);
 		mDbHelper.open();
 //		mDbHelper.dropTable() ;
@@ -188,11 +191,16 @@ public class Notepad extends Activity{
 	@Override
 	protected void onStart() {
 		super.onStart();
+		
+		gps = new GPSProvider(this, new TextView(Notepad.this)) ;
+		netGPS = new NetworkProvider(this, new TextView(Notepad.this)) ;
+		
 		mla = new listAdap(this, 0);
 		list.setAdapter(mla);
 		Cursor cursor = mDbHelper.getNotesByDate();
 		drawNotes(cursor);
 
+		
 	};
 	@Override
 	protected void onPause() {
@@ -254,14 +262,28 @@ public class Notepad extends Activity{
 		@Override
 		public void onClick(View arg0) {
 			MyDialog myD = new MyDialog(Notepad.this, R.layout.search_tags_layout) ;
-			Button searchByTag = (Button) myD.getDialoglayout().findViewById(R.id.search_by_tag) ;
+			
+			TextView placeLocation = (TextView) myD.getDialoglayout().findViewById(R.id.location_modes);
+			
 			Button choose_mode = (Button) myD.getDialoglayout().findViewById(R.id.mode_choses) ;
 			choose_mode.setOnClickListener(choose_mode_l) ;
+			
 			Button choose_place = (Button) myD.getDialoglayout().findViewById(R.id.loc_choses) ;
 			choose_place.setOnClickListener(choose_place_l);
+			
 			Button searchByMode = (Button) myD.getDialoglayout().findViewById(R.id.search_by_mode_palce) ;
 			searchByMode.setOnClickListener(search_By_mode_tag) ;
-			searchByTag.setOnClickListener(search_By_cam) ;
+			
+			Button searchByCam = (Button) myD.getDialoglayout().findViewById(R.id.search_by_tag) ;
+			searchByCam.setOnClickListener(search_By_cam) ;
+			
+			int thisplace = getGPSID();
+			if(thisplace<0){
+				placeLocation.setText("unknown place");
+			}else{
+				placeLocation.setText("Place: "+Notepad.getDb().getPlacesById(thisplace).getString(1));
+			}
+			
 			myD.getAlertDialog().show() ;
 		}
 	};
@@ -591,6 +613,18 @@ public class Notepad extends Activity{
 
 		@Override
 		public void onClick(View arg0){
+			int thisPlace = getGPSID();
+			Log.d("place","getGPSID :: "+thisPlace);
+			if(place_ID != thisPlace || thisPlace < 0 || mode_ID < 0){
+				if(thisPlace < 0){
+					Toast.makeText(Notepad.this, "unknown place", Toast.LENGTH_SHORT).show();
+				}else if(place_ID != thisPlace){
+					Toast.makeText(Notepad.this, "you can't search with place you are not in", Toast.LENGTH_SHORT).show();
+				}else if( mode_ID < 0){
+					Toast.makeText(Notepad.this, "you need to chose mode to use the camera", Toast.LENGTH_SHORT).show();
+				}
+				return ;
+			}
 
 			Cursor cursor = Notepad.getDb().getNoteByModePlace(mode_ID, place_ID) ;
 			Log.d("soso","   "+ mode_ID+ "    "+place_ID) ;
@@ -620,6 +654,10 @@ public class Notepad extends Activity{
 					Log.d("jojo", cursor2.getInt(0) + "     " + cursor2.getString(1)) ;
 				}
 			}
+			if(photoesID.size()<1){
+				Toast.makeText(Notepad.this, "no notes associated with your settings", Toast.LENGTH_SHORT).show();
+				return;
+			}
 
 			Intent intent = new Intent(Notepad.this,UserTakeActivity5.class);
 			intent.putExtra("data",true);
@@ -635,7 +673,39 @@ public class Notepad extends Activity{
 		startService(new Intent(Notepad.this,SyncService.class));
 	}
 
-
+	public int getGPSID(){
+		
+		Location loc;
+		if ((GPSProvider.isGPS_ConToSatil()) && (gps.getLatitude()!=null)&&(gps.getLongitude()!=null)){
+			loc = new Location("");
+			loc.setLongitude(gps.getLongitude());
+			loc.setLatitude(gps.getLatitude());
+			Log.d("place", "find locatoin by gps");
+		}else if ((NetworkProvider.isInternet_con()) && (netGPS.getLatitude()!=null)&&(netGPS.getLongitude()!=null)){
+			loc = new Location("");
+			loc.setLongitude(netGPS.getLongitude());
+			loc.setLatitude(netGPS.getLatitude());
+			Log.d("place", "find locatoin by net");
+		}else{
+			Toast.makeText(getBaseContext(), "fail", Toast.LENGTH_LONG).show() ;
+			return -1;
+		}
+		Cursor cursor = Notepad.getDb().getAllPlaces() ;
+		
+		Region  reg;
+		if(cursor.moveToFirst()){
+			do{
+				reg = new Region(cursor.getDouble(2), cursor.getDouble(3), cursor.getInt(4));
+				if (reg.isInside(loc)){
+					Log.d("place", "inside locatoin " + cursor.getInt(0));
+					return cursor.getInt(0);				
+				}else{
+					Log.d("place", "out side locatoin " + cursor.getInt(0));
+				}
+			}while(cursor.moveToNext());
+		}
+		return -2;
+	}
 
 }
 
