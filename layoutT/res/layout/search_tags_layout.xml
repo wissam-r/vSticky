@@ -20,7 +20,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:text="@string/mode" />
+            android:text="@string/choose_mode" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -57,7 +57,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_below="@id/location_gps_ons"
-            android:text="@string/chose_loc" />
+            android:text="@string/choose_place" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -84,6 +84,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_below="@id/search_by_mode_palce"
+            android:drawableLeft="@drawable/ic_action_camera"
             android:text="@string/Search_cam" />
     </RelativeLayout>
 

@@ -66,8 +66,8 @@ public class Notepad extends Activity{
 		setContentView(R.layout.activity_note_pado);
 		mDbHelper = new NotesDbAdapter(this);
 		mDbHelper.open();
-		mDbHelper.dropTable() ;
-		mDbHelper.createTable() ;
+//		mDbHelper.dropTable() ;
+//		mDbHelper.createTable() ;
 
 		list = (ListView) findViewById(R.id.note_pad_noteslist);	
 		Button new_note_b  = (Button) findViewById(R.id.note_pad_add);

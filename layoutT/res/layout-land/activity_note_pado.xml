@@ -67,7 +67,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@id/note_pad_overflow"
-            android:drawableLeft="@drawable/ic_action_search" />
+            android:drawableLeft="@drawable/tag" />
         <Button
             android:id="@+id/note_pad_search"
             android:layout_width="wrap_content"

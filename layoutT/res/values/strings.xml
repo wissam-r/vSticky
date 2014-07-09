@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="choose_mode">Choose mode</string>
+    <string name="choose_place">Choose place</string>
     <string name="app_name">layoutT</string>
-    <string name="search_Mode_Tag">Search By Mode Tag</string>
+    <string name="search_Mode_Tag">Search</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="Add">Add</string>
     <string name="Title">Title</string>
-    <string name="Con">Con</string>
+    <string name="Con">Body</string>
     <string name="note">Put note Here</string>
     <string name="cancel">Cancel</string>
     <string name="noto">Note</string>
@@ -25,15 +27,15 @@
     <string name="tag">Tags</string>
     <string name="new_mode">New mode</string>
     <string name="mode">Mode</string>
-    <string name="location_mode">LocatMode</string>
+    <string name="location_mode">Current Place</string>
     <string name="chose_loc">Chose Loc</string>
-    <string name="picfg">pick form gal</string>
-    <string name="tack_pic">take pic</string>
-    <string name="current_pos">Current Pos</string>
+    <string name="picfg">Gallery</string>
+    <string name="tack_pic">New photo</string>
+    <string name="current_pos">Current Place</string>
     <string name="range">Range</string>
     <string name="place_name">Place name</string>
     <string name="new_plce">New place</string>
-    <string name="Search_cam">Search by cam</string>
+    <string name="Search_cam">Search by Camera</string>
     <string name="current_pos_byGPS">GPS Position</string>
     <string name="current_pos_byNetwork">Network Position</string>
     <string name="sync">Sync</string>

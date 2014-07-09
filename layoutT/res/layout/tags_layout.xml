@@ -28,7 +28,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@id/add_mode"
-            android:text="@string/mode" />
+            android:text="@string/choose_mode" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -72,7 +72,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_below="@id/location_gps_on"
-            android:text="@string/chose_loc" />
+            android:text="@string/choose_place" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -95,13 +95,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/picfg" />
+                android:text="@string/picfg" 
+                android:drawableLeft="@drawable/ic_action_picture"
+                />
 
             <Button
                 android:id="@+id/new_pic"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_action_camera"
                 android:text="@string/tack_pic" />
         </LinearLayout>
 
