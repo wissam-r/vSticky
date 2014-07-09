@@ -100,6 +100,13 @@ public class NoteEditer extends Activity {
 							Cursor cursor = Notepad.getDb().getPhotoByPath(mCurrentPhoto.getAbsolutePath());
 							if (cursor.getCount()>0)
 								photo_ID = cursor.getInt(0) ;
+							else
+							{
+								Notepad.getDb().insertPhoto(mCurrentPhoto.getAbsolutePath()) ;
+								cursor = Notepad.getDb().getPhotoByPath(mCurrentPhoto.getAbsolutePath());
+								photo_ID = cursor.getInt(0) ;
+								Toast.makeText(getBaseContext(),"photo_ID = "+ photo_ID , Toast.LENGTH_LONG).show() ;
+							}
 						}
 						//						buttons.Buttons.save(t1.getText().toString().trim(), t2.getText().toString().trim(),Notepad.getDb());
 

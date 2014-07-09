@@ -2,8 +2,11 @@ package com.example.layoutt;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
+import note.Mode;
 import note.Note;
 import note.NoteEditer;
 import note.Place;
@@ -43,6 +46,9 @@ public class Notepad extends Activity{
 	ListView list ;	
 	Button sortBy_s ;
 	Button overflow_b ;
+	private Integer mode_ID =null ;
+	private Integer place_ID =null;
+	private Integer photo_ID =null ;
 
 	//TODO fill this objects
 	final int DETECTE_NOTE = 1;
@@ -59,8 +65,8 @@ public class Notepad extends Activity{
 		setContentView(R.layout.activity_note_pado);
 		mDbHelper = new NotesDbAdapter(this);
 		mDbHelper.open();
-		mDbHelper.dropTable() ;
-		mDbHelper.createTable() ;
+//		mDbHelper.dropTable() ;
+//		mDbHelper.createTable() ;
 
 		list = (ListView) findViewById(R.id.note_pad_noteslist);	
 		Button new_note_b  = (Button) findViewById(R.id.note_pad_add);
@@ -404,10 +410,41 @@ public class Notepad extends Activity{
 		public void onClick(View arg0) {
 			MyDialog myD = new MyDialog(Notepad.this, R.layout.search_tags_layout) ;
 			Button searchByTag = (Button) myD.getDialoglayout().findViewById(R.id.search_by_tag) ;
+			Button choose_mode = (Button) myD.getDialoglayout().findViewById(R.id.mode_choses) ;
+			choose_mode.setOnClickListener(choose_mode_l) ;
+			Button choose_place = (Button) myD.getDialoglayout().findViewById(R.id.loc_choses) ;
+			choose_place.setOnClickListener(choose_place_l);
+			
+			
 			searchByTag.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View arg0) {
+					Cursor cursor = Notepad.getDb().getNoteByModePlace(mode_ID, place_ID) ;
+					Toast.makeText(getBaseContext(),"number of selected notes " + cursor.getCount(), Toast.LENGTH_LONG).show() ;
+					int i = 0 ;
+					ArrayList<Integer> photoesID = new ArrayList<Integer>() ;
+					
+					while(i <cursor.getCount()){
+						i++ ;
+						//TODO
+						Toast.makeText(getBaseContext(), i+" : photos id " + cursor.getInt(4), Toast.LENGTH_LONG).show() ;
+						photoesID.add(cursor.getInt(4)) ;
+						cursor.moveToNext() ;
+//						photoPaths.add(cursor.getS)
+					}
+					// add elements to al, including duplicates
+					HashSet<Integer> temp = new HashSet<Integer>();
+					temp.addAll(photoesID);
+					photoesID.clear();
+					photoesID.addAll(temp);
+					for (int photoID : photoesID) {
+//						Toast.makeText(getBaseContext(), photoID +"", Toast.LENGTH_LONG).show() ;
+						Cursor cursor2 = Notepad.getDb().getPhotoById(photoID) ;
+						if (cursor2.getCount()>0){
+						photoPaths.add(cursor2.getString(1));
+						photoIDs.add(cursor2.getInt(0)) ;}
+					}
 					Intent intent = new Intent(Notepad.this,UserTakeActivity5.class);
 					intent.putExtra("data",true);
 					intent.putStringArrayListExtra("images", photoPaths);
@@ -575,7 +612,7 @@ public class Notepad extends Activity{
 					Toast.makeText(getBaseContext(), "fail", Toast.LENGTH_LONG).show() ;
 					return;
 				}
-					
+
 				if ((newplace.getRaduis() >= minRaduis)&&(!newplace.getName().equals("")) ){
 					Cursor cursor = mDbHelper.getAllPlaces() ;
 					Region  reg;
@@ -627,6 +664,85 @@ public class Notepad extends Activity{
 			}
 		}) ;
 		myD.getAlertDialog().show() ;
+	}
+
+	OnClickListener choose_mode_l = new OnClickListener() {
+
+		@Override
+		public void onClick(View arg0) {
+			ArrayList<Mode> modes =  new ArrayList<Mode>() ;
+			Mode mode ;
+			Cursor cursor =  Notepad.getDb().getAllModes() ;
+			int i = 0 ;
+			while(i<cursor.getCount()){
+				i++;
+				mode = new Mode(cursor.getInt(0),cursor.getString(1)) ;
+				modes.add(mode) ;
+				cursor.moveToNext() ;
+			}
+
+			PopupMenu popup = new PopupMenu(Notepad.this, arg0);
+			for (Mode modee : modes) {
+				popup.getMenu().addSubMenu(0, modee.getId(), 0, modee.getName()) ;		
+			}
+			//			popup.getMenu().addSubMenu(0, mode.getId(), 0, mode.getName()) ;
+			popup.setOnMenuItemClickListener(modeClick) ;
+
+			popup.show() ;
+
+		}
+	};
+	OnClickListener choose_place_l = new OnClickListener() {
+
+		@Override
+		public void onClick(View arg0) {
+			ArrayList<Place> places =  new ArrayList<Place>() ;
+			Place place ;
+			Cursor cursor =  Notepad.getDb().getAllPlaces() ;
+			int i = 0 ;
+			while(i<cursor.getCount()){
+				i++;
+				place = new Place(cursor.getInt(0),cursor.getString(1),cursor.getDouble(2),cursor.getDouble(3),cursor.getInt(4)) ;
+				places.add(place) ;
+				cursor.moveToNext() ;
+			}
+
+			PopupMenu popup = new PopupMenu(Notepad.this, arg0);
+			for (Place placee : places) {
+				popup.getMenu().addSubMenu(0, placee.getId(), 0, placee.getName()) ;		
+			}
+			//			popup.getMenu().addSubMenu(0, mode.getId(), 0, mode.getName()) ;
+			popup.setOnMenuItemClickListener(placeClick) ;
+			popup.show() ;
+
+
+		}
+
+
+	};
+
+	OnMenuItemClickListener placeClick = new OnMenuItemClickListener() {
+
+		@Override
+		public boolean onMenuItemClick(MenuItem arg0) {	
+			place_ID = arg0.getItemId() ;
+			return false;
+		}
+
+	} ;
+	OnMenuItemClickListener	modeClick = new OnMenuItemClickListener() {
+
+		@Override
+		public boolean onMenuItemClick(MenuItem arg0) {	
+			mode_ID = arg0.getItemId() ;
+			Toast.makeText(getBaseContext(), mode_ID + "", Toast.LENGTH_LONG).show();
+			return false;
+		}
+
+	} ;
+	
+	public void search_by_tag_d(){
+		
 	}
 
 }

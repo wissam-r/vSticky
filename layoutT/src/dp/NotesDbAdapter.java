@@ -367,6 +367,17 @@ public class NotesDbAdapter {
 		}
 		return cursor ;
 	}
+	public Cursor getNoteByModePlace(int mode_ID, int place_ID){
+		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,PHOTO_ID,GPS_ID,MODE_ID};
+		String [] ide = {String.valueOf(mode_ID),String.valueOf(place_ID)} ;
+		//mDb.query(distinct, table, columns, selection, selectionArgs, groupBy, having, orderBy, limit, cancellationSignal)
+		Cursor cursor = mDb.query(true, TABLE_NAME[3], FROM, MODE_ID +" =? "+"and "+ GPS_ID +" =?" , ide , null, null,
+				null,null);
+		if (cursor.getCount()>0){
+			cursor.moveToFirst() ;
+		}
+		return cursor ;
+	}
 	
 	public Cursor getPhotoByPath(String path){
 		String[] FROM = {PHOTO_ID,PHOTO_PATH};
