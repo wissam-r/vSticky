@@ -56,6 +56,10 @@
             android:label="@string/noto" >
         </activity>
         <activity
+            android:name="com.example.layoutt.Search_ByTag_Activity"
+            android:label="@string/noto" >
+        </activity>
+        <activity
             android:name="com.example.layoutt.Search_Activity"
             android:label="@string/noto" >
         </activity>

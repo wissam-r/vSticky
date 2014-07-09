@@ -65,8 +65,8 @@ public class Notepad extends Activity{
 		setContentView(R.layout.activity_note_pado);
 		mDbHelper = new NotesDbAdapter(this);
 		mDbHelper.open();
-//		mDbHelper.dropTable() ;
-//		mDbHelper.createTable() ;
+		//		mDbHelper.dropTable() ;
+		//		mDbHelper.createTable() ;
 
 		list = (ListView) findViewById(R.id.note_pad_noteslist);	
 		Button new_note_b  = (Button) findViewById(R.id.note_pad_add);
@@ -122,22 +122,6 @@ public class Notepad extends Activity{
 
 		list.setOnItemClickListener(listItemL);
 		list.setOnItemLongClickListener(listItemLongL);
-		//		search_title_b.setOnQueryTextListener(search_title_b_l);
-		//				new OnQueryTextListener() {
-		//
-		//			@Override
-		//			public boolean onQueryTextSubmit(String arg0) {
-		//				Intent intent =  new Intent(Notepad.this,Search_Activity.class);
-		//				intent.putExtra("titleS", search_title_b.getQuery().toString()) ;
-		//				startActivity(intent) ;
-		//				return false;
-		//			}
-		//
-		//			@Override
-		//			public boolean onQueryTextChange(String arg0) {
-		//				return false;
-		//			}
-		//		});
 
 	}
 
@@ -149,63 +133,7 @@ public class Notepad extends Activity{
 			Intent intent = new Intent(Notepad.this, ViewNote.class);
 			Note note = (Note) mla.getItem(arg2);
 			intent.putExtra("id", note.getId());
-			startActivity(intent);
-			//			Context context = Notepad.this ;
-			////			AlertDialog.Builder builder = new AlertDialog.Builder(context)
-			////            .setTitle("My title")
-			////            .setMessage("Enter password");
-			////			final FrameLayout frameView = new FrameLayout(context);
-			////			builder.setView(frameView);
-			////			final AlertDialog alertDialog = builder.create();
-			////			LayoutInflater inflater = alertDialog.getLayoutInflater();
-			////			View dialoglayout = inflater.inflate(R.layout.testwithmenu, frameView);
-			////			alertDialog.show();
-			//			AlertDialog.Builder builder = new Builder(context) ;
-			//			final FrameLayout frameView = new FrameLayout(context);
-			//			builder.setView(frameView);
-			//			final AlertDialog alertDialog = builder.create()  ;
-			//			LayoutInflater inflater = alertDialog.getLayoutInflater();
-			//			View dialoglayout = inflater.inflate(R.layout.testwithmenu, frameView);
-			//			final MyDialog myD = new MyDialog(Notepad.this, R.layout.testwithmenu) ;
-			//			
-			//			Spinner s1 = (Spinner) myD.getDialoglayout().findViewById(R.id.spinner) ;
-			//			String array_spinner[];
-			//			array_spinner=new String[5];
-			//	        array_spinner[0]="option 1";
-			//	        array_spinner[1]="option 2";
-			//	        array_spinner[2]="option 3";
-			//	        array_spinner[3]="option 4";
-			//	        array_spinner[4]="option 5";
-			//	        final ArrayAdapter adapter = new ArrayAdapter(Notepad.this,
-			//	        android.R.layout.simple_spinner_item, array_spinner);
-			//	        s1.setAdapter(adapter);
-			//			s1.setOnItemSelectedListener(new OnItemSelectedListener(){
-			//
-			//				@Override
-			//				public void onItemSelected(AdapterView<?> arg0, View arg1,
-			//						int arg2, long arg3) {
-			//					Toast.makeText(getBaseContext(),arg0.getItemAtPosition(arg2).toString() , Toast.LENGTH_LONG).show();
-			//
-			//					
-			//				}
-			//
-			//				@Override
-			//				public void onNothingSelected(AdapterView<?> arg0) {
-			//					
-			//				}
-			//
-			//				
-			//			});
-			//			Button b1  = (Button) myD.getDialoglayout().findViewById(R.id.canceldaa);
-			//			b1.setOnClickListener(new OnClickListener() {
-			//				
-			//				@Override
-			//				public void onClick(View arg0) {
-			//					myD.getAlertDialog().cancel() ;
-			//				}
-			//			}) ; 
-			////			alertDialog.setContentView(R.layout.testwithmenu) ;
-			//			myD.getAlertDialog().show() ;
+			startActivity(intent) ;
 		}
 	};
 
@@ -330,68 +258,26 @@ public class Notepad extends Activity{
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(resultCode == RESULT_OK && requestCode == DETECTE_NOTE){
 			int id = data.getExtras().getInt("id");
+			photo_ID = id ;
+			Intent intent = new Intent(Notepad.this , Search_ByTag_Activity.class) ;
+			intent.putExtra("photo_ID", photo_ID) ;
+			intent.putExtra("mode_ID", mode_ID) ;
+			intent.putExtra("place_ID", place_ID) ;
 			//TODO id of the photo detected
+			startActivity(intent) ;
 		}
 
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	//	@Override
-	//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	//		super.onActivityResult(requestCode, resultCode, data);
-	//		switch(requestCode){
-	//		case 1 : if (resultCode==RESULT_OK);
-	//		}
-	//	}
-
-	//	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-	//		@Override
-	//		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-	//			return false;
-	//		}
-	//		@Override
-	//		public void onDestroyActionMode(ActionMode mode) {
-	//			 
-	//		}
-	//		@Override
-	//		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-	//			 
-	//			getMenuInflater().inflate(R.menu.main, menu);
-	//			return true;
-	//		}
-	//		@Override
-	//		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-	//			 
-	//			return false;
-	//		}
-	//	};
-
+	
 	OnClickListener new_note_b_l = new OnClickListener() {
 
 		@Override
 		public void onClick(View arg0) {
 			Intent intent =  new Intent(Notepad.this, NoteEditer.class);
 			intent.putExtra("mode", "add") ;
-			startActivity(intent) ;
-
-			//			Intent intent  = new Intent(Notepad.this,CameraPhotoCapture.class)  ;
-			//			startActivity(intent) ;
-
-			//			PopupMenu popup = new PopupMenu(Notepad.this, new_note_b);  
-			//            //Inflating the Popup using xml file  
-			//            popup.getMenuInflater().inflate(R.menu.submenu, popup.getMenu());
-			//            popup.show();
-
-			//			Button b1  = (Button) myD.getDialoglayout().findViewById(R.id.canceldaa);
-			//			//			b1.setOnClickListener(new OnClickListener() {
-			//			//				
-			//			//				@Override
-			//			//				public void onClick(View arg0) {
-			//			//					myD.getAlertDialog().cancel() ;
-			//			//				}
-			//			//			}) ; 
-			//			////			alertDialog.setContentView(R.layout.testwithmenu) ;
-			//			//			myD.getAlertDialog().show() ;
+			startActivity(intent)  ;
 
 		}
 	};
@@ -414,8 +300,8 @@ public class Notepad extends Activity{
 			choose_mode.setOnClickListener(choose_mode_l) ;
 			Button choose_place = (Button) myD.getDialoglayout().findViewById(R.id.loc_choses) ;
 			choose_place.setOnClickListener(choose_place_l);
-			
-			
+
+
 			searchByTag.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -424,14 +310,14 @@ public class Notepad extends Activity{
 					Toast.makeText(getBaseContext(),"number of selected notes " + cursor.getCount(), Toast.LENGTH_LONG).show() ;
 					int i = 0 ;
 					ArrayList<Integer> photoesID = new ArrayList<Integer>() ;
-					
+
 					while(i <cursor.getCount()){
 						i++ ;
 						//TODO
 						Toast.makeText(getBaseContext(), i+" : photos id " + cursor.getInt(4), Toast.LENGTH_LONG).show() ;
 						photoesID.add(cursor.getInt(4)) ;
 						cursor.moveToNext() ;
-//						photoPaths.add(cursor.getS)
+						//						photoPaths.add(cursor.getS)
 					}
 					// add elements to al, including duplicates
 					HashSet<Integer> temp = new HashSet<Integer>();
@@ -439,11 +325,11 @@ public class Notepad extends Activity{
 					photoesID.clear();
 					photoesID.addAll(temp);
 					for (int photoID : photoesID) {
-//						Toast.makeText(getBaseContext(), photoID +"", Toast.LENGTH_LONG).show() ;
+						//						Toast.makeText(getBaseContext(), photoID +"", Toast.LENGTH_LONG).show() ;
 						Cursor cursor2 = Notepad.getDb().getPhotoById(photoID) ;
 						if (cursor2.getCount()>0){
-						photoPaths.add(cursor2.getString(1));
-						photoIDs.add(cursor2.getInt(0)) ;}
+							photoPaths.add(cursor2.getString(1));
+							photoIDs.add(cursor2.getInt(0)) ;}
 					}
 					Intent intent = new Intent(Notepad.this,UserTakeActivity5.class);
 					intent.putExtra("data",true);
@@ -740,9 +626,9 @@ public class Notepad extends Activity{
 		}
 
 	} ;
-	
+
 	public void search_by_tag_d(){
-		
+
 	}
 
 }

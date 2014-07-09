@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="0dp"
     android:background="@android:drawable/btn_default" >
 
@@ -69,23 +69,22 @@
         android:layout_below="@id/location_res"
         android:gravity="center" >
 
-        <CheckedTextView
+        <Button
             android:id="@+id/picfgas"
-            
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:text="@string/Search_cam" />
+
+        <Button
+            android:id="@+id/search_by_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/picfgas"
             android:text="@string/Search_cam" />
     </RelativeLayout>
-    <Button 
-        android:id="@+id/search_by_tag"
-        android:text="@string/Search_cam"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@id/take_picss"/>
 
 </RelativeLayout>
