@@ -36,7 +36,7 @@ public class NetworkProvider extends BroadcastReceiver implements LocationListen
 		return longitude;
 	}
 
-	
+
 	private LocationManager locationManager;
 	private Location  myLocationNetwork ;
 	public Location getMyLocationNetwork() {
@@ -48,23 +48,23 @@ public class NetworkProvider extends BroadcastReceiver implements LocationListen
 
 
 	@Override
-    public void onReceive(final Context context, final Intent intent) {
- 
-        String status = NetworkUtil.getConnectivityStatusString(context);
-        if (status == "Wifi enabled") {
+	public void onReceive(final Context context, final Intent intent) {
+
+		String status = NetworkUtil.getConnectivityStatusString(context);
+		if (status == "Wifi enabled") {
 			internet_con  = true ;
 		} else if (status =="Mobile data enabled") {
 			internet_con  = true ;
 		} else {
 			internet_con=false ;
 		}
-        Toast.makeText(context, status, Toast.LENGTH_LONG).show();
-    }
+		Toast.makeText(context, status, Toast.LENGTH_LONG).show();
+	}
 	public NetworkProvider(){};
 	public NetworkProvider (Activity activity , TextView textView) {
 		// TODO Auto-generated constructor stub
 
-		
+
 		this.activity =  activity ;
 		this.textView = textView ;
 		/********** get Gps location service LocationManager object ***********/
@@ -77,7 +77,7 @@ public class NetworkProvider extends BroadcastReceiver implements LocationListen
 			Toast.makeText(activity.getBaseContext(), "NO NETWORK", Toast.LENGTH_LONG).show() ;
 		}
 
-		
+
 		/* CAL METHOD requestLocationUpdates */
 
 		// Parameters :
@@ -89,9 +89,9 @@ public class NetworkProvider extends BroadcastReceiver implements LocationListen
 		//   Third(minDistance) :  the minimum distance interval for notifications, in meters 
 		//   Fourth(listener)   :  a {#link LocationListener} whose onLocationChanged(Location) 
 		//                         method will be called for each location update 
-	    
 
-		
+
+
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000,
 				1, this);
 
@@ -115,36 +115,34 @@ public class NetworkProvider extends BroadcastReceiver implements LocationListen
 		} 
 		else 
 			internet_con = false ;
-		
-		if (internet_con){
-		String str = "Latitude: "+location.getLatitude()+" Longitude: "+location.getLongitude();
 
-		latitude = location.getLatitude() ;
-		longitude = location.getLongitude() ;
-		
-		Toast.makeText(activity.getBaseContext(), "NETWORK : "+str, Toast.LENGTH_LONG).show();
-		textView.setText("NETWORK "+str) ;}
+		if (internet_con){
+			String str = "Latitude: "+location.getLatitude()+" Longitude: "+location.getLongitude();
+
+			latitude = location.getLatitude() ;
+			longitude = location.getLongitude() ;
+
+			Toast.makeText(activity.getBaseContext(), "NETWORK : "+str, Toast.LENGTH_LONG).show();
+			textView.setText("INTERNET Conected") ;
+			}
 		else
-			textView.setText("NETWORK off") ;
+			textView.setText("NO INTERNET Connection") ;
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
 
 		/******** Called when User off Gps *********/
-		
+
 		Toast.makeText(activity.getBaseContext(), provider +" off ", Toast.LENGTH_LONG).show();
-		textView.setText("Place is Off") ;
-		
+		textView.setText("NO INTERNET Connection") ;
+
 
 	}
 
 	@Override
 	public void onProviderEnabled(String provider) {
 
-		/******** Called when User on Gps  *********/
-		Toast.makeText(activity.getBaseContext(), "Gps turned on ", Toast.LENGTH_LONG).show();
-		textView.setText("Place is On plz wait for contected to satil") ;
 	}
 
 	@Override

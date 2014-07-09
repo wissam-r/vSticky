@@ -206,7 +206,7 @@ public final static String TAG = "detectionFilter";
 								(int)(p.y-target.usedSize.height/2),
 								(int)(target.usedSize.width),
 								(int)(target.usedSize.height)))){
-				return i;
+				return target.id;
 			}
 		}
 		return -1;

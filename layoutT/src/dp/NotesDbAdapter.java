@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import android.R.integer;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -379,10 +380,32 @@ public class NotesDbAdapter {
 		}
 		return cursor ;
 	}
-	
-	public Cursor getNoteByModePlacePhoto(int mode_ID, int place_ID ,int photo_ID){
+	public Cursor getNoteByMode(int mode_ID){
 		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,PHOTO_ID,GPS_ID,MODE_ID};
-		String [] ide = {String.valueOf(mode_ID),String.valueOf(place_ID),String.valueOf(photo_ID)} ;
+		String [] ide = {String.valueOf(mode_ID)} ;
+		//mDb.query(distinct, table, columns, selection, selectionArgs, groupBy, having, orderBy, limit, cancellationSignal)
+		Cursor cursor = mDb.query(true, TABLE_NAME[3], FROM, MODE_ID +" =? " , ide , null, null,
+				null,null);
+		if (cursor.getCount()>0){
+			cursor.moveToFirst() ;
+		}
+		return cursor ;
+	}
+	public Cursor getNoteByPlace(int place_ID){
+		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,PHOTO_ID,GPS_ID,MODE_ID};
+		String [] ide = {String.valueOf(place_ID)} ;
+		//mDb.query(distinct, table, columns, selection, selectionArgs, groupBy, having, orderBy, limit, cancellationSignal)
+		Cursor cursor = mDb.query(true, TABLE_NAME[3], FROM, GPS_ID +" =? " , ide , null, null,
+				null,null);
+		if (cursor.getCount()>0){
+			cursor.moveToFirst() ;
+		}
+		return cursor ;
+	}
+	
+	public Cursor getNoteByModePlacePhoto(Integer mode_ID2, Integer place_ID ,Integer photo_ID2){
+		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,PHOTO_ID,GPS_ID,MODE_ID};
+		String [] ide = {String.valueOf(mode_ID2),String.valueOf(place_ID),String.valueOf(photo_ID2)} ;
 		//mDb.query(distinct, table, columns, selection, selectionArgs, groupBy, having, orderBy, limit, cancellationSignal)
 		Cursor cursor = mDb.query(true, TABLE_NAME[3], FROM, MODE_ID +" =? "+"and "+ GPS_ID +" =? "+"and "+ PHOTO_ID +" =?" , ide , null, null,
 				null,null);

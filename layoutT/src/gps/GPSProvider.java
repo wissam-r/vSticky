@@ -91,7 +91,7 @@ public class GPSProvider implements LocationListener , GpsStatus.Listener{
 		latitude = location.getLatitude() ;
 		longitude = location.getLongitude() ;
 		Toast.makeText(activity.getBaseContext(), "Place : "+str, Toast.LENGTH_LONG).show();
-		textView.setText("Place OR NETWORK "+str) ;
+		textView.setText("GPS Conected") ;
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class GPSProvider implements LocationListener , GpsStatus.Listener{
 		/******** Called when User off Gps *********/
 
 		Toast.makeText(activity.getBaseContext(), provider +" off ", Toast.LENGTH_LONG).show();
-		textView.setText("Place is Off") ;
+		textView.setText("GPS OFF") ;
 		GPS_ConToSatil = false ;
 
 	}
@@ -110,7 +110,7 @@ public class GPSProvider implements LocationListener , GpsStatus.Listener{
 
 		/******** Called when User on Gps  *********/
 		Toast.makeText(activity.getBaseContext(), "Gps turned on ", Toast.LENGTH_LONG).show();
-		textView.setText("Place is On plz wait for contected to satil") ;
+		textView.setText("GPS is ON Plz wait") ;
 		GPS_ConToSatil = false ;
 	}
 
@@ -132,7 +132,7 @@ public class GPSProvider implements LocationListener , GpsStatus.Listener{
 		case GpsStatus.GPS_EVENT_STARTED:
 			break;
 		case GpsStatus.GPS_EVENT_STOPPED:
-			textView.setText("Place is Off") ;
+			textView.setText("GPS OFF") ;
 			break;
 		} 
 	}

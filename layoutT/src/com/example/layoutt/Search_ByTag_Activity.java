@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +29,6 @@ public class Search_ByTag_Activity extends Activity {
 
 	ListView list ;
 	listAdap mla = null ;
-	static String searchT = "" ;
 	private Integer photo_ID ;
 	private Integer mode_ID ;
 	private Integer place_ID ;
@@ -39,9 +39,7 @@ public class Search_ByTag_Activity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search_by_tag) ;
 		
-		photo_ID = getIntent().getIntExtra("photo_ID", -1) ;
-		place_ID = getIntent().getIntExtra("place_ID", -1) ;
-		mode_ID = getIntent().getIntExtra("mode_ID", -1) ;
+
 		
 		list = (ListView) findViewById(R.id.listViewSt) ;
 		Button back = (Button) findViewById(R.id.backst) ;
@@ -131,7 +129,7 @@ public class Search_ByTag_Activity extends Activity {
 	}
 
 	public void drawNotes(Cursor cursor){
-		TextView t1 = (TextView) findViewById(R.id.notes_number) ;
+		TextView t1 = (TextView) findViewById(R.id.notes_numberst) ;
 		t1.setText("Memo ("+cursor.getCount()+")");
 		int i =1 ;
 		while(i <= cursor.getCount()){
@@ -150,7 +148,23 @@ public class Search_ByTag_Activity extends Activity {
 		super.onStart();
 		mla = new listAdap(this, 0);
 		list.setAdapter(mla);
-		Cursor cursor = Notepad.getDb().getNoteByModePlacePhoto(mode_ID, place_ID, photo_ID);
+		photo_ID = getIntent().getIntExtra("photo_ID", -1) ;
+		place_ID = getIntent().getIntExtra("place_ID", -1) ;
+		mode_ID = getIntent().getIntExtra("mode_ID", -1) ;
+		
+		Log.d("momo", photo_ID + "  "+place_ID  + "   " + mode_ID ) ;
+		Cursor cursor  ;
+		if ((mode_ID != -1)&&(place_ID !=-1 )&&(photo_ID==-1))
+			cursor = Notepad.getDb().getNoteByModePlace(mode_ID, place_ID);
+		else if ((mode_ID != -1)&&(place_ID !=-1 )&&(photo_ID!=-1))
+			cursor = Notepad.getDb().getNoteByModePlacePhoto(mode_ID, place_ID, photo_ID);
+		else if ((mode_ID != -1)&&(place_ID ==-1 )&&(photo_ID==-1))
+			cursor = Notepad.getDb().getNoteByMode(mode_ID);
+		else if ((mode_ID == -1)&&(place_ID !=-1 )&&(photo_ID==-1))
+			cursor = Notepad.getDb().getNoteByMode(place_ID);
+		else
+			return ;
+
 		drawNotes(cursor);
 	};
 	@Override

@@ -123,6 +123,9 @@
             android:id="@+id/done_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            
             android:layout_below="@id/showImg"
             android:text="@string/Add" />
     </RelativeLayout>

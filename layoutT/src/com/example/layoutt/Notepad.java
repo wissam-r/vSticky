@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,9 +47,9 @@ public class Notepad extends Activity{
 	ListView list ;	
 	Button sortBy_s ;
 	Button overflow_b ;
-	private Integer mode_ID =null ;
-	private Integer place_ID =null;
-	private Integer photo_ID =null ;
+	private Integer mode_ID =-1 ;
+	private Integer place_ID =-1;
+	private Integer photo_ID =-1 ;
 
 	//TODO fill this objects
 	final int DETECTE_NOTE = 1;
@@ -65,8 +66,8 @@ public class Notepad extends Activity{
 		setContentView(R.layout.activity_note_pado);
 		mDbHelper = new NotesDbAdapter(this);
 		mDbHelper.open();
-		//		mDbHelper.dropTable() ;
-		//		mDbHelper.createTable() ;
+		mDbHelper.dropTable() ;
+		mDbHelper.createTable() ;
 
 		list = (ListView) findViewById(R.id.note_pad_noteslist);	
 		Button new_note_b  = (Button) findViewById(R.id.note_pad_add);
@@ -75,44 +76,6 @@ public class Notepad extends Activity{
 		sortBy_s = (Button) findViewById(R.id.note_pad_s_sortby) ;
 		overflow_b = (Button) findViewById(R.id.note_pad_overflow) ;
 
-
-		//		String array_spinner[];
-		//		array_spinner=new String[2];
-		//		array_spinner[0]="Date";
-		//		array_spinner[1]="Title";
-		//
-		//		ArrayAdapter spinnerAd = new ArrayAdapter(Notepad.this,
-		//				R.layout.spinner_item, array_spinner);
-		//		
-		//		sortBy_s.setAdapter(spinnerAd) ;
-		//		sortBy_s.setOnItemSelectedListener(sortBy_l) ;
-
-
-		//	        array_spinner[2]="option 3";
-		//	        array_spinner[3]="option 4";
-		//	        array_spinner[4]="option 5";
-		//	        final ArrayAdapter adapter = new ArrayAdapter(Notepad.this,
-		//	        android.R.layout.simple_spinner_item, array_spinner);
-		//	        s1.setAdapter(adapter);
-		//			s1.setOnItemSelectedListener(new OnItemSelectedListener(){
-		//
-		//				@Override
-		//				public void onItemSelected(AdapterView<?> arg0, View arg1,
-		//						int arg2, long arg3) {
-		//					Toast.makeText(getBaseContext(),arg0.getItemAtPosition(arg2).toString() , Toast.LENGTH_LONG).show();
-		//
-		//					
-		//				}
-		//
-		//				@Override
-		//				public void onNothingSelected(AdapterView<?> arg0) {
-		//					
-		//				}
-		//
-		//				
-		//			});
-
-		//		SearchView search_title_b = (SearchView) findViewById(R.id.note_pad_search);
 		overflow_b.setOnClickListener(overflow_l) ;
 		sortBy_s.setOnClickListener(sortby_l) ;
 		new_note_b.setOnClickListener(new_note_b_l) ;
@@ -229,12 +192,7 @@ public class Notepad extends Activity{
 		list.setAdapter(mla);
 		Cursor cursor = mDbHelper.getNotesByDate();
 		drawNotes(cursor);
-		//		if (sortBy_s.getSelectedItem().toString().equals("Date"))
-		//			 cursor = mDbHelper.getNotesByDate();
-		//		else
-		//			 cursor = mDbHelper.getNotesByTitle();
 
-		//		sortBy_s.setOnItemSelectedListener(sortBy_l) ;
 	};
 	@Override
 	protected void onPause() {
@@ -260,6 +218,8 @@ public class Notepad extends Activity{
 			int id = data.getExtras().getInt("id");
 			photo_ID = id ;
 			Intent intent = new Intent(Notepad.this , Search_ByTag_Activity.class) ;
+			Log.d("koko","   "+ mode_ID+ "    "+place_ID) ;
+			intent.putExtra("search_mode", "camera") ;
 			intent.putExtra("photo_ID", photo_ID) ;
 			intent.putExtra("mode_ID", mode_ID) ;
 			intent.putExtra("place_ID", place_ID) ;
@@ -270,7 +230,7 @@ public class Notepad extends Activity{
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	
+
 	OnClickListener new_note_b_l = new OnClickListener() {
 
 		@Override
@@ -281,7 +241,6 @@ public class Notepad extends Activity{
 
 		}
 	};
-
 	OnClickListener search_t_b_l = new OnClickListener() {
 
 		@Override
@@ -300,44 +259,9 @@ public class Notepad extends Activity{
 			choose_mode.setOnClickListener(choose_mode_l) ;
 			Button choose_place = (Button) myD.getDialoglayout().findViewById(R.id.loc_choses) ;
 			choose_place.setOnClickListener(choose_place_l);
-
-
-			searchByTag.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-					Cursor cursor = Notepad.getDb().getNoteByModePlace(mode_ID, place_ID) ;
-					Toast.makeText(getBaseContext(),"number of selected notes " + cursor.getCount(), Toast.LENGTH_LONG).show() ;
-					int i = 0 ;
-					ArrayList<Integer> photoesID = new ArrayList<Integer>() ;
-
-					while(i <cursor.getCount()){
-						i++ ;
-						//TODO
-						Toast.makeText(getBaseContext(), i+" : photos id " + cursor.getInt(4), Toast.LENGTH_LONG).show() ;
-						photoesID.add(cursor.getInt(4)) ;
-						cursor.moveToNext() ;
-						//						photoPaths.add(cursor.getS)
-					}
-					// add elements to al, including duplicates
-					HashSet<Integer> temp = new HashSet<Integer>();
-					temp.addAll(photoesID);
-					photoesID.clear();
-					photoesID.addAll(temp);
-					for (int photoID : photoesID) {
-						//						Toast.makeText(getBaseContext(), photoID +"", Toast.LENGTH_LONG).show() ;
-						Cursor cursor2 = Notepad.getDb().getPhotoById(photoID) ;
-						if (cursor2.getCount()>0){
-							photoPaths.add(cursor2.getString(1));
-							photoIDs.add(cursor2.getInt(0)) ;}
-					}
-					Intent intent = new Intent(Notepad.this,UserTakeActivity5.class);
-					intent.putExtra("data",true);
-					intent.putStringArrayListExtra("images", photoPaths);
-					intent.putIntegerArrayListExtra("ids", photoIDs);
-					startActivityForResult(intent, DETECTE_NOTE);
-				}
-			}) ;
+			Button searchByMode = (Button) myD.getDialoglayout().findViewById(R.id.search_by_mode_palce) ;
+			searchByMode.setOnClickListener(search_By_mode_tag) ;
+			searchByTag.setOnClickListener(search_By_cam) ;
 			myD.getAlertDialog().show() ;
 		}
 	};
@@ -402,6 +326,9 @@ public class Notepad extends Activity{
 					else if (arg0.getTitle().toString().equals("New place")){
 						new_palce();
 					}
+					else if (arg0.getTitle().toString().equals("Sync")){
+						sync();
+					}
 					return false;
 				}
 			});
@@ -460,7 +387,7 @@ public class Notepad extends Activity{
 	} ;
 
 	public void new_palce(){
-		MyDialog myD = new MyDialog(Notepad.this, R.layout.new_place) ;
+		final MyDialog myD = new MyDialog(Notepad.this, R.layout.new_place) ;
 		TextView currentGps = (TextView) myD.getDialoglayout().findViewById(R.id.current_pos);
 		TextView currentGpsNet = (TextView) myD.getDialoglayout().findViewById(R.id.current_posnet);
 		Button saveB =  (Button) myD.getDialoglayout().findViewById(R.id.save_place) ;
@@ -477,6 +404,16 @@ public class Notepad extends Activity{
 			public void onClick(View arg0) {
 				Place newplace ;
 				final int minRaduis = 10;
+				if (((GPSProvider.isGPS_ConToSatil()) && (gps.getLatitude()!=null)&&(gps.getLongitude()!=null))&&((NetworkProvider.isInternet_con()) && (netGPS.getLatitude()!=null)&&(netGPS.getLongitude()!=null)))
+				{
+					Location loc1  = new Location("") ;
+					Location loc2 =  new Location("") ;
+					loc1.setLatitude(gps.getLatitude()); loc1.setLongitude(gps.getLongitude()) ;
+					loc2.setLatitude(netGPS.getLatitude()) ; loc2.setLongitude(netGPS.getLongitude()) ;
+					Toast.makeText(getBaseContext(), "distance : "+loc1.distanceTo(loc2 )+"\n"+
+							"longt : " +(loc2.getLongitude()-loc1.getLongitude()+"\n"+
+									"latt : " +(loc2.getLatitude()-loc1.getLatitude())), Toast.LENGTH_LONG).show() ;
+				}
 				if ((GPSProvider.isGPS_ConToSatil()) && (gps.getLatitude()!=null)&&(gps.getLongitude()!=null))
 				{
 					try{
@@ -525,6 +462,7 @@ public class Notepad extends Activity{
 					}
 					mDbHelper.insertPlace(newplace.getName(), newplace.getX(), newplace.getY(), newplace.getRaduis()) ;
 					Toast.makeText(getBaseContext(), "success", Toast.LENGTH_LONG).show() ;
+					myD.getAlertDialog().cancel() ;
 				}
 
 			}
@@ -534,7 +472,7 @@ public class Notepad extends Activity{
 	}
 
 	public void new_mode(){
-		MyDialog myD = new MyDialog(Notepad.this, R.layout.new_mode) ;
+		final MyDialog myD = new MyDialog(Notepad.this, R.layout.new_mode) ;
 		final EditText mode_name = (EditText) myD.getDialoglayout().findViewById(R.id.new_mode_name) ;
 		Button save_mode = (Button) myD.getDialoglayout().findViewById(R.id.save_mode) ;
 		save_mode.setOnClickListener(new OnClickListener() {
@@ -546,6 +484,8 @@ public class Notepad extends Activity{
 					mDbHelper.insertMode(mode_name.getText().toString()) ;
 					Cursor cursor = mDbHelper.getAllModes() ;
 					Toast.makeText(getBaseContext(), String.valueOf(cursor.getCount()), Toast.LENGTH_LONG).show();
+					myD.getAlertDialog().cancel() ;
+
 				}
 			}
 		}) ;
@@ -555,7 +495,7 @@ public class Notepad extends Activity{
 	OnClickListener choose_mode_l = new OnClickListener() {
 
 		@Override
-		public void onClick(View arg0) {
+		public void onClick(final View arg0) {
 			ArrayList<Mode> modes =  new ArrayList<Mode>() ;
 			Mode mode ;
 			Cursor cursor =  Notepad.getDb().getAllModes() ;
@@ -572,8 +512,22 @@ public class Notepad extends Activity{
 				popup.getMenu().addSubMenu(0, modee.getId(), 0, modee.getName()) ;		
 			}
 			//			popup.getMenu().addSubMenu(0, mode.getId(), 0, mode.getName()) ;
-			popup.setOnMenuItemClickListener(modeClick) ;
 
+
+//			if (mode_ID != -1 )
+//				((Button) arg0 ).setText(popup.getMenu().getItem(mode_ID-1).getTitle());
+			OnMenuItemClickListener	modeClick = new OnMenuItemClickListener() {
+				@Override
+				public boolean onMenuItemClick(MenuItem arg1) {	
+					mode_ID = arg1.getItemId() ;
+					Toast.makeText(getBaseContext(), mode_ID + "", Toast.LENGTH_LONG).show();
+					((Button) arg0).setText(arg1.getTitle()) ;
+					
+					return false;
+				}
+
+			} ;
+			popup.setOnMenuItemClickListener(modeClick) ;
 			popup.show() ;
 
 		}
@@ -581,7 +535,7 @@ public class Notepad extends Activity{
 	OnClickListener choose_place_l = new OnClickListener() {
 
 		@Override
-		public void onClick(View arg0) {
+		public void onClick(final View arg0) {
 			ArrayList<Place> places =  new ArrayList<Place>() ;
 			Place place ;
 			Cursor cursor =  Notepad.getDb().getAllPlaces() ;
@@ -598,38 +552,90 @@ public class Notepad extends Activity{
 				popup.getMenu().addSubMenu(0, placee.getId(), 0, placee.getName()) ;		
 			}
 			//			popup.getMenu().addSubMenu(0, mode.getId(), 0, mode.getName()) ;
+
+			OnMenuItemClickListener placeClick = new OnMenuItemClickListener() {
+
+				@Override
+				public boolean onMenuItemClick(MenuItem arg1) {	
+					place_ID = arg1.getItemId() ;
+					((Button) arg0).setText(arg1.getTitle());
+					return false;
+				}
+
+			} ;
 			popup.setOnMenuItemClickListener(placeClick) ;
+
 			popup.show() ;
-
-
 		}
 
 
 	};
 
-	OnMenuItemClickListener placeClick = new OnMenuItemClickListener() {
+	
+	
 
+	OnClickListener search_By_mode_tag =  new OnClickListener(){
 		@Override
-		public boolean onMenuItemClick(MenuItem arg0) {	
-			place_ID = arg0.getItemId() ;
-			return false;
+		public void onClick(View arg0){
+			Intent intent = new Intent(Notepad.this , Search_ByTag_Activity.class) ;
+			intent.putExtra("mode_ID", mode_ID) ;
+			intent.putExtra("place_ID", place_ID) ;
+			intent.putExtra("photo_ID", -1) ;
+			intent.putExtra("search_mode", "mode_place") ;
+			startActivity(intent) ;
+
 		}
-
-	} ;
-	OnMenuItemClickListener	modeClick = new OnMenuItemClickListener() {
-
-		@Override
-		public boolean onMenuItemClick(MenuItem arg0) {	
-			mode_ID = arg0.getItemId() ;
-			Toast.makeText(getBaseContext(), mode_ID + "", Toast.LENGTH_LONG).show();
-			return false;
-		}
-
 	} ;
 
-	public void search_by_tag_d(){
+	OnClickListener search_By_cam =  new OnClickListener() {
 
+		@Override
+		public void onClick(View arg0){
+
+			Cursor cursor = Notepad.getDb().getNoteByModePlace(mode_ID, place_ID) ;
+			Log.d("soso","   "+ mode_ID+ "    "+place_ID) ;
+			Toast.makeText(getBaseContext(),"number of selected notes " + cursor.getCount(), Toast.LENGTH_LONG).show() ;
+			int i = 0 ;
+			ArrayList<Integer> photoesID = new ArrayList<Integer>() ;
+
+			while(i <cursor.getCount()){
+				i++ ;
+				//TODO
+				Toast.makeText(getBaseContext(), i+" : photos id " + cursor.getInt(4), Toast.LENGTH_LONG).show() ;
+				photoesID.add(cursor.getInt(4)) ;
+				cursor.moveToNext() ;
+				//						photoPaths.add(cursor.getS)
+			}
+			// add elements to al, including duplicates
+			HashSet<Integer> temp = new HashSet<Integer>();
+			temp.addAll(photoesID);
+			photoesID.clear();
+			photoesID.addAll(temp);
+			for (int photoID : photoesID) {
+				//						Toast.makeText(getBaseContext(), photoID +"", Toast.LENGTH_LONG).show() ;
+				Cursor cursor2 = Notepad.getDb().getPhotoById(photoID) ;
+				if (cursor2.getCount()>0){
+					photoPaths.add(cursor2.getString(1));
+					photoIDs.add(cursor2.getInt(0)) ;
+					Log.d("jojo", cursor2.getInt(0) + "     " + cursor2.getString(1)) ;
+				}
+			}
+
+			Intent intent = new Intent(Notepad.this,UserTakeActivity5.class);
+			intent.putExtra("data",true);
+			intent.putStringArrayListExtra("images", photoPaths);
+			intent.putIntegerArrayListExtra("ids", photoIDs);
+			startActivityForResult(intent, DETECTE_NOTE);
+		}
+
+
+	};
+	public void sync(){
+		//TODO ammar
+		startService(new Intent(Notepad.this,SyncService.class));
 	}
+
+
 
 }
 

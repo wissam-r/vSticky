@@ -55,15 +55,24 @@ public class NoteEditer extends Activity {
 	private Integer photo_ID =null ;
 
 	MyDialog myD;
+	
+	GPSProvider gps;
+	NetworkProvider netGPS;
 
+	EditText t1;
+	EditText t2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.note);
-
-		final EditText t1 = (EditText) findViewById(R.id.titleo);
-		final EditText t2 = (EditText) findViewById(R.id.conto);
+		
+		gps = new GPSProvider(this, new TextView(NoteEditer.this)) ;
+		netGPS = new NetworkProvider(this, new TextView(NoteEditer.this)) ;
+		
+		myD = new MyDialog(NoteEditer.this, R.layout.tags_layout) ;
+		t1 = (EditText) findViewById(R.id.titleo);
+		t2 = (EditText) findViewById(R.id.conto);
 		Button save = (Button) findViewById(R.id.b2);
 		Button cancel = (Button) findViewById(R.id.b3);
 		Button share = (Button) findViewById(R.id.share) ;
@@ -156,11 +165,6 @@ public class NoteEditer extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK){
-			//BitmapFactory.Options opts = new Options();
-			//opts.inSampleSize = 4;
-			//			opts.outWidth = myDImVeiw.getWidth();
-			//			opts.outHeight = myDImVeiw.getHeight();
-			//Bitmap b = BitmapFactory.decodeFile(mCurrentPhoto.getAbsolutePath(), opts);
 			Bitmap b = BitmapFactory.decodeFile(mCurrentPhoto.getAbsolutePath());
 			if(b.getWidth()>1921 || b.getHeight()>1281){
 				Toast.makeText(this, "size too big, please reduis to max of 1920*1280", Toast.LENGTH_SHORT).show();
@@ -170,7 +174,6 @@ public class NoteEditer extends Activity {
 		}else if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK) {
 
 			Uri selectedImage = data.getData();
-			//myDImVeiw.setImageURI(selectedImage);
 			String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
 			Cursor cursor = getContentResolver().query(selectedImage,
@@ -208,7 +211,7 @@ public class NoteEditer extends Activity {
 	OnClickListener choose_mode_l = new OnClickListener() {
 
 		@Override
-		public void onClick(View arg0) {
+		public void onClick(final View arg0) {
 			ArrayList<Mode> modes =  new ArrayList<Mode>() ;
 			Mode mode ;
 			Cursor cursor =  Notepad.getDb().getAllModes() ;
@@ -225,6 +228,17 @@ public class NoteEditer extends Activity {
 				popup.getMenu().addSubMenu(0, modee.getId(), 0, modee.getName()) ;		
 			}
 			//			popup.getMenu().addSubMenu(0, mode.getId(), 0, mode.getName()) ;
+			OnMenuItemClickListener	modeClick = new OnMenuItemClickListener() {
+
+				@Override
+				public boolean onMenuItemClick(MenuItem arg1) {	
+					mode_ID = arg1.getItemId() ;
+					((Button)arg0).setText(arg1.getTitle());
+					Toast.makeText(getBaseContext(), mode_ID + "", Toast.LENGTH_LONG).show();
+					return false;
+				}
+
+			} ;
 			popup.setOnMenuItemClickListener(modeClick) ;
 
 			popup.show() ;
@@ -234,7 +248,7 @@ public class NoteEditer extends Activity {
 	OnClickListener choose_place_l = new OnClickListener() {
 
 		@Override
-		public void onClick(View arg0) {
+		public void onClick(final View arg0) {
 			ArrayList<Place> places =  new ArrayList<Place>() ;
 			Place place ;
 			Cursor cursor =  Notepad.getDb().getAllPlaces() ;
@@ -250,7 +264,16 @@ public class NoteEditer extends Activity {
 			for (Place placee : places) {
 				popup.getMenu().addSubMenu(0, placee.getId(), 0, placee.getName()) ;		
 			}
-			//			popup.getMenu().addSubMenu(0, mode.getId(), 0, mode.getName()) ;
+			OnMenuItemClickListener placeClick = new OnMenuItemClickListener() {
+
+				@Override
+				public boolean onMenuItemClick(MenuItem arg1) {	
+					place_ID = arg1.getItemId() ;
+					((Button) arg0).setText(arg1.getTitle());
+					return false;
+				}
+
+			} ;
 			popup.setOnMenuItemClickListener(placeClick) ;
 			popup.show() ;
 
@@ -273,7 +296,7 @@ public class NoteEditer extends Activity {
 	}
 
 	public void new_mode(){
-		MyDialog myD = new MyDialog(NoteEditer.this, R.layout.new_mode) ;
+		final MyDialog myD = new MyDialog(NoteEditer.this, R.layout.new_mode) ;
 		final EditText mode_name = (EditText) myD.getDialoglayout().findViewById(R.id.new_mode_name) ;
 		Button save_mode = (Button) myD.getDialoglayout().findViewById(R.id.save_mode) ;
 		save_mode.setOnClickListener(new OnClickListener() {
@@ -285,6 +308,7 @@ public class NoteEditer extends Activity {
 					Notepad.getDb().insertMode(mode_name.getText().toString()) ;
 					Cursor cursor = Notepad.getDb().getAllModes() ;
 					Toast.makeText(getBaseContext(), String.valueOf(cursor.getCount()), Toast.LENGTH_LONG).show();
+					myD.getAlertDialog().cancel() ;
 				}
 			}
 		}) ;
@@ -292,7 +316,7 @@ public class NoteEditer extends Activity {
 	}
 
 	public void new_place(){
-		MyDialog myD = new MyDialog(NoteEditer.this, R.layout.new_place) ;
+		final MyDialog myD = new MyDialog(NoteEditer.this, R.layout.new_place) ;
 		TextView currentGps = (TextView) myD.getDialoglayout().findViewById(R.id.current_pos);
 		TextView currentGpsNet = (TextView) myD.getDialoglayout().findViewById(R.id.current_posnet);
 		Button saveB =  (Button) myD.getDialoglayout().findViewById(R.id.save_place) ;
@@ -304,7 +328,7 @@ public class NoteEditer extends Activity {
 		final NetworkProvider netGPS = new NetworkProvider(NoteEditer.this, currentGpsNet) ;
 
 		saveB.setOnClickListener(new OnClickListener() {
-
+//TODO look here and use it in the other place
 			@Override
 			public void onClick(View arg0) {
 				Place newplace ;
@@ -357,6 +381,7 @@ public class NoteEditer extends Activity {
 					}
 					Notepad.getDb().insertPlace(newplace.getName(), newplace.getX(), newplace.getY(), newplace.getRaduis()) ;
 					Toast.makeText(getBaseContext(), "success", Toast.LENGTH_LONG).show() ;
+					myD.getAlertDialog().cancel() ;
 				}
 
 			}
@@ -365,32 +390,17 @@ public class NoteEditer extends Activity {
 		myD.getAlertDialog().show() ;
 	}
 
-	OnMenuItemClickListener placeClick = new OnMenuItemClickListener() {
 
-		@Override
-		public boolean onMenuItemClick(MenuItem arg0) {	
-			place_ID = arg0.getItemId() ;
-			return false;
-		}
-
-	} ;
-	OnMenuItemClickListener	modeClick = new OnMenuItemClickListener() {
-
-		@Override
-		public boolean onMenuItemClick(MenuItem arg0) {	
-			mode_ID = arg0.getItemId() ;
-			Toast.makeText(getBaseContext(), mode_ID + "", Toast.LENGTH_LONG).show();
-			return false;
-		}
-
-	} ;
 
 
 	OnClickListener tag_l = new OnClickListener() {
 
 		@Override
 		public void onClick(View arg0) {
+			if(t1.getText().toString().isEmpty() || t2.getText().toString().isEmpty())
+				return ;
 			//			myD = new MyDialog(NoteEditer.this, R.layout.tags_layout) ;
+			//TODO here u have to declire the text view and add listener to it
 			myDImVeiw = (ImageView) myD.getDialoglayout().findViewById(R.id.showImg);
 			Button takePic = (Button) myD.getDialoglayout().findViewById(R.id.new_pic);
 			takePic.setOnClickListener(new OnClickListener() {
@@ -439,6 +449,7 @@ public class NoteEditer extends Activity {
 					}
 				}
 			});
+			
 			Button loadPic = (Button) myD.getDialoglayout().findViewById(R.id.picfga);
 			loadPic.setOnClickListener(new OnClickListener() {
 
@@ -449,37 +460,78 @@ public class NoteEditer extends Activity {
 					startActivityForResult(i, RESULT_LOAD_IMAGE);						
 				}
 			});
+			
 			Button new_place = (Button) myD.getDialoglayout().findViewById(R.id.new_loc);
 			new_place.setOnClickListener(add_place) ;
+			
 			Button new_mode = (Button) myD.getDialoglayout().findViewById(R.id.add_mode) ;
 			new_mode.setOnClickListener(add_mode) ;
+			
 			Button choose_mode = (Button) myD.getDialoglayout().findViewById(R.id.mode_chose) ;
 			choose_mode.setOnClickListener(choose_mode_l) ;
+			
 			Button choose_place = (Button) myD.getDialoglayout().findViewById(R.id.loc_chose) ;
 			choose_place.setOnClickListener(choose_place_l);
+			
 			Button done_tag = (Button) myD.getDialoglayout().findViewById(R.id.done_tag);
 			done_tag.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View arg0) {
-					if (mode_ID!=null )
-						saving_type+=1 ;
-					if (place_ID!=null)
-						saving_type+=2 ;
-					if (mCurrentPhoto!= null)
-						saving_type+=4  ;
 					myD.getAlertDialog().cancel() ;
 
 				}
 			}) ;
+			
+			TextView usedLocation = (TextView) myD.getDialoglayout().findViewById(R.id.location_mode);
+			
+			place_ID = getGPSID();
+			Log.d("place","getGPSID :: "+place_ID);
+			if(place_ID!=-1){
+				new_place.setEnabled(false);
+				choose_place.setEnabled(false);
+				usedLocation.setText(Notepad.getDb().getPlacesById(place_ID).getString(1));
+			}
 			myD.getAlertDialog().show() ;
 		}
 	};
-
+	
+	public int getGPSID(){
+		
+		Location loc;
+		if ((GPSProvider.isGPS_ConToSatil()) && (gps.getLatitude()!=null)&&(gps.getLongitude()!=null)){
+			loc = new Location("");
+			loc.setLongitude(gps.getLongitude());
+			loc.setLatitude(gps.getLatitude());
+			Log.d("place", "find locatoin by gps");
+		}else if ((NetworkProvider.isInternet_con()) && (netGPS.getLatitude()!=null)&&(netGPS.getLongitude()!=null)){
+			loc = new Location("");
+			loc.setLongitude(netGPS.getLongitude());
+			loc.setLatitude(netGPS.getLatitude());
+			Log.d("place", "find locatoin by net");
+		}else{
+			Toast.makeText(getBaseContext(), "fail", Toast.LENGTH_LONG).show() ;
+			return -1;
+		}
+		Cursor cursor = Notepad.getDb().getAllPlaces() ;
+		
+		Region  reg;
+		if(cursor.moveToFirst()){
+			do{
+				reg = new Region(cursor.getDouble(2), cursor.getDouble(3), cursor.getInt(4));
+				if (reg.isInside(loc)){
+					Log.d("place", "inside locatoin " + cursor.getInt(0));
+					return cursor.getInt(0);				
+				}else{
+					Log.d("place", "out side locatoin " + cursor.getInt(0));
+				}
+			}while(cursor.moveToNext());
+		}
+		return -1;
+	}
 
 	@Override
 	protected void onStart() {
-		myD = new MyDialog(NoteEditer.this, R.layout.tags_layout) ;
 		super.onStart();
 	}
 

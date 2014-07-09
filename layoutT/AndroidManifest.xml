@@ -92,6 +92,16 @@
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name="com.example.layoutt.Login"
+            android:label="@string/title_activity_login"
+            android:noHistory="true" >
+        </activity>
+        <activity
+            android:name="com.example.layoutt.Signup"
+            android:label="@string/title_activity_signup" >
+        </activity>
     </application>
 
 </manifest>

@@ -5,11 +5,82 @@
     android:layout_margin="0dp"
     android:background="@android:drawable/btn_default" >
 
+    <RelativeLayout
+        android:id="@+id/mode_re"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" >
+
+        <Button
+            android:id="@+id/add_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/Add" />
+
+        <Button
+            android:id="@+id/mode_chose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@id/add_mode"
+            android:text="@string/mode" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/location_re"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/mode_re" >
+
+        <LinearLayout
+            android:id="@+id/location_gps_on"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true" >
+
+            <TextView
+                android:id="@+id/location_mode"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/location_mode"
+                android:textColor="@android:color/black"
+                android:textSize="17sp" />
+
+            <Button
+                android:id="@+id/new_loc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/Add" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/loc_chose"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/location_gps_on"
+            android:text="@string/chose_loc" />
+    </RelativeLayout>
+
     <ImageView
         android:id="@+id/showImg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_below="@id/location_re"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:adjustViewBounds="true"
@@ -19,115 +90,37 @@
         android:scaleType="fitCenter"
         android:src="@drawable/qwe" />
 
-    <RelativeLayout
-        android:id="@+id/tags_re"
+    <LinearLayout
+        android:id="@+id/tack_picsl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/showImg" >
-
-        <RelativeLayout
-            android:id="@+id/mode_re"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true" >
-
-            <Button
-                android:id="@+id/add_mode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:text="@string/Add" />
-
-            <Button
-                android:id="@+id/mode_chose"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_toLeftOf="@id/add_mode"
-                android:text="@string/mode" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/location_re"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/mode_re" >
-
-            <LinearLayout
-                android:id="@+id/location_gps_on"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true" >
-
-                <TextView
-                    android:id="@+id/location_mode"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:text="@string/location_mode"
-                    android:textColor="@android:color/black"
-                    android:textSize="17sp" />
-
-                <Button
-                    android:id="@+id/new_loc"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/Add" />
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/loc_chose"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/location_gps_on"
-                android:text="@string/chose_loc" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/tack_picsl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/location_re"
-            android:padding="0dp" >
-
-            <Button
-                android:id="@+id/picfga"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/picfg" />
-
-            <Button
-                android:id="@+id/new_pic"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/tack_pic" />
-        </LinearLayout>
+        android:layout_below="@id/location_re"
+        android:layout_toRightOf="@id/showImg"
+        android:padding="0dp" >
 
         <Button
-            android:id="@+id/done_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tack_picsl"
-            android:text="@string/Add" />
-    </RelativeLayout>
+            android:id="@+id/picfga"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/picfg" />
+
+        <Button
+            android:id="@+id/new_pic"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/tack_pic" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/done_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tack_picsl"
+        android:layout_toRightOf="@id/showImg"
+        android:text="@string/Add" />
 
 </RelativeLayout>

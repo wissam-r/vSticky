@@ -70,12 +70,12 @@
         android:gravity="center" >
 
         <Button
-            android:id="@+id/picfgas"
+            android:id="@+id/search_by_mode_palce"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:text="@string/Search_cam" />
+            android:text="@string/search_Mode_Tag" />
 
         <Button
             android:id="@+id/search_by_tag"
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/picfgas"
+            android:layout_below="@id/search_by_mode_palce"
             android:text="@string/Search_cam" />
     </RelativeLayout>
 
