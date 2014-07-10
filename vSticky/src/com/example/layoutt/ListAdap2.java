@@ -1,5 +1,6 @@
 package com.example.layoutt;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import note.Note;

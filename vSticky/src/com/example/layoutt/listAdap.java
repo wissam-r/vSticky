@@ -1,5 +1,6 @@
 package com.example.layoutt;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import note.Note;
@@ -13,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class listAdap extends BaseAdapter{
+public class listAdap extends BaseAdapter {
 
 	private ArrayList<Note> mData = new ArrayList<Note>();
 	private ArrayList<String> times = new ArrayList<String>();

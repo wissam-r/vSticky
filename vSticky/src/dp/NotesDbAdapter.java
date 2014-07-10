@@ -36,6 +36,7 @@ public class NotesDbAdapter {
 
 	private static final String DATABASE_NAME = "notes.db";
 	private static final String TABLE_NAME[] = {"modes", "photos", "gps","notes"};
+	private static final String TABLE_SYNC_NAME[] = {"notes_delete_sync","notes_update_sync"} ;
 
 	private static final int DATABASE_VERSION = 1;
 
@@ -59,7 +60,6 @@ public class NotesDbAdapter {
 			+PHOTO_PATH+" text not null );" ;
 	private static final String Create_GPS_Table  = "create table "+TABLE_NAME[2]+" ("+GPS_ID+" integer primary key autoincrement, "
 			+GPS_long+" real not null, "+GPS_lat+" real not null, "+GPS_NAME+" text not null, "+GPS_RADUIS+" integer not null );" ;
-
 	private static final String Create_Notes_Table = "create table " + TABLE_NAME[3] + " (" +NOTE_ID+" integer primary key autoincrement, "
 			+NOTE_TITLE+" text not null, "
 			+NOTE_BODY+" text not null, "
@@ -68,6 +68,8 @@ public class NotesDbAdapter {
 			+MODE_ID+" integer references "+TABLE_NAME[0]+" ("+ MODE_ID+"), "
 			+GPS_ID+" integer references "+TABLE_NAME[2]+" ( "+ GPS_ID+" ));";
 
+	private static final String Create_Note_Delete_Table = "create table " + TABLE_SYNC_NAME[0] + " (" +NOTE_ID+" integer primary key );" ;
+	private static final String Create_Note_Update_Table = "create table " + TABLE_SYNC_NAME[1] + " (" +NOTE_ID+" integer primary key );" ;
 	//	DEFAULT CURRENT_TIMESTAMP
 
 	private final Context mContext;
@@ -118,11 +120,15 @@ public class NotesDbAdapter {
 		return true ;
 
 	}
+	
 	public boolean createTable(){
 		mDb.execSQL(Create_Mode_Table);	
 		mDb.execSQL(Create_Photos_Table);		
 		mDb.execSQL(Create_GPS_Table);		
 		mDb.execSQL(Create_Notes_Table);		
+		mDb.execSQL(Create_Note_Delete_Table);
+		mDb.execSQL(Create_Note_Update_Table);
+
 
 		return true ;
 	}
@@ -217,7 +223,6 @@ public class NotesDbAdapter {
 		return mDb.delete(TABLE_NAME[1],
 				where, whereArgs) > 0;              
 	}
-
 	public boolean deletePlace(int id) 
 	{
 		String where = GPS_ID+" =?";
@@ -225,20 +230,16 @@ public class NotesDbAdapter {
 		return mDb.delete(TABLE_NAME[2],
 				where, whereArgs) > 0;              
 	}
-	public boolean deleteNotesByTitle(String title) 
-	{
-		String where = NOTE_TITLE+" =?";
-		String[] whereArgs = new String[] { title };
-		return mDb.delete(TABLE_NAME[3],
-				where, whereArgs) > 0;              
-	}
-
 	public boolean deleteNoteByID(int id) 
 	{
+		
 		String where = NOTE_ID+" =?";
 		String[] whereArgs = new String[] { String.valueOf(id) };
-		return mDb.delete(TABLE_NAME[3],
-				where, whereArgs) > 0;              
+		if (mDb.delete(TABLE_NAME[3], where, whereArgs) > 0)  {  
+			insertDeletedNote(id) ;
+			return true ;}
+		return false; 
+		
 	}
 
 	public boolean deleteAllNotes(){
@@ -475,23 +476,7 @@ public class NotesDbAdapter {
 		}
 		return cursor ;
 	}
-	public void updateNote(int id,String title,String body){
 
-		try{
-			mDb = mDbHelper.getWritableDatabase();
-			String where = NOTE_ID+" =?";
-			String[] whereArgs = new String[] { String.valueOf(id) };
-			ContentValues initialValues = new ContentValues();
-			initialValues.put(NOTE_TITLE, title);
-			initialValues.put(NOTE_BODY, body);
-			initialValues.put(NOTE_DATE, getDateTime());
-			mDb.update(TABLE_NAME[3], initialValues, where, whereArgs);		 
-		}
-		catch(Exception ex)
-		{
-
-		}
-	}
 	public void updateMode(int id,String mode_name){
 
 		try{
@@ -553,7 +538,10 @@ public class NotesDbAdapter {
 			initialValues.put(PHOTO_ID, photo_id);
 			initialValues.put(GPS_ID, gps_id);
 			initialValues.put(MODE_ID, mode_id);
-			mDb.update(TABLE_NAME[3], initialValues, where, whereArgs);		 
+			if (mDb.update(TABLE_NAME[3], initialValues, where, whereArgs)>0){
+				insertUpdatedNote(id);
+			}
+				
 		}
 		catch(Exception ex)
 		{
@@ -561,6 +549,54 @@ public class NotesDbAdapter {
 		}
 
 	}
+	public Cursor getAllUpdatedNotes(){
+		String[] FROM = {NOTE_ID};
+		Cursor cursor = mDb.query(TABLE_SYNC_NAME[1], FROM, null, null, null, null, PHOTO_ID+" ASC");
+		//		mDb.query(table, columns, selection, selectionArgs, groupBy, having, orderBy)
+		if (cursor.getCount()>0){
+			cursor.moveToFirst() ;
 
+		}
 
+		return cursor ;
+	}
+	
+	public Cursor getAllDeletedNotes(){
+		String[] FROM = {NOTE_ID};
+		Cursor cursor = mDb.query(TABLE_SYNC_NAME[0], FROM, null, null, null, null, PHOTO_ID+" ASC");
+		//		mDb.query(table, columns, selection, selectionArgs, groupBy, having, orderBy)
+		if (cursor.getCount()>0){
+			cursor.moveToFirst() ;
+
+		}
+
+		return cursor ;
+	}
+	
+	public boolean insertDeletedNote(int id){
+		try {
+			ContentValues values = new ContentValues() ;
+			mDb = mDbHelper.getWritableDatabase();
+			values.put(NOTE_ID, id) ;
+			mDb.insertOrThrow(TABLE_SYNC_NAME[0], null, values) ;
+			return true ;
+		}
+		catch (Exception ex){
+			return false ;
+		}
+
+	}
+	public boolean insertUpdatedNote(int id){
+		try {
+			ContentValues values = new ContentValues() ;
+			mDb = mDbHelper.getWritableDatabase();
+			values.put(NOTE_ID, id) ;
+			mDb.insertOrThrow(TABLE_SYNC_NAME[1], null, values) ;
+			return true ;
+		}
+		catch (Exception ex){
+			return false ;
+		}
+
+	}
 }

@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="0dp"
-    android:background="@android:drawable/btn_default" >
+    android:layout_margin="0dp" >
 
     <RelativeLayout
         android:id="@+id/mode_re"
@@ -11,7 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" >
+        android:layout_alignParentTop="true"
+        android:background="@android:drawable/btn_default" >
 
         <Button
             android:id="@+id/add_mode"
@@ -37,7 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/mode_re" >
+        android:layout_below="@id/mode_re"
+        android:background="@android:drawable/btn_default" >
 
         <LinearLayout
             android:id="@+id/location_gps_on"
@@ -87,8 +88,7 @@
         android:contentDescription="@string/hello_world"
         android:maxHeight="100dp"
         android:maxWidth="100dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/qwe" />
+        android:scaleType="fitCenter" />
 
     <LinearLayout
         android:id="@+id/tack_picsl"
@@ -97,6 +97,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/location_re"
         android:layout_toRightOf="@id/showImg"
+        android:background="@android:drawable/btn_default"
         android:padding="0dp" >
 
         <Button
@@ -111,9 +112,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/tack_pic"
-
-             />
+            android:text="@string/tack_pic" />
     </LinearLayout>
 
     <Button

@@ -1,5 +1,7 @@
 package note;
 
+import java.io.Serializable;
+
 public class Note {
 	
 	String t ;

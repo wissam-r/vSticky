@@ -596,10 +596,10 @@ public class Notepad extends Activity{
 		public void onClick(View arg0){
 			int thisPlace = getGPSID();
 			Log.d("place","getGPSID :: "+thisPlace);
-			if(place_ID != thisPlace || thisPlace < 0 || mode_ID < 0){
-				if(thisPlace < 0){
-					Toast.makeText(Notepad.this, "unknown place", Toast.LENGTH_SHORT).show();
-				}else if(place_ID != thisPlace){
+			if(((place_ID != thisPlace)&&(thisPlace>0))||((place_ID<0)&&(thisPlace==-1))|| mode_ID < 0){
+				if((place_ID < 0)&&(thisPlace==-1)){
+					Toast.makeText(Notepad.this, "unknown place Plz use Internet \n or GPS or Choose palce", Toast.LENGTH_SHORT).show();
+				}else if((place_ID != thisPlace)&&(thisPlace>0)){
 					Toast.makeText(Notepad.this, "you can't search with place you are not in", Toast.LENGTH_SHORT).show();
 				}else if( mode_ID < 0){
 					Toast.makeText(Notepad.this, "you need to chose mode to use the camera", Toast.LENGTH_SHORT).show();
@@ -652,10 +652,15 @@ public class Notepad extends Activity{
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		// TODO Auto-generated method stub
-		if (myDa.getAlertDialog().isShowing())
+		if (myDa.getAlertDialog().isShowing()){
 			outState.putBoolean("myDa", true) ;
+			outState.putSerializable("photo_ID", photo_ID);
+			outState.putSerializable("place_ID", place_ID);
+			outState.putSerializable("mode_ID", mode_ID);
+		}
 		else
 			outState.putBoolean("myDa", false) ;
+
 		super.onSaveInstanceState(outState);
 	}
 
@@ -663,8 +668,13 @@ public class Notepad extends Activity{
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		if (savedInstanceState.getBoolean("myDa")){
+
+			photo_ID = (Integer) savedInstanceState.getSerializable("photo_ID") ;
+			place_ID = (Integer) savedInstanceState.getSerializable("place_ID") ;
+			mode_ID = (Integer) savedInstanceState.getSerializable("mode_ID") ;
 			myDaL() ;
 		}
+
 		super.onRestoreInstanceState(savedInstanceState);
 	}
 
@@ -715,9 +725,19 @@ public class Notepad extends Activity{
 
 		Button choose_mode = (Button) myDa.getDialoglayout().findViewById(R.id.mode_choses) ;
 		choose_mode.setOnClickListener(choose_mode_l) ;
+		if (mode_ID!=-1)
+		{
+			Cursor cursor  = getDb().getModeById(mode_ID) ;
+			choose_mode.setText(cursor.getString(1)) ;
+		}
 
 		Button choose_place = (Button) myDa.getDialoglayout().findViewById(R.id.loc_choses) ;
 		choose_place.setOnClickListener(choose_place_l);
+		if (place_ID!=-1)
+		{
+			Cursor cursor  = getDb().getPlacesById(place_ID) ;
+			choose_place.setText(cursor.getString(1)) ;
+		}
 
 		Button searchByMode = (Button) myDa.getDialoglayout().findViewById(R.id.search_by_mode_palce) ;
 		searchByMode.setOnClickListener(search_By_mode_tag) ;
