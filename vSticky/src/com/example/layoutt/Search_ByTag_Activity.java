@@ -161,7 +161,7 @@ public class Search_ByTag_Activity extends Activity {
 		else if ((mode_ID != -1)&&(place_ID ==-1 )&&(photo_ID==-1))
 			cursor = Notepad.getDb().getNoteByMode(mode_ID);
 		else if ((mode_ID == -1)&&(place_ID !=-1 )&&(photo_ID==-1))
-			cursor = Notepad.getDb().getNoteByMode(place_ID);
+			cursor = Notepad.getDb().getNoteByPlace(place_ID);
 		else
 			return ;
 
