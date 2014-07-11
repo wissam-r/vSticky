@@ -15,7 +15,10 @@ import com.example.layoutt.Notepad;
 import com.example.layoutt.R;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnDismissListener;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -48,7 +51,9 @@ public class NoteEditer extends Activity {
 	private Integer mode_ID =null ;
 	private Integer place_ID =null;
 	private Integer photo_ID =null ;
-	
+
+	int foundPlace ;
+
 	private boolean pickedPlace = false ;
 
 	MyDialog myD;
@@ -95,9 +100,24 @@ public class NoteEditer extends Activity {
 					return ;
 				}
 				try{
+					if (mCurrentPhoto!=null)
+					{
+						Cursor cursor = Notepad.getDb().getPhotoByPath(mCurrentPhoto.getAbsolutePath());
+						if (cursor.getCount()>0)
+							photo_ID = cursor.getInt(0) ;
+						else
+						{
+							Notepad.getDb().insertPhoto(mCurrentPhoto.getAbsolutePath()) ;
+							cursor = Notepad.getDb().getPhotoByPath(mCurrentPhoto.getAbsolutePath());
+							photo_ID = cursor.getInt(0) ;
+							Toast.makeText(getBaseContext(),"photo_ID = "+ photo_ID , Toast.LENGTH_LONG).show() ;
+						}
+					}
 					if (getIntent().getExtras().getString("mode").equals("edit")) {
 						//						buttons.Buttons.save(getIntent().getExtras().getInt("id"), t1.getText().toString().trim(), t2.getText().toString().trim(),Notepad.getDb());
 						Notepad.getDb().updateTagedNote(getIntent().getExtras().getInt("id"),t1.getText().toString(), t2.getText().toString(), photo_ID , place_ID , mode_ID ) ;
+						Log.d("update", "id : "+getIntent().getExtras().getInt("id") + " title : " + t1.getText().toString() + " body : "+  t2.getText().toString()
+								+" photo : "+ photo_ID + " palce : "+place_ID+ " mode : "+mode_ID) ;
 
 					}
 					else {
@@ -164,11 +184,11 @@ public class NoteEditer extends Activity {
 		outState.putString("title", t1.getText().toString()) ;
 		outState.putString("body", t2.getText().toString()) ;
 		outState.putSerializable("currentFile", mCurrentPhoto) ;
-		outState.putSerializable("photo_ID", photo_ID);
+		//		outState.putSerializable("photo_ID", photo_ID);
 		outState.putSerializable("place_ID", place_ID);
 		outState.putSerializable("mode_ID", mode_ID);
 		outState.putSerializable("pickedPlace", pickedPlace) ;
-		
+
 
 
 
@@ -179,16 +199,14 @@ public class NoteEditer extends Activity {
 		t1.setText(savedInstanceState.getString("title"));
 		t2.setText(savedInstanceState.getString("body"));
 
-		photo_ID = (Integer) savedInstanceState.getSerializable("photo_ID") ;
+		//		photo_ID = (Integer) savedInstanceState.getSerializable("photo_ID") ;
 		place_ID = (Integer) savedInstanceState.getSerializable("place_ID") ;
 		mode_ID = (Integer) savedInstanceState.getSerializable("mode_ID") ;
 		pickedPlace = savedInstanceState.getBoolean("pickedPlace") ;
+		mCurrentPhoto = (File) savedInstanceState.getSerializable("currentFile") ;
 		if (savedInstanceState.getBoolean("myD")){
-			myDL() ;
-			mCurrentPhoto = (File) savedInstanceState.getSerializable("currentFile") ;
-			if (mCurrentPhoto!=null){
-				Bitmap b = BitmapFactory.decodeFile(mCurrentPhoto.getAbsolutePath());
-				myDImVeiw.setImageBitmap(b);}
+			Log.d("restor", "myd") ;
+			myDL() ;	
 		}
 
 
@@ -226,83 +244,6 @@ public class NoteEditer extends Activity {
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-
-	OnClickListener choose_mode_l = new OnClickListener() {
-
-		@Override
-		public void onClick(final View arg0) {
-			ArrayList<Mode> modes =  new ArrayList<Mode>() ;
-			Mode mode ;
-			Cursor cursor =  Notepad.getDb().getAllModes() ;
-			int i = 0 ;
-			while(i<cursor.getCount()){
-				i++;
-				mode = new Mode(cursor.getInt(0),cursor.getString(1)) ;
-				modes.add(mode) ;
-				cursor.moveToNext() ;
-			}
-
-			PopupMenu popup = new PopupMenu(NoteEditer.this, arg0);
-			for (Mode modee : modes) {
-				popup.getMenu().addSubMenu(0, modee.getId(), 0, modee.getName()) ;		
-			}
-			//			popup.getMenu().addSubMenu(0, mode.getId(), 0, mode.getName()) ;
-			OnMenuItemClickListener	modeClick = new OnMenuItemClickListener() {
-
-				@Override
-				public boolean onMenuItemClick(MenuItem arg1) {	
-					mode_ID = arg1.getItemId() ;
-					((Button)arg0).setText(arg1.getTitle());
-					Toast.makeText(getBaseContext(), mode_ID + "", Toast.LENGTH_LONG).show();
-					return false;
-				}
-
-			} ;
-			popup.setOnMenuItemClickListener(modeClick) ;
-
-			popup.show() ;
-
-		}
-	};
-	OnClickListener choose_place_l = new OnClickListener() {
-
-		@Override
-		public void onClick(final View arg0) {
-			ArrayList<Place> places =  new ArrayList<Place>() ;
-			Place place ;
-			Cursor cursor =  Notepad.getDb().getAllPlaces() ;
-			int i = 0 ;
-			while(i<cursor.getCount()){
-				i++;
-				place = new Place(cursor.getInt(0),cursor.getString(1),cursor.getDouble(2),cursor.getDouble(3),cursor.getInt(4)) ;
-				places.add(place) ;
-				cursor.moveToNext() ;
-			}
-
-			PopupMenu popup = new PopupMenu(NoteEditer.this, arg0);
-			for (Place placee : places) {
-				popup.getMenu().addSubMenu(0, placee.getId(), 0, placee.getName()) ;		
-			}
-			OnMenuItemClickListener placeClick = new OnMenuItemClickListener() {
-
-				@Override
-				public boolean onMenuItemClick(MenuItem arg1) {	
-					place_ID = arg1.getItemId() ;
-					((Button) arg0).setText(arg1.getTitle());
-					pickedPlace=true ;
-					
-					return false;
-				}
-
-			} ;
-			popup.setOnMenuItemClickListener(placeClick) ;
-			popup.show() ;
-
-
-		}
-	};
-
-
 
 	public File getmCurrentPhoto() {
 		return mCurrentPhoto;
@@ -373,7 +314,28 @@ public class NoteEditer extends Activity {
 		//			return ;
 		//			myD = new MyDialog(NoteEditer.this, R.layout.tags_layout) ;
 		//TODO here u have to declire the text view and add listener to it
+		final int modee_ID ;
+		final int placee_ID ;
+		final File currentFile ; 
+		if (mode_ID==null)
+			modee_ID =-1;
+		else
+			modee_ID = mode_ID ;
+		if (place_ID==null)
+			placee_ID =-1;
+		else
+			placee_ID = place_ID ;
+		if (mCurrentPhoto==null)
+			currentFile =null;
+		else
+			currentFile = mCurrentPhoto ;
+
 		myDImVeiw = (ImageView) myD.getDialoglayout().findViewById(R.id.showImg);
+		if (mCurrentPhoto!=null){	
+			Bitmap b = BitmapFactory.decodeFile(mCurrentPhoto.getAbsolutePath());
+			Log.d("enterd here", "draw") ;
+			myDImVeiw.setImageBitmap(b);
+			}
 		Button takePic = (Button) myD.getDialoglayout().findViewById(R.id.new_pic);
 		takePic.setOnClickListener(new OnClickListener() {
 
@@ -435,7 +397,86 @@ public class NoteEditer extends Activity {
 
 		TextView usedLocation = (TextView) myD.getDialoglayout().findViewById(R.id.location_mode);
 
-		Button choose_mode = (Button) myD.getDialoglayout().findViewById(R.id.mode_chose) ;
+
+		OnClickListener choose_mode_l = new OnClickListener() {
+
+			@Override
+			public void onClick(final View arg0) {
+				ArrayList<Mode> modes =  new ArrayList<Mode>() ;
+				Mode mode ;
+				Cursor cursor =  Notepad.getDb().getAllModes() ;
+				int i = 0 ;
+				while(i<cursor.getCount()){
+					i++;
+					mode = new Mode(cursor.getInt(0),cursor.getString(1)) ;
+					modes.add(mode) ;
+					cursor.moveToNext() ;
+				}
+
+				PopupMenu popup = new PopupMenu(NoteEditer.this, arg0);
+				for (Mode modee : modes) {
+					popup.getMenu().addSubMenu(0, modee.getId(), 0, modee.getName()) ;		
+				}
+				//			popup.getMenu().addSubMenu(0, mode.getId(), 0, mode.getName()) ;
+				OnMenuItemClickListener	modeClick = new OnMenuItemClickListener() {
+
+					@Override
+					public boolean onMenuItemClick(MenuItem arg1) {	
+						mode_ID = arg1.getItemId() ;
+						((Button)arg0).setText(arg1.getTitle());
+						Toast.makeText(getBaseContext(), mode_ID + "", Toast.LENGTH_LONG).show();
+						return false;
+					}
+
+				} ;
+				popup.setOnMenuItemClickListener(modeClick) ;
+
+				popup.show() ;
+
+			}
+		};
+		OnClickListener choose_place_l = new OnClickListener() {
+
+			@Override
+			public void onClick(final View arg0) {
+				ArrayList<Place> places =  new ArrayList<Place>() ;
+				Place place ;
+				Cursor cursor =  Notepad.getDb().getAllPlaces() ;
+				int i = 0 ;
+				while(i<cursor.getCount()){
+					i++;
+					place = new Place(cursor.getInt(0),cursor.getString(1),cursor.getDouble(2),cursor.getDouble(3),cursor.getInt(4)) ;
+					places.add(place) ;
+					cursor.moveToNext() ;
+				}
+
+				PopupMenu popup = new PopupMenu(NoteEditer.this, arg0);
+				for (Place placee : places) {
+					popup.getMenu().addSubMenu(0, placee.getId(), 0, placee.getName()) ;		
+				}
+				OnMenuItemClickListener placeClick = new OnMenuItemClickListener() {
+
+					@Override
+					public boolean onMenuItemClick(MenuItem arg1) {	
+						place_ID = arg1.getItemId() ;
+						((Button) arg0).setText(arg1.getTitle());
+						pickedPlace=true ;
+
+						return false;
+					}
+
+				} ;
+				popup.setOnMenuItemClickListener(placeClick) ;
+				popup.show() ;
+
+
+			}
+		};
+
+
+
+
+		final Button choose_mode = (Button) myD.getDialoglayout().findViewById(R.id.mode_chose) ;
 		choose_mode.setOnClickListener(choose_mode_l) ;
 		if (mode_ID!=null)
 		{
@@ -443,7 +484,7 @@ public class NoteEditer extends Activity {
 			choose_mode.setText(cursor.getString(1)) ;
 		}
 
-		Button choose_place = (Button) myD.getDialoglayout().findViewById(R.id.loc_chose) ;
+		final Button choose_place = (Button) myD.getDialoglayout().findViewById(R.id.loc_chose) ;
 		choose_place.setOnClickListener(choose_place_l);
 
 		Button new_place = (Button) myD.getDialoglayout().findViewById(R.id.new_loc);
@@ -457,33 +498,88 @@ public class NoteEditer extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				myD.getAlertDialog().cancel() ;
+				myD.getAlertDialog().dismiss() ;
 
 			}
 		}) ;
 
-
-		int foundPlace ;
 		foundPlace = getGPSID();
 		Log.d("place","getGPSID :: "+place_ID);
 		if(foundPlace>-1){
 			pickedPlace = false ;
 			new_place.setEnabled(false);
 			choose_place.setEnabled(false);
-			usedLocation.setText(Notepad.getDb().getPlacesById(place_ID).getString(1));
+			usedLocation.setText(Notepad.getDb().getPlacesById(foundPlace).getString(1));
 		}else if(foundPlace==-2){//we know our gps locatoin but not where we are
 			choose_place.setEnabled(false);
 		}
 
 		if ((pickedPlace)&&(place_ID!=null))
 		{
-//		
-//
-				Cursor cursor  = Notepad.getDb().getPlacesById(place_ID) ;
-				choose_place.setText(cursor.getString(1)) ;
-//
-//			
+
+			Cursor cursor  = Notepad.getDb().getPlacesById(place_ID) ;
+			Log.d("palce_ID", place_ID+"");
+			choose_place.setText(cursor.getString(1)) ;
+
 		}
+		Button clear_tag = (Button) myD.getDialoglayout().findViewById(R.id.clear_tag) ;
+		clear_tag.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				mCurrentPhoto = null ;
+				place_ID = null ;
+				mode_ID = null ;
+				choose_mode.setText(getResources().getString(R.string.choose_mode)) ;
+				choose_place.setText(getResources().getString(R.string.choose_place)) ;
+				myDImVeiw.setImageBitmap(null) ;
+
+
+
+			}
+		}) ;
+
+		myD.getAlertDialog().setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface arg0) {
+				// TODO Auto-generated method stub
+				Toast.makeText(getBaseContext(), "dismiss", Toast.LENGTH_LONG).show() ;
+			}
+		}); 
+		myD.getAlertDialog().setOnCancelListener(new OnCancelListener() {
+
+			@Override
+			public void onCancel(DialogInterface arg0) {
+				// TODO Auto-generated method stub
+				if (modee_ID==-1){
+					mode_ID = null ;
+					choose_mode.setText(getResources().getString(R.string.choose_mode)) ;
+
+				}
+				else
+					mode_ID = modee_ID ;
+				if (placee_ID==-1){
+					place_ID = null ;
+					choose_place.setText(getResources().getString(R.string.choose_place)) ;
+					pickedPlace = false ;
+				}
+				else
+					place_ID = placee_ID ;
+				if (currentFile==null){
+					mCurrentPhoto = null ;
+					Log.d("current", "null") ;
+				}
+				else
+					mCurrentPhoto = currentFile ;
+				Toast.makeText(getBaseContext(), "cancell", Toast.LENGTH_LONG).show() ;
+
+			}
+		});
+
+
+
 		myD.getAlertDialog().show() ;
 	}
 }

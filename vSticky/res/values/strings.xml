@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="mode_d">Mode : </string>
+    <string name="place_d">place : </string>
+    <string name="clear">Clear</string>
     <string name="choose_mode">Choose mode</string>
     <string name="choose_place">Choose place</string>
     <string name="app_name">layoutT</string>

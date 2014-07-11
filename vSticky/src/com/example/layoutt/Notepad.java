@@ -14,6 +14,9 @@ import dp.NotesDbAdapter;
 import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
@@ -723,7 +726,7 @@ public class Notepad extends Activity{
 
 		TextView placeLocation = (TextView) myDa.getDialoglayout().findViewById(R.id.location_modes);
 
-		Button choose_mode = (Button) myDa.getDialoglayout().findViewById(R.id.mode_choses) ;
+		final Button choose_mode = (Button) myDa.getDialoglayout().findViewById(R.id.mode_choses) ;
 		choose_mode.setOnClickListener(choose_mode_l) ;
 		if (mode_ID!=-1)
 		{
@@ -731,7 +734,7 @@ public class Notepad extends Activity{
 			choose_mode.setText(cursor.getString(1)) ;
 		}
 
-		Button choose_place = (Button) myDa.getDialoglayout().findViewById(R.id.loc_choses) ;
+		final Button choose_place = (Button) myDa.getDialoglayout().findViewById(R.id.loc_choses) ;
 		choose_place.setOnClickListener(choose_place_l);
 		if (place_ID!=-1)
 		{
@@ -751,6 +754,28 @@ public class Notepad extends Activity{
 		}else{
 			placeLocation.setText("Place: "+Notepad.getDb().getPlacesById(thisplace).getString(1));
 		}
+		myDa.getAlertDialog().setOnDismissListener(new OnDismissListener() {
+			
+			@Override
+			public void onDismiss(DialogInterface arg0) {
+				// TODO Auto-generated method stub
+				Toast.makeText(getBaseContext(), "dismiss", Toast.LENGTH_LONG).show() ;
+			}
+		}); 
+		myDa.getAlertDialog().setOnCancelListener(new OnCancelListener() {
+			
+			@Override
+			public void onCancel(DialogInterface arg0) {
+				// TODO Auto-generated method stub
+				photo_ID = -1 ;
+				mode_ID =-1 ;
+				place_ID = -1 ;
+				choose_mode.setText(getResources().getString(R.string.choose_mode));
+				choose_place.setText(getResources().getString(R.string.choose_place)) ;			
+				Toast.makeText(getBaseContext(), "cancell", Toast.LENGTH_LONG).show() ;
+
+			}
+		});
 
 		myDa.getAlertDialog().show() ;
 

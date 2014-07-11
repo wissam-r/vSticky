@@ -247,7 +247,7 @@ public class NotesDbAdapter {
 	}
 
 	public Cursor getNoteById(int id){
-		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE};
+		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,MODE_ID,PHOTO_ID,GPS_ID};
 
 		String [] ide = {String.valueOf(id)} ;
 		//mDb.query(distinct, table, columns, selection, selectionArgs, groupBy, having, orderBy, limit, cancellationSignal)
@@ -259,7 +259,7 @@ public class NotesDbAdapter {
 		return cursor ;
 	}
 	public Cursor getNoteByTitle(String title) {
-		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE};
+		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,MODE_ID,PHOTO_ID,GPS_ID};
 		String [] titleo = {title} ;
 		//mDb.query(distinct, table, columns, selection, selectionArgs, groupBy, having, orderBy, limit, cancellationSignal)
 
@@ -525,7 +525,7 @@ public class NotesDbAdapter {
 
 		}
 	}
-	public void updateTagedNote(int id,String title,String body, int photo_id , int gps_id , int mode_id){
+	public void updateTagedNote(int id,String title,String body, Integer photo_id , Integer gps_id , Integer mode_id){
 
 		try{
 			mDb = mDbHelper.getWritableDatabase();
@@ -545,7 +545,7 @@ public class NotesDbAdapter {
 		}
 		catch(Exception ex)
 		{
-
+			Log.d("error", "asdasdasdasdasd") ;
 		}
 
 	}
