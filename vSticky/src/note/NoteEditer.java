@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.example.layoutt.MyDialog;
 import com.example.layoutt.Notepad;
@@ -395,7 +397,7 @@ public class NoteEditer extends Activity {
 			}
 		});
 
-		TextView usedLocation = (TextView) myD.getDialoglayout().findViewById(R.id.location_mode);
+		final TextView usedLocation = (TextView) myD.getDialoglayout().findViewById(R.id.location_mode);
 
 
 		OnClickListener choose_mode_l = new OnClickListener() {
@@ -488,10 +490,28 @@ public class NoteEditer extends Activity {
 		choose_place.setOnClickListener(choose_place_l);
 
 		Button new_place = (Button) myD.getDialoglayout().findViewById(R.id.new_loc);
-		new_place.setOnClickListener(new NewPlaceAdder(NoteEditer.this, usedLocation)) ;
+		NewPlaceAdder npa = new NewPlaceAdder(NoteEditer.this);
+		npa.addOnAddListener(new NewPlaceAdder.onAddListener() {
+			
+			@Override
+			public void onAdd(Place place) {
+				usedLocation.setText(place.getName());
+				place_ID = place.getId();
+			}
+		});
+		new_place.setOnClickListener(npa) ;
 
 		Button new_mode = (Button) myD.getDialoglayout().findViewById(R.id.add_mode) ;
-		new_mode.setOnClickListener(new NewModeAdder(NoteEditer.this, choose_mode)) ;
+		NewModeAdder nma = new NewModeAdder(NoteEditer.this);
+		nma.addOnAddListener(new NewModeAdder.onAddListener() {
+			
+			@Override
+			public void onAdd(Mode mode) {
+				choose_mode.setText(mode.getName());
+				mode_ID = mode.getId();				
+			}
+		});
+		new_mode.setOnClickListener(nma) ;
 
 		Button done_tag = (Button) myD.getDialoglayout().findViewById(R.id.done_tag);
 		done_tag.setOnClickListener(new OnClickListener() {
@@ -590,12 +610,6 @@ class NewModeAdder implements OnClickListener{
 	public NewModeAdder(Activity activity){
 		this.activity = activity;
 	}
-	public NewModeAdder(Activity activity, Button b){
-		button = b;
-		this.activity = activity;
-	}
-
-	Button button;
 	Activity activity;
 	@Override
 	public void onClick(View v) {
@@ -612,8 +626,10 @@ class NewModeAdder implements OnClickListener{
 					Cursor cursor = Notepad.getDb().getAllModes() ;
 					Toast.makeText(activity, String.valueOf(cursor.getCount()), Toast.LENGTH_LONG).show();
 					myD.getAlertDialog().cancel() ;
-					if(button!= null){
-						button.setText(mode_name.getText().toString());
+					cursor = Notepad.getDb().getModeByName(mode_name.getText().toString());
+					Mode newmode = new Mode(cursor.getInt(0), cursor.getString(1));
+					for(int i = 0;i<listeners.size();i++){
+						listeners.get(i).onAdd(newmode);
 					}
 				}
 			}
@@ -622,23 +638,22 @@ class NewModeAdder implements OnClickListener{
 
 	}
 
+	private List<onAddListener> listeners = new LinkedList<>();
+
+	public static interface onAddListener{
+		void onAdd(Mode mode);
+	}
+	
+	public void addOnAddListener(onAddListener oal){
+		listeners.add(oal);
+	}
 }
 
 class NewPlaceAdder implements OnClickListener{
 	public NewPlaceAdder(Activity activity){
 		this.activity = activity;
 	}
-	public NewPlaceAdder(Activity activity, Button b){
-		button = b;
-		this.activity = activity;
-	}
-	public NewPlaceAdder(Activity activity, TextView t){
-		textview = t;
-		this.activity = activity;
-	}
 
-	Button button;
-	TextView textview;
 	Activity activity;
 	@Override
 	public void onClick(View v) {
@@ -708,13 +723,13 @@ class NewPlaceAdder implements OnClickListener{
 					Notepad.getDb().insertPlace(newplace.getName(), newplace.getX(), newplace.getY(), newplace.getRaduis()) ;
 					Toast.makeText(activity, "success", Toast.LENGTH_LONG).show() ;
 					myD.getAlertDialog().cancel() ;
-					if(button!=null){
-						button.setText(newplace.getName());
-					}
-					if(textview!=null){
-						textview.setText(newplace.getName());
-					}
 					fv.setEnabled(false);
+					
+					Cursor placec = Notepad.getDb().getPlacesByName(newplace.getName());
+					newplace = new Place(placec.getInt(0), placec.getString(1), placec.getDouble(2), placec.getDouble(3), placec.getInt(4));
+					for(int k = 0;k<listeners.size();k++){
+						listeners.get(k).onAdd(newplace);
+					}
 				}
 
 			}
@@ -723,6 +738,15 @@ class NewPlaceAdder implements OnClickListener{
 		myD.getAlertDialog().show() ;
 
 	}
+	
+	private List<onAddListener> listeners = new LinkedList<>();
 
+	public static interface onAddListener{
+		void onAdd(Place place);
+	}
+	
+	public void addOnAddListener(onAddListener oal){
+		listeners.add(oal);
+	}
 }
 
