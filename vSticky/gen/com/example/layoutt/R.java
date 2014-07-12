@@ -9,12 +9,38 @@ package com.example.layoutt;
 
 public final class R {
     public static final class array {
-        public static final int testarray=0x7f060000;
+        public static final int testarray=0x7f070000;
     }
     public static final class attr {
+        /** <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>any</code></td><td>-1</td><td></td></tr>
+<tr><td><code>back</code></td><td>99</td><td></td></tr>
+<tr><td><code>front</code></td><td>98</td><td></td></tr>
+</table>
+         */
+        public static final int camera_id=0x7f010001;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int show_fps=0x7f010000;
     }
     public static final class color {
-        public static final int text_c=0x7f080000;
+        public static final int text_c=0x7f090000;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -23,8 +49,8 @@ public final class R {
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     
          */
-        public static final int activity_horizontal_margin=0x7f040000;
-        public static final int activity_vertical_margin=0x7f040001;
+        public static final int activity_horizontal_margin=0x7f050000;
+        public static final int activity_vertical_margin=0x7f050001;
     }
     public static final class drawable {
         public static final int board_shap=0x7f020000;
@@ -58,128 +84,129 @@ public final class R {
         public static final int whack_notepad=0x7f02001c;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0066;
-        public static final int add_mode=0x7f0a0056;
-        public static final int add_tags=0x7f0a0039;
-        public static final int b1=0x7f0a0025;
-        public static final int b2=0x7f0a0036;
-        public static final int b3=0x7f0a0037;
-        public static final int backs=0x7f0a0045;
-        public static final int backst=0x7f0a0049;
-        public static final int backv=0x7f0a003d;
-        public static final int btnLogin=0x7f0a0008;
-        public static final int btnSignup=0x7f0a000a;
-        public static final int cancelc=0x7f0a001b;
-        public static final int canceldaa=0x7f0a0065;
-        public static final int chkBoxRememberMe=0x7f0a0007;
-        public static final int clear_tag=0x7f0a0062;
-        public static final int contacts=0x7f0a0079;
-        public static final int contentv=0x7f0a0043;
-        public static final int conto=0x7f0a003b;
-        public static final int current_pos=0x7f0a0030;
-        public static final int current_posnet=0x7f0a0031;
-        public static final int date=0x7f0a0018;
-        public static final int datev=0x7f0a0040;
-        public static final int deletev=0x7f0a003e;
-        public static final int dialog_name=0x7f0a002c;
-        public static final int done_tag=0x7f0a0061;
-        public static final int etxtEmail=0x7f0a0014;
-        public static final int etxtPassword=0x7f0a0006;
-        public static final int etxtPassword2=0x7f0a0015;
-        public static final int etxtUsername=0x7f0a0005;
-        public static final int imageDetails=0x7f0a0002;
-        public static final int imgLogo=0x7f0a0004;
-        public static final int listView=0x7f0a0028;
-        public static final int listView2=0x7f0a001d;
-        public static final int listViewS=0x7f0a0048;
-        public static final int listViewSt=0x7f0a004b;
-        public static final int loc_chose=0x7f0a005c;
-        public static final int loc_choses=0x7f0a0051;
-        public static final int location_gps_on=0x7f0a0059;
-        public static final int location_gps_ons=0x7f0a004f;
-        public static final int location_mode=0x7f0a005a;
-        public static final int location_modes=0x7f0a0050;
-        public static final int location_re=0x7f0a0058;
-        public static final int location_res=0x7f0a004e;
-        public static final int main_add=0x7f0a0021;
-        public static final int main_but_overflow=0x7f0a002b;
-        public static final int main_but_search_tag=0x7f0a002a;
-        public static final int main_notes_list=0x7f0a0024;
-        public static final int main_notes_number=0x7f0a0023;
-        public static final int main_search=0x7f0a0022;
-        public static final int main_spin_orderby=0x7f0a0029;
-        public static final int menu_about=0x7f0a006a;
-        public static final int menu_delete=0x7f0a0074;
-        public static final int menu_edit=0x7f0a0075;
-        public static final int menu_modes=0x7f0a0069;
-        public static final int menu_overflow=0x7f0a0078;
-        public static final int menu_places=0x7f0a0068;
-        public static final int menu_remove=0x7f0a0067;
-        public static final int menu_remove_items=0x7f0a0071;
-        public static final int menu_share=0x7f0a0076;
-        public static final int message=0x7f0a0001;
-        public static final int mode_chose=0x7f0a0057;
-        public static final int mode_choses=0x7f0a004d;
-        public static final int mode_d=0x7f0a001e;
-        public static final int mode_re=0x7f0a0055;
-        public static final int mode_res=0x7f0a004c;
-        public static final int modes_place_list=0x7f0a002d;
-        public static final int name_place=0x7f0a0033;
-        public static final int new_loc=0x7f0a005b;
-        public static final int new_mode=0x7f0a006f;
-        public static final int new_mode_name=0x7f0a002e;
-        public static final int new_note_upa=0x7f0a0035;
-        public static final int new_pic=0x7f0a0060;
-        public static final int new_place=0x7f0a006e;
-        public static final int note_pad_add=0x7f0a000f;
-        public static final int note_pad_bota=0x7f0a000e;
-        public static final int note_pad_noteslist=0x7f0a0013;
-        public static final int note_pad_overflow=0x7f0a0010;
-        public static final int note_pad_s_sortby=0x7f0a000c;
-        public static final int note_pad_search=0x7f0a0012;
-        public static final int note_pad_search_sv=0x7f0a0047;
-        public static final int note_pad_search_tag=0x7f0a0011;
-        public static final int note_pad_t_number=0x7f0a000d;
-        public static final int note_pad_upa=0x7f0a000b;
-        public static final int note_view_upa=0x7f0a003c;
-        public static final int notes_n=0x7f0a0027;
-        public static final int notes_number=0x7f0a0046;
-        public static final int notes_numberst=0x7f0a004a;
-        public static final int overfow_remove=0x7f0a006d;
-        public static final int overfow_setting=0x7f0a006c;
-        public static final int photo=0x7f0a0000;
-        public static final int photo_d=0x7f0a0020;
-        public static final int picfga=0x7f0a005f;
-        public static final int place_d=0x7f0a001f;
-        public static final int range_gps=0x7f0a0032;
-        public static final int removec=0x7f0a001c;
-        public static final int rowId=0x7f0a0016;
-        public static final int saveDetails=0x7f0a0077;
-        public static final int save_mode=0x7f0a002f;
-        public static final int save_place=0x7f0a0034;
-        public static final int search=0x7f0a0026;
-        public static final int search_by_mode_palce=0x7f0a0053;
-        public static final int search_by_tag=0x7f0a0054;
-        public static final int search_upa=0x7f0a0044;
-        public static final int share=0x7f0a0038;
-        public static final int sharev=0x7f0a003f;
-        public static final int showImg=0x7f0a0003;
-        public static final int sortby_date=0x7f0a0072;
-        public static final int sortby_title=0x7f0a0073;
-        public static final int spinner=0x7f0a0064;
-        public static final int sync=0x7f0a0070;
-        public static final int tack_picsl=0x7f0a005e;
-        public static final int take_pics=0x7f0a005d;
-        public static final int take_picss=0x7f0a0052;
-        public static final int test=0x7f0a006b;
-        public static final int testlist=0x7f0a0063;
-        public static final int textViewc=0x7f0a001a;
-        public static final int titleCon=0x7f0a0019;
-        public static final int titleId=0x7f0a0017;
-        public static final int titleo=0x7f0a003a;
-        public static final int titlev=0x7f0a0042;
-        public static final int txtOr=0x7f0a0009;
-        public static final int view_note_overflow=0x7f0a0041;
+        public static final int action_settings=0x7f040069;
+        public static final int add_mode=0x7f040059;
+        public static final int add_tags=0x7f04003c;
+        public static final int any=0x7f040000;
+        public static final int b1=0x7f040028;
+        public static final int b2=0x7f040039;
+        public static final int b3=0x7f04003a;
+        public static final int back=0x7f040001;
+        public static final int backs=0x7f040048;
+        public static final int backst=0x7f04004c;
+        public static final int backv=0x7f040040;
+        public static final int btnLogin=0x7f04000b;
+        public static final int btnSignup=0x7f04000d;
+        public static final int cancelc=0x7f04001e;
+        public static final int canceldaa=0x7f040068;
+        public static final int chkBoxRememberMe=0x7f04000a;
+        public static final int clear_tag=0x7f040065;
+        public static final int contacts=0x7f04007a;
+        public static final int contentv=0x7f040046;
+        public static final int conto=0x7f04003e;
+        public static final int current_pos=0x7f040033;
+        public static final int current_posnet=0x7f040034;
+        public static final int date=0x7f04001b;
+        public static final int datev=0x7f040043;
+        public static final int deletev=0x7f040041;
+        public static final int dialog_name=0x7f04002f;
+        public static final int done_tag=0x7f040064;
+        public static final int etxtEmail=0x7f040017;
+        public static final int etxtPassword=0x7f040009;
+        public static final int etxtPassword2=0x7f040018;
+        public static final int etxtUsername=0x7f040008;
+        public static final int front=0x7f040002;
+        public static final int imageDetails=0x7f040005;
+        public static final int imgLogo=0x7f040007;
+        public static final int listView=0x7f04002b;
+        public static final int listView2=0x7f040020;
+        public static final int listViewS=0x7f04004b;
+        public static final int listViewSt=0x7f04004e;
+        public static final int loc_chose=0x7f04005f;
+        public static final int loc_choses=0x7f040054;
+        public static final int location_gps_on=0x7f04005c;
+        public static final int location_gps_ons=0x7f040052;
+        public static final int location_mode=0x7f04005d;
+        public static final int location_modes=0x7f040053;
+        public static final int location_re=0x7f04005b;
+        public static final int location_res=0x7f040051;
+        public static final int main_add=0x7f040024;
+        public static final int main_but_overflow=0x7f04002e;
+        public static final int main_but_search_tag=0x7f04002d;
+        public static final int main_notes_list=0x7f040027;
+        public static final int main_notes_number=0x7f040026;
+        public static final int main_search=0x7f040025;
+        public static final int main_spin_orderby=0x7f04002c;
+        public static final int menu_about=0x7f04006a;
+        public static final int menu_delete=0x7f040075;
+        public static final int menu_edit=0x7f040076;
+        public static final int menu_modes=0x7f04006d;
+        public static final int menu_overflow=0x7f040079;
+        public static final int menu_places=0x7f04006c;
+        public static final int menu_remove=0x7f04006b;
+        public static final int menu_remove_items=0x7f040072;
+        public static final int menu_share=0x7f040077;
+        public static final int message=0x7f040004;
+        public static final int mode_chose=0x7f04005a;
+        public static final int mode_choses=0x7f040050;
+        public static final int mode_d=0x7f040021;
+        public static final int mode_re=0x7f040058;
+        public static final int mode_res=0x7f04004f;
+        public static final int modes_place_list=0x7f040030;
+        public static final int name_place=0x7f040036;
+        public static final int new_loc=0x7f04005e;
+        public static final int new_mode=0x7f040070;
+        public static final int new_mode_name=0x7f040031;
+        public static final int new_note_upa=0x7f040038;
+        public static final int new_pic=0x7f040063;
+        public static final int new_place=0x7f04006f;
+        public static final int note_pad_add=0x7f040012;
+        public static final int note_pad_bota=0x7f040011;
+        public static final int note_pad_noteslist=0x7f040016;
+        public static final int note_pad_overflow=0x7f040013;
+        public static final int note_pad_s_sortby=0x7f04000f;
+        public static final int note_pad_search=0x7f040015;
+        public static final int note_pad_search_sv=0x7f04004a;
+        public static final int note_pad_search_tag=0x7f040014;
+        public static final int note_pad_t_number=0x7f040010;
+        public static final int note_pad_upa=0x7f04000e;
+        public static final int note_view_upa=0x7f04003f;
+        public static final int notes_n=0x7f04002a;
+        public static final int notes_number=0x7f040049;
+        public static final int notes_numberst=0x7f04004d;
+        public static final int overfow_remove=0x7f04006e;
+        public static final int photo=0x7f040003;
+        public static final int photo_d=0x7f040023;
+        public static final int picfga=0x7f040062;
+        public static final int place_d=0x7f040022;
+        public static final int range_gps=0x7f040035;
+        public static final int removec=0x7f04001f;
+        public static final int rowId=0x7f040019;
+        public static final int saveDetails=0x7f040078;
+        public static final int save_mode=0x7f040032;
+        public static final int save_place=0x7f040037;
+        public static final int search=0x7f040029;
+        public static final int search_by_mode_palce=0x7f040056;
+        public static final int search_by_tag=0x7f040057;
+        public static final int search_upa=0x7f040047;
+        public static final int share=0x7f04003b;
+        public static final int sharev=0x7f040042;
+        public static final int showImg=0x7f040006;
+        public static final int sortby_date=0x7f040073;
+        public static final int sortby_title=0x7f040074;
+        public static final int spinner=0x7f040067;
+        public static final int sync=0x7f040071;
+        public static final int tack_picsl=0x7f040061;
+        public static final int take_pics=0x7f040060;
+        public static final int take_picss=0x7f040055;
+        public static final int testlist=0x7f040066;
+        public static final int textViewc=0x7f04001d;
+        public static final int titleCon=0x7f04001c;
+        public static final int titleId=0x7f04001a;
+        public static final int titleo=0x7f04003d;
+        public static final int titlev=0x7f040045;
+        public static final int txtOr=0x7f04000c;
+        public static final int view_note_overflow=0x7f040044;
     }
     public static final class layout {
         public static final int activity_camera_photo_capture=0x7f030000;
@@ -206,73 +233,73 @@ public final class R {
         public static final int testwithmenu=0x7f030015;
     }
     public static final class menu {
-        public static final int login=0x7f090000;
-        public static final int main=0x7f090001;
-        public static final int overflow_menu=0x7f090002;
-        public static final int remove=0x7f090003;
-        public static final int signup=0x7f090004;
-        public static final int sortby=0x7f090005;
-        public static final int submenu=0x7f090006;
-        public static final int test_menu=0x7f090007;
+        public static final int login=0x7f0a0000;
+        public static final int main=0x7f0a0001;
+        public static final int overflow_menu=0x7f0a0002;
+        public static final int remove=0x7f0a0003;
+        public static final int signup=0x7f0a0004;
+        public static final int sortby=0x7f0a0005;
+        public static final int submenu=0x7f0a0006;
+        public static final int test_menu=0x7f0a0007;
     }
     public static final class string {
-        public static final int Add=0x7f05000c;
-        public static final int Con=0x7f05000e;
-        public static final int Search_cam=0x7f050028;
-        public static final int Title=0x7f05000d;
-        public static final int about=0x7f050000;
-        public static final int action_settings=0x7f05000a;
-        public static final int all_notes=0x7f05001c;
-        public static final int app_name=0x7f050008;
-        public static final int back=0x7f050017;
-        public static final int btnLogin=0x7f050032;
-        public static final int btnSignup=0x7f050033;
-        public static final int cancel=0x7f050010;
-        public static final int chkBoxRememberMe=0x7f050031;
-        public static final int choose_mode=0x7f050006;
-        public static final int choose_place=0x7f050007;
-        public static final int chose_loc=0x7f050021;
-        public static final int clear=0x7f050005;
-        public static final int current_pos=0x7f050024;
-        public static final int current_pos_byGPS=0x7f050029;
-        public static final int current_pos_byNetwork=0x7f05002a;
-        public static final int date=0x7f050019;
-        public static final int edit=0x7f050014;
-        public static final int etxtEmail=0x7f05002e;
-        public static final int etxtPassword=0x7f05002f;
-        public static final int etxtPassword2=0x7f050030;
-        public static final int etxtUsername=0x7f05002d;
-        public static final int hello_world=0x7f05000b;
-        public static final int location_mode=0x7f050020;
+        public static final int Add=0x7f06000c;
+        public static final int Con=0x7f06000e;
+        public static final int Search_cam=0x7f060028;
+        public static final int Title=0x7f06000d;
+        public static final int about=0x7f060000;
+        public static final int action_settings=0x7f06000a;
+        public static final int all_notes=0x7f06001c;
+        public static final int app_name=0x7f060008;
+        public static final int back=0x7f060017;
+        public static final int btnLogin=0x7f060032;
+        public static final int btnSignup=0x7f060033;
+        public static final int cancel=0x7f060010;
+        public static final int chkBoxRememberMe=0x7f060031;
+        public static final int choose_mode=0x7f060006;
+        public static final int choose_place=0x7f060007;
+        public static final int chose_loc=0x7f060021;
+        public static final int clear=0x7f060005;
+        public static final int current_pos=0x7f060024;
+        public static final int current_pos_byGPS=0x7f060029;
+        public static final int current_pos_byNetwork=0x7f06002a;
+        public static final int date=0x7f060019;
+        public static final int edit=0x7f060014;
+        public static final int etxtEmail=0x7f06002e;
+        public static final int etxtPassword=0x7f06002f;
+        public static final int etxtPassword2=0x7f060030;
+        public static final int etxtUsername=0x7f06002d;
+        public static final int hello_world=0x7f06000b;
+        public static final int location_mode=0x7f060020;
         /**  Strings for Login/Signup Screen 
          */
-        public static final int logoDesc=0x7f05002c;
-        public static final int memo=0x7f050018;
-        public static final int menu=0x7f050013;
-        public static final int mode=0x7f05001f;
-        public static final int mode_d=0x7f050003;
-        public static final int modes=0x7f050001;
-        public static final int new_mode=0x7f05001e;
-        public static final int new_note=0x7f05001a;
-        public static final int new_plce=0x7f050027;
-        public static final int note=0x7f05000f;
-        public static final int noto=0x7f050011;
-        public static final int picfg=0x7f050022;
-        public static final int place_d=0x7f050004;
-        public static final int place_name=0x7f050026;
-        public static final int places=0x7f050002;
-        public static final int range=0x7f050025;
-        public static final int remove=0x7f050012;
-        public static final int save=0x7f050015;
-        public static final int search_Mode_Tag=0x7f050009;
-        public static final int share=0x7f050016;
-        public static final int sync=0x7f05002b;
-        public static final int tack_pic=0x7f050023;
-        public static final int tag=0x7f05001d;
-        public static final int title=0x7f05001b;
-        public static final int title_activity_login=0x7f050035;
-        public static final int title_activity_signup=0x7f050036;
-        public static final int txtOr=0x7f050034;
+        public static final int logoDesc=0x7f06002c;
+        public static final int memo=0x7f060018;
+        public static final int menu=0x7f060013;
+        public static final int mode=0x7f06001f;
+        public static final int mode_d=0x7f060003;
+        public static final int modes=0x7f060001;
+        public static final int new_mode=0x7f06001e;
+        public static final int new_note=0x7f06001a;
+        public static final int new_plce=0x7f060027;
+        public static final int note=0x7f06000f;
+        public static final int noto=0x7f060011;
+        public static final int picfg=0x7f060022;
+        public static final int place_d=0x7f060004;
+        public static final int place_name=0x7f060026;
+        public static final int places=0x7f060002;
+        public static final int range=0x7f060025;
+        public static final int remove=0x7f060012;
+        public static final int save=0x7f060015;
+        public static final int search_Mode_Tag=0x7f060009;
+        public static final int share=0x7f060016;
+        public static final int sync=0x7f06002b;
+        public static final int tack_pic=0x7f060023;
+        public static final int tag=0x7f06001d;
+        public static final int title=0x7f06001b;
+        public static final int title_activity_login=0x7f060035;
+        public static final int title_activity_signup=0x7f060036;
+        public static final int txtOr=0x7f060034;
     }
     public static final class style {
         /** 
@@ -291,12 +318,67 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f070000;
+        public static final int AppBaseTheme=0x7f080000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f070003;
-        public static final int MyListView=0x7f070001;
-        public static final int MyListView1=0x7f070002;
+        public static final int AppTheme=0x7f080003;
+        public static final int MyListView=0x7f080001;
+        public static final int MyListView1=0x7f080002;
     }
+    public static final class styleable {
+        /** Attributes that can be used with a CameraBridgeViewBase.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #CameraBridgeViewBase_camera_id com.example.layoutt:camera_id}</code></td><td></td></tr>
+           <tr><td><code>{@link #CameraBridgeViewBase_show_fps com.example.layoutt:show_fps}</code></td><td></td></tr>
+           </table>
+           @see #CameraBridgeViewBase_camera_id
+           @see #CameraBridgeViewBase_show_fps
+         */
+        public static final int[] CameraBridgeViewBase = {
+            0x7f010000, 0x7f010001
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.example.layoutt.R.attr#camera_id}
+          attribute's value can be found in the {@link #CameraBridgeViewBase} array.
+
+
+          <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>any</code></td><td>-1</td><td></td></tr>
+<tr><td><code>back</code></td><td>99</td><td></td></tr>
+<tr><td><code>front</code></td><td>98</td><td></td></tr>
+</table>
+          @attr name com.example.layoutt:camera_id
+        */
+        public static final int CameraBridgeViewBase_camera_id = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.example.layoutt.R.attr#show_fps}
+          attribute's value can be found in the {@link #CameraBridgeViewBase} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.layoutt:show_fps
+        */
+        public static final int CameraBridgeViewBase_show_fps = 0;
+    };
 }

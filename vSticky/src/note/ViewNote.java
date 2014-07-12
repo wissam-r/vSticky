@@ -53,7 +53,7 @@ public class ViewNote extends Activity{
 		body = (TextView) findViewById(R.id.contentv);
 		TextView date = (TextView) findViewById(R.id.datev);
 		id = getIntent().getExtras().getInt("id");
-		Cursor cursor = Notepad.getDb().getNoteById(id);
+		Cursor cursor = Notepad.getDb().getNoteById(id,Notepad.getUser_ID());
 		if (cursor == null)
 			return;
 		title.setText(cursor.getString(1));

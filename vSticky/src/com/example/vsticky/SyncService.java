@@ -38,7 +38,7 @@ public class SyncService extends Service {
 		}
 		// Get Locally and Server stored notes ids
 		ArrayList<Integer> storedRemotely = ServerApi.getNotesIds();
-		Cursor cursor2 = Notepad.getDb().getAllNotes();
+		Cursor cursor2 = Notepad.getDb().getAllNotes(Notepad.getUser_ID());
 		ArrayList<Integer> storedLocally = new ArrayList<Integer>();
 		i = 0;
 		while (i < cursor2.getCount()) {
@@ -51,7 +51,7 @@ public class SyncService extends Service {
 		storedRemotely.removeAll(tmp);
 		// Send local notes to server
 		for (Integer id : storedLocally) {
-			Cursor n = Notepad.getDb().getNoteById(id);
+			Cursor n = Notepad.getDb().getNoteById(id,Notepad.getUser_ID());
 			ServerApi.sendNote(n.getInt(0), n.getString(1), n.getString(2),
 					n.getString(3), n.getInt(4), n.getInt(5), n.getInt(6));
 		}

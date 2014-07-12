@@ -90,7 +90,7 @@ public class Search_Activity extends Activity {
 					searchT= arg0 ;
 					mla = new listAdap(Search_Activity.this, 0);
 					list.setAdapter(mla);
-					Cursor cursor = Notepad.getDb().getNoteByTitle(arg0);
+					Cursor cursor = Notepad.getDb().getNoteByTitle(arg0,Notepad.getUser_ID());
 					drawNotes(cursor) ;
 					return false;
 				}
@@ -126,7 +126,7 @@ public class Search_Activity extends Activity {
 			actions.Buttons.delete(note.getId(), Notepad.getDb()) ;
 			mla = new listAdap(this, 0);
 			list.setAdapter(mla);
-			Cursor cursor = Notepad.getDb().getNoteByTitle(searchT);
+			Cursor cursor = Notepad.getDb().getNoteByTitle(searchT,Notepad.getUser_ID());
 			drawNotes(cursor);
 			Toast.makeText(getApplicationContext(), "Deleted",
 					Toast.LENGTH_LONG).show();
@@ -164,7 +164,7 @@ public class Search_Activity extends Activity {
 		super.onStart();
 		mla = new listAdap(this, 0);
 		list.setAdapter(mla);
-		Cursor cursor = Notepad.getDb().getNoteByTitle(searchT);
+		Cursor cursor = Notepad.getDb().getNoteByTitle(searchT,Notepad.getUser_ID());
 		drawNotes(cursor);
 	};
 	@Override

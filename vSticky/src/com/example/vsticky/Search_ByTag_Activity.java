@@ -112,7 +112,7 @@ public class Search_ByTag_Activity extends Activity {
 			actions.Buttons.delete(note.getId(), Notepad.getDb()) ;
 			mla = new listAdap(this, 0);
 			list.setAdapter(mla);
-			Cursor cursor = Notepad.getDb().getNoteByModePlacePhoto(mode_ID, place_ID, photo_ID);
+			Cursor cursor = Notepad.getDb().getNoteByModePlacePhoto(mode_ID, place_ID, photo_ID,Notepad.getUser_ID());
 			drawNotes(cursor);
 			Toast.makeText(getApplicationContext(), "Deleted",
 					Toast.LENGTH_LONG).show();
@@ -157,13 +157,13 @@ public class Search_ByTag_Activity extends Activity {
 		Log.d("momo", photo_ID + "  "+place_ID  + "   " + mode_ID ) ;
 		Cursor cursor  ;
 		if ((mode_ID != -1)&&(place_ID !=-1 )&&(photo_ID==-1))
-			cursor = Notepad.getDb().getNoteByModePlace(mode_ID, place_ID);
+			cursor = Notepad.getDb().getNoteByModePlace(mode_ID, place_ID,Notepad.getUser_ID());
 		else if ((mode_ID != -1)&&(place_ID !=-1 )&&(photo_ID!=-1))
-			cursor = Notepad.getDb().getNoteByModePlacePhoto(mode_ID, place_ID, photo_ID);
+			cursor = Notepad.getDb().getNoteByModePlacePhoto(mode_ID, place_ID, photo_ID,Notepad.getUser_ID());
 		else if ((mode_ID != -1)&&(place_ID ==-1 )&&(photo_ID==-1))
-			cursor = Notepad.getDb().getNoteByMode(mode_ID);
+			cursor = Notepad.getDb().getNoteByMode(mode_ID,Notepad.getUser_ID());
 		else if ((mode_ID == -1)&&(place_ID !=-1 )&&(photo_ID==-1))
-			cursor = Notepad.getDb().getNoteByPlace(place_ID);
+			cursor = Notepad.getDb().getNoteByPlace(place_ID,Notepad.getUser_ID());
 		else
 			return ;
 

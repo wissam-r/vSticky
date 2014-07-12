@@ -45,6 +45,16 @@ import gps.*;
 
 public class Notepad extends Activity{
 
+	private static String user_ID = "-1" ;
+
+	public static String getUser_ID() {
+		return user_ID;
+	}
+
+	public static void setUser_ID(String user_ID) {
+		Notepad.user_ID = user_ID;
+	}
+
 	private static listAdap mla = null ;
 	private static NotesDbAdapter mDbHelper;
 	ListView list ;	
@@ -72,13 +82,36 @@ public class Notepad extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_note_pado);
-
+		Intent intent ;
+		intent = getIntent() ;
+		try{
+			String user_name = getIntent().getExtras().getString("username") ;
+			String user_id = getIntent().getExtras().getString("userId") ;
+			String user_token = getIntent().getExtras().getString("token") ;
+			Cursor cursor  = getDb().getAllUsers() ;
+			int i = 0 ;
+			while (i<cursor.getCount()){
+				i++ ;
+				if (cursor.getString(0).equals(user_id)){
+					user_ID = user_id ;
+				}
+				else
+					cursor.moveToNext() ;
+			}
+			if (i==cursor.getCount()){
+				getDb().insertUser(user_id, user_name, user_token) ;
+				user_ID = user_id ;
+			}
+		}
+		catch (Exception ex){
+			if (user_ID.equals("-1"))
+				Toast.makeText(getBaseContext(), "no user", Toast.LENGTH_LONG).show() ;}
 		myDa = new MyDialog(Notepad.this, R.layout.search_tags_layout) ;
 
 		mDbHelper = new NotesDbAdapter(this);
 		mDbHelper.open();
-		//				mDbHelper.dropTable() ;
-		//				mDbHelper.createTable() ;
+		//						mDbHelper.dropTable() ;
+		//						mDbHelper.createTable() ;
 
 		list = (ListView) findViewById(R.id.note_pad_noteslist);	
 		Button new_note_b  = (Button) findViewById(R.id.note_pad_add);
@@ -179,7 +212,7 @@ public class Notepad extends Activity{
 			actions.Buttons.delete(note.getId(), getDb()) ;
 			mla = new listAdap(this, 0);
 			list.setAdapter(mla);
-			Cursor cursor = mDbHelper.getNotesByDate();
+			Cursor cursor = mDbHelper.getNotesByDate(Notepad.getUser_ID());
 			drawNotes(cursor);
 			Toast.makeText(getApplicationContext(), "Deleted",
 					Toast.LENGTH_LONG).show();
@@ -239,7 +272,10 @@ public class Notepad extends Activity{
 			int i= 0;
 			while(i<cursor.getCount()){
 				i++ ;
-				values.add(cursor.getString(1)) ;
+				values.add(cursor.getString(1)+"\n"+
+						"	Latitude : "+cursor.getDouble(2)+"\n"+
+						"	Longitude : "+cursor.getDouble(3)+"\n"+	
+						"	Range : "+cursor.getDouble(4)) ;
 				cursor.moveToNext() ;
 
 			}
@@ -298,13 +334,14 @@ public class Notepad extends Activity{
 		mla = new listAdap(this, 0);
 		list.setAdapter(mla);
 		try{
-		Cursor cursor = mDbHelper.getNotesByDate();
-		drawNotes(cursor);
+			Cursor cursor = mDbHelper.getNotesByDate(Notepad.getUser_ID());
+			drawNotes(cursor);
 
 		}
 		catch (Exception ex){
 			getDb().dropTable() ;
 			getDb().createTable() ;
+			getDb().insertUser(user_ID, "test_user", "qwerttyy") ;
 		}
 
 	};
@@ -386,13 +423,13 @@ public class Notepad extends Activity{
 					if(arg0.getTitle().toString().equals("Date")){
 						mla = new listAdap(Notepad.this, 0);
 						list.setAdapter(mla);
-						Cursor cursor = mDbHelper.getNotesByDate();
+						Cursor cursor = mDbHelper.getNotesByDate(Notepad.getUser_ID());
 						drawNotes(cursor);
 					}
 					else{
 						mla = new listAdap(Notepad.this, 0);
 						list.setAdapter(mla);
-						Cursor cursor = mDbHelper.getNotesByTitle();
+						Cursor cursor = mDbHelper.getNotesByTitle(Notepad.getUser_ID());
 						drawNotes(cursor);
 
 					}
@@ -450,13 +487,13 @@ public class Notepad extends Activity{
 			if (arg0.getItemAtPosition(arg2).toString().equals("Date")){
 				mla = new listAdap(Notepad.this, 0);
 				list.setAdapter(mla);
-				Cursor cursor = mDbHelper.getNotesByDate();
+				Cursor cursor = mDbHelper.getNotesByDate(Notepad.getUser_ID());
 				drawNotes(cursor);
 			}
 			else{
 				mla = new listAdap(Notepad.this, 0);
 				list.setAdapter(mla);
-				Cursor cursor = mDbHelper.getNotesByTitle();
+				Cursor cursor = mDbHelper.getNotesByTitle(Notepad.getUser_ID());
 				drawNotes(cursor);
 
 			}
@@ -507,16 +544,16 @@ public class Notepad extends Activity{
 			public void onClick(View arg0) {
 				Place newplace ;
 				final int minRaduis = 10;
-//				if (((GPSProvider.isGPS_ConToSatil()) && (gps.getLatitude()!=null)&&(gps.getLongitude()!=null))&&((NetworkProvider.isInternet_con()) && (netGPS.getLatitude()!=null)&&(netGPS.getLongitude()!=null)))
-//				{
-//					Location loc1  = new Location("") ;
-//					Location loc2 =  new Location("") ;
-//					loc1.setLatitude(gps.getLatitude()); loc1.setLongitude(gps.getLongitude()) ;
-//					loc2.setLatitude(netGPS.getLatitude()) ; loc2.setLongitude(netGPS.getLongitude()) ;
-//					Toast.makeText(getBaseContext(), "distance : "+loc1.distanceTo(loc2 )+"\n"+
-//							"longt : " +(loc2.getLongitude()-loc1.getLongitude()+"\n"+
-//									"latt : " +(loc2.getLatitude()-loc1.getLatitude())), Toast.LENGTH_LONG).show() ;
-//				}
+				//				if (((GPSProvider.isGPS_ConToSatil()) && (gps.getLatitude()!=null)&&(gps.getLongitude()!=null))&&((NetworkProvider.isInternet_con()) && (netGPS.getLatitude()!=null)&&(netGPS.getLongitude()!=null)))
+				//				{
+				//					Location loc1  = new Location("") ;
+				//					Location loc2 =  new Location("") ;
+				//					loc1.setLatitude(gps.getLatitude()); loc1.setLongitude(gps.getLongitude()) ;
+				//					loc2.setLatitude(netGPS.getLatitude()) ; loc2.setLongitude(netGPS.getLongitude()) ;
+				//					Toast.makeText(getBaseContext(), "distance : "+loc1.distanceTo(loc2 )+"\n"+
+				//							"longt : " +(loc2.getLongitude()-loc1.getLongitude()+"\n"+
+				//									"latt : " +(loc2.getLatitude()-loc1.getLatitude())), Toast.LENGTH_LONG).show() ;
+				//				}
 				if ((GPSProvider.isGPS_ConToSatil()) && (gps.getLatitude()!=null)&&(gps.getLongitude()!=null))
 				{
 					try{
@@ -535,7 +572,7 @@ public class Notepad extends Activity{
 						return;
 					}
 				}else{
-//					Toast.makeText(getBaseContext(), "fail", Toast.LENGTH_LONG).show() ;
+					//					Toast.makeText(getBaseContext(), "fail", Toast.LENGTH_LONG).show() ;
 					return;
 				}
 
@@ -718,7 +755,7 @@ public class Notepad extends Activity{
 			//				return ;
 			//			}
 
-			Cursor cursor = Notepad.getDb().getNoteByModePlace(mode_ID, place_ID) ;
+			Cursor cursor = Notepad.getDb().getNoteByModePlace(mode_ID, place_ID,Notepad.getUser_ID()) ;
 			Log.d("soso","   "+ mode_ID+ "    "+place_ID) ;
 			Toast.makeText(getBaseContext(),"Number of selected notes " + cursor.getCount(), Toast.LENGTH_LONG).show() ;
 			int i = 0 ;
@@ -789,7 +826,7 @@ public class Notepad extends Activity{
 
 
 	public void sync(){
-		Log.d("MAIN::","START SYNC SERVICE");
+		//TODO ammar
 		startService(new Intent(Notepad.this,SyncService.class));
 	}
 
@@ -807,7 +844,7 @@ public class Notepad extends Activity{
 			loc.setLatitude(netGPS.getLatitude());
 			Log.d("place", "find locatoin by net");
 		}else{
-//			Toast.makeText(getBaseContext(), "fail", Toast.LENGTH_LONG).show() ;
+			//			Toast.makeText(getBaseContext(), "fail", Toast.LENGTH_LONG).show() ;
 			return -1;
 		}
 		Cursor cursor = Notepad.getDb().getAllPlaces() ;
@@ -860,7 +897,7 @@ public class Notepad extends Activity{
 		}else{
 			placeLocation.setText("Place: "+Notepad.getDb().getPlacesById(thisplace).getString(1));
 		}
-	
+
 		myDa.getAlertDialog().setOnCancelListener(new OnCancelListener() {
 
 			@Override

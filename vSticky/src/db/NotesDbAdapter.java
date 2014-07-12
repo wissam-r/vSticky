@@ -268,24 +268,24 @@ public class NotesDbAdapter {
 		return mDb.delete(TABLE_NAME[3], null, null)>0; 
 	}
 
-	public Cursor getNoteById(int id){
-		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,MODE_ID,PHOTO_ID,GPS_ID};
+	public Cursor getNoteById(int id,String user_id){
+		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,MODE_ID,PHOTO_ID,GPS_ID,USER_ID};
 
-		String [] ide = {String.valueOf(id)} ;
+		String [] ide = {String.valueOf(id), user_id} ;
 		//mDb.query(distinct, table, columns, selection, selectionArgs, groupBy, having, orderBy, limit, cancellationSignal)
-		Cursor cursor = mDb.query(true, TABLE_NAME[3], FROM, NOTE_ID +" =?" , ide , null, null,
+		Cursor cursor = mDb.query(true, TABLE_NAME[3], FROM, NOTE_ID +" =? "+"and "+ USER_ID +" =?" , ide , null, null,
 				null,null);
 		if (cursor.getCount()>0){
 			cursor.moveToFirst() ;
 		}
 		return cursor ;
 	}
-	public Cursor getNoteByTitle(String title) {
-		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,MODE_ID,PHOTO_ID,GPS_ID};
-		String [] titleo = {title} ;
+	public Cursor getNoteByTitle(String title,String user_id) {
+		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,MODE_ID,PHOTO_ID,GPS_ID,USER_ID};
+		String [] titleo = {title,user_id} ;
 		//mDb.query(distinct, table, columns, selection, selectionArgs, groupBy, having, orderBy, limit, cancellationSignal)
 
-		Cursor cursor = mDb.query(true, TABLE_NAME[3], FROM, NOTE_TITLE +" =?" , titleo , null, null,
+		Cursor cursor = mDb.query(true, TABLE_NAME[3], FROM, NOTE_TITLE +" =? "+"and "+ USER_ID +" =?"  , titleo , null, null,
 				null,null);
 		if (cursor.getCount()>0){
 			cursor.moveToFirst() ;
@@ -294,9 +294,10 @@ public class NotesDbAdapter {
 
 		return cursor ;
 	}
-	public Cursor getNotesByDate(){
-		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE};
-		Cursor cursor = mDb.query(TABLE_NAME[3], FROM, null, null, null, null, NOTE_DATE+" DESC");
+	public Cursor getNotesByDate(String user_id){
+		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,USER_ID};
+		String [] titleo = {user_id} ;
+		Cursor cursor = mDb.query(TABLE_NAME[3], FROM, USER_ID +" =?" , titleo, null, null, NOTE_DATE+" DESC");
 		//		mDb.query(table, columns, selection, selectionArgs, groupBy, having, orderBy)
 
 		if (cursor.getCount()>0){
@@ -306,9 +307,10 @@ public class NotesDbAdapter {
 		return cursor ;
 	}
 
-	public Cursor getNotesByTitle(){
-		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE};
-		Cursor cursor = mDb.query(TABLE_NAME[3], FROM, null, null, null, null, NOTE_TITLE+" ASC");
+	public Cursor getNotesByTitle(String user_id){
+		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,USER_ID};
+		String [] titleo = {user_id} ;
+		Cursor cursor = mDb.query(TABLE_NAME[3], FROM,  USER_ID +" =?" , titleo, null, null, NOTE_TITLE+" ASC");
 		//		mDb.query(table, columns, selection, selectionArgs, groupBy, having, orderBy)
 
 		if (cursor.getCount()>0){
@@ -316,9 +318,11 @@ public class NotesDbAdapter {
 		}
 		return cursor ;}
 
-	public Cursor getAllNotes(){
-		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,MODE_ID,PHOTO_ID,GPS_ID};
-		Cursor cursor = mDb.query(TABLE_NAME[3], FROM, null, null, null, null, NOTE_DATE+" DESC");
+	public Cursor getAllNotes(String user_id){
+		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,MODE_ID,PHOTO_ID,GPS_ID,USER_ID};
+
+		String [] ide = { user_id} ;
+		Cursor cursor = mDb.query(TABLE_NAME[3], FROM,  USER_ID +" =?" , ide, null, null, NOTE_DATE+" DESC");
 		//		mDb.query(table, columns, selection, selectionArgs, groupBy, having, orderBy)
 
 		if (cursor.getCount()>0){
@@ -379,46 +383,12 @@ public class NotesDbAdapter {
 		}
 		return cursor ;
 	}
-	public Cursor getNoteByPhotoId(int id){
+	public Cursor getNoteByPhotoId(int id,String user_id){
 		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,PHOTO_ID,GPS_ID,MODE_ID};
 
-		String [] ide = {String.valueOf(id)} ;
+		String [] ide = {String.valueOf(id),user_id} ;
 		//mDb.query(distinct, table, columns, selection, selectionArgs, groupBy, having, orderBy, limit, cancellationSignal)
-		Cursor cursor = mDb.query(true, TABLE_NAME[3], FROM, PHOTO_ID +" =?" , ide , null, null,
-				null,null);
-		if (cursor.getCount()>0){
-			cursor.moveToFirst() ;
-		}
-		return cursor ;
-	}
-
-	public Cursor getNoteByModePlace(int mode_ID, int place_ID){
-		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,PHOTO_ID,GPS_ID,MODE_ID};
-		String [] ide = {String.valueOf(mode_ID),String.valueOf(place_ID)} ;
-		//mDb.query(distinct, table, columns, selection, selectionArgs, groupBy, having, orderBy, limit, cancellationSignal)
-		Cursor cursor = mDb.query(true, TABLE_NAME[3], FROM, MODE_ID +" =? "+"and "+ GPS_ID +" =?" , ide , null, null,
-				null,null);
-		if (cursor.getCount()>0){
-			cursor.moveToFirst() ;
-		}
-		return cursor ;
-	}
-	public Cursor getNoteByMode(int mode_ID){
-		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,PHOTO_ID,GPS_ID,MODE_ID};
-		String [] ide = {String.valueOf(mode_ID)} ;
-		//mDb.query(distinct, table, columns, selection, selectionArgs, groupBy, having, orderBy, limit, cancellationSignal)
-		Cursor cursor = mDb.query(true, TABLE_NAME[3], FROM, MODE_ID +" =? " , ide , null, null,
-				null,null);
-		if (cursor.getCount()>0){
-			cursor.moveToFirst() ;
-		}
-		return cursor ;
-	}
-	public Cursor getNoteByPlace(int place_ID){
-		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,PHOTO_ID,GPS_ID,MODE_ID};
-		String [] ide = {String.valueOf(place_ID)} ;
-		//mDb.query(distinct, table, columns, selection, selectionArgs, groupBy, having, orderBy, limit, cancellationSignal)
-		Cursor cursor = mDb.query(true, TABLE_NAME[3], FROM, GPS_ID +" =? " , ide , null, null,
+		Cursor cursor = mDb.query(true, TABLE_NAME[3], FROM, PHOTO_ID +" =?" +" and "+ USER_ID +" =?" , ide , null, null,
 				null,null);
 		if (cursor.getCount()>0){
 			cursor.moveToFirst() ;
@@ -426,11 +396,45 @@ public class NotesDbAdapter {
 		return cursor ;
 	}
 
-	public Cursor getNoteByModePlacePhoto(Integer mode_ID2, Integer place_ID ,Integer photo_ID2){
-		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,PHOTO_ID,GPS_ID,MODE_ID};
-		String [] ide = {String.valueOf(mode_ID2),String.valueOf(place_ID),String.valueOf(photo_ID2)} ;
+	public Cursor getNoteByModePlace(int mode_ID, int place_ID,String user_id){
+		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,PHOTO_ID,GPS_ID,MODE_ID,USER_ID};
+		String [] ide = {String.valueOf(mode_ID),String.valueOf(place_ID),user_id} ;
 		//mDb.query(distinct, table, columns, selection, selectionArgs, groupBy, having, orderBy, limit, cancellationSignal)
-		Cursor cursor = mDb.query(true, TABLE_NAME[3], FROM, MODE_ID +" =? "+"and "+ GPS_ID +" =? "+"and "+ PHOTO_ID +" =?" , ide , null, null,
+		Cursor cursor = mDb.query(true, TABLE_NAME[3], FROM, MODE_ID +" =? "+"and "+ GPS_ID +" =?"+" and "+ USER_ID +" =?"  , ide , null, null,
+				null,null);
+		if (cursor.getCount()>0){
+			cursor.moveToFirst() ;
+		}
+		return cursor ;
+	}
+	public Cursor getNoteByMode(int mode_ID,String user_id){
+		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,PHOTO_ID,GPS_ID,MODE_ID,USER_ID};
+		String [] ide = {String.valueOf(mode_ID),user_id} ;
+		//mDb.query(distinct, table, columns, selection, selectionArgs, groupBy, having, orderBy, limit, cancellationSignal)
+		Cursor cursor = mDb.query(true, TABLE_NAME[3], FROM, MODE_ID +" =? "+" and "+ USER_ID +" =?" , ide , null, null,
+				null,null);
+		if (cursor.getCount()>0){
+			cursor.moveToFirst() ;
+		}
+		return cursor ;
+	}
+	public Cursor getNoteByPlace(int place_ID,String user_id){
+		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,PHOTO_ID,GPS_ID,MODE_ID,USER_ID};
+		String [] ide = {String.valueOf(place_ID),user_id} ;
+		//mDb.query(distinct, table, columns, selection, selectionArgs, groupBy, having, orderBy, limit, cancellationSignal)
+		Cursor cursor = mDb.query(true, TABLE_NAME[3], FROM, GPS_ID +" =? "+" and "+ USER_ID +" =?" , ide , null, null,
+				null,null);
+		if (cursor.getCount()>0){
+			cursor.moveToFirst() ;
+		}
+		return cursor ;
+	}
+
+	public Cursor getNoteByModePlacePhoto(Integer mode_ID2, Integer place_ID ,Integer photo_ID2,String user_id){
+		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,PHOTO_ID,GPS_ID,MODE_ID,USER_ID};
+		String [] ide = {String.valueOf(mode_ID2),String.valueOf(place_ID),String.valueOf(photo_ID2),user_id} ;
+		//mDb.query(distinct, table, columns, selection, selectionArgs, groupBy, having, orderBy, limit, cancellationSignal)
+		Cursor cursor = mDb.query(true, TABLE_NAME[3], FROM, MODE_ID +" =? "+"and "+ GPS_ID +" =? "+"and "+ PHOTO_ID +" =?"+" and "+ USER_ID +" =?" , ide , null, null,
 				null,null);
 		if (cursor.getCount()>0){
 			cursor.moveToFirst() ;
@@ -573,7 +577,7 @@ public class NotesDbAdapter {
 	}
 	public Cursor getAllUpdatedNotes(){
 		String[] FROM = {NOTE_ID};
-		Cursor cursor = mDb.query(TABLE_SYNC_NAME[1], FROM, null, null, null, null, PHOTO_ID+" ASC");
+		Cursor cursor = mDb.query(TABLE_SYNC_NAME[1], FROM, null, null, null, null, NOTE_ID+" ASC");
 		//		mDb.query(table, columns, selection, selectionArgs, groupBy, having, orderBy)
 		if (cursor.getCount()>0){
 			cursor.moveToFirst() ;
@@ -585,7 +589,7 @@ public class NotesDbAdapter {
 
 	public Cursor getAllDeletedNotes(){
 		String[] FROM = {NOTE_ID};
-		Cursor cursor = mDb.query(TABLE_SYNC_NAME[0], FROM, null, null, null, null, PHOTO_ID+" ASC");
+		Cursor cursor = mDb.query(TABLE_SYNC_NAME[0], FROM, null, null, null, null, NOTE_ID+" ASC");
 		//		mDb.query(table, columns, selection, selectionArgs, groupBy, having, orderBy)
 		if (cursor.getCount()>0){
 			cursor.moveToFirst() ;
@@ -659,4 +663,15 @@ public class NotesDbAdapter {
 	}
 
 
+	public Cursor getAllUsers(){
+		String[] FROM = {USER_ID};
+		
+		Cursor cursor = mDb.query(TABLE_SYNC_NAME[4], FROM, null, null, null, null, USER_ID+" ASC");
+		//		mDb.query(table, columns, selection, selectionArgs, groupBy, having, orderBy)
+		if (cursor.getCount()>0){
+			cursor.moveToFirst() ;
+
+		}
+		return cursor ;	
+	}
 }

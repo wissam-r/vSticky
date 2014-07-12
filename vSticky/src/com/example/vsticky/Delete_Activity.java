@@ -25,7 +25,7 @@ public class Delete_Activity extends Activity{
 		setContentView(R.layout.check_view);
 		list = (ListView) findViewById(R.id.listView2);
 		mla2 =  new ListAdap2(this, 0) ;
-		Cursor cursor = Notepad.getDb().getNotesByDate() ;
+		Cursor cursor = Notepad.getDb().getNotesByDate(Notepad.getUser_ID()) ;
 		for (int i= 0 ; i < cursor.getCount() ; i++) {
 			Scanner con = new Scanner(cursor.getString(2));
 			Note note =  new Note(cursor.getInt(0), cursor.getString(1),con.nextLine() );	

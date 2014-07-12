@@ -85,7 +85,7 @@ public class NoteEditer extends Activity {
 
 
 		if (getIntent().getExtras().getString("mode").equals("edit")) {
-			Cursor cursor = Notepad.getDb().getNoteById(getIntent().getExtras().getInt("id"));
+			Cursor cursor = Notepad.getDb().getNoteById(getIntent().getExtras().getInt("id"),Notepad.getUser_ID());
 			if (cursor == null)
 				return;
 			t1.setText(cursor.getString(1));
@@ -143,7 +143,7 @@ public class NoteEditer extends Activity {
 						//						int photo_ID = cursor.getInt(0) ;
 						Random roro = new Random() ;
 						int x = roro.nextInt() ;
-						Cursor testIDC = Notepad.getDb().getAllNotes() ;
+						Cursor testIDC = Notepad.getDb().getAllNotes(Notepad.getUser_ID()) ;
 						int i = 0;
 						while(i < testIDC.getCount()){
 							i++ ;
@@ -155,8 +155,10 @@ public class NoteEditer extends Activity {
 							else
 								testIDC.moveToNext() ;
 						}
-						Notepad.getDb().insertTagedNote(Math.abs(x) + 1 ,t1.getText().toString(), t2.getText().toString(), photo_ID , place_ID , mode_ID ) ;
-//						Toast.makeText(getBaseContext(), cursor.getString(0) +cursor.getString(1)+cursor.getString(2) +cursor.getString(3)+"mode name " +cursor2.getString(1), Toast.LENGTH_LONG).show() ;
+//						Notepad.getDb().insertTagedNote(Math.abs(x) + 1 ,t1.getText().toString(), t2.getText().toString(), photo_ID , place_ID , mode_ID ) ;
+						Notepad.getDb().insertTagedNoteUser(Math.abs(x) + 1 ,t1.getText().toString(), t2.getText().toString(), photo_ID , place_ID , mode_ID ,Notepad.getUser_ID()) ;
+
+						//						Toast.makeText(getBaseContext(), cursor.getString(0) +cursor.getString(1)+cursor.getString(2) +cursor.getString(3)+"mode name " +cursor2.getString(1), Toast.LENGTH_LONG).show() ;
 					}
 				}
 				catch(Exception ex){

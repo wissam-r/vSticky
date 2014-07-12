@@ -3,10 +3,6 @@
 
     <group>
         <item
-            android:id="@+id/overfow_setting"
-            android:title="@string/action_settings">
-        </item>
-        <item
             android:id="@+id/overfow_remove"
             android:title="@string/remove">
         </item>
