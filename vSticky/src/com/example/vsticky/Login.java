@@ -44,6 +44,7 @@ public class Login extends Activity {
 				&& storedUsername != null
 				&& storedToken != null) {
 			Intent intent = new Intent(getApplicationContext(),Notepad.class);
+			// TODO Wissam
 			intent.putExtra("username", storedUsername);
 			intent.putExtra("userId", userId);
 			intent.putExtra("token", storedToken);
@@ -78,6 +79,7 @@ public class Login extends Activity {
 									sessionManager.createLoginSession(username,authToken,ServerApi.userId);
 								}
 								Intent intent = new Intent(Login.this,Notepad.class);
+								// TODO Wissam
 								intent.putExtra("username", username);
 								intent.putExtra("userId", ServerApi.userId);
 								intent.putExtra("token", authToken);
