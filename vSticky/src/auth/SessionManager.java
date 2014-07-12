@@ -12,13 +12,13 @@ import android.content.SharedPreferences.Editor;
 
 public class SessionManager {
 	// Shared Preferences
-	SharedPreferences pref;
+	static SharedPreferences pref;
 
 	// Editor for Shared preferences
-	Editor editor;
+	static Editor editor;
 
 	// Context
-	Context context;
+	static Context context;
 
 	// Shared pref mode
 	int PRIVATE_MODE = 0;
@@ -47,12 +47,7 @@ public class SessionManager {
 	// Constructor
 	@SuppressLint("CommitPrefEdits")
 	public SessionManager(Context context) {
-		this.context = context;
-		pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
-		editor = pref.edit();
-	}
-
-	public SessionManager() {
+		SessionManager.context = context;
 		pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
 		editor = pref.edit();
 	}
@@ -105,7 +100,7 @@ public class SessionManager {
 		return user;
 	}
 
-	public void logoutUser() {
+	public static void logoutUser() {
 		// Clearing all data from Shared Preferences
 		editor.clear();
 		editor.commit();

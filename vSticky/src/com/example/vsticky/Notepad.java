@@ -4,7 +4,9 @@ package com.example.vsticky;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
+
 import com.example.layoutt.R;
+
 import note.Mode;
 import note.Note;
 import note.NoteEditer;
@@ -40,6 +42,7 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import auth.SessionManager;
 import filters.UserTakeActivity5;
 import gps.*;
 
@@ -910,7 +913,7 @@ public class Notepad extends Activity{
 	}
 
 	public void signout(){
-		//TODO ammar
+		SessionManager.logoutUser();
 	}
 
 }

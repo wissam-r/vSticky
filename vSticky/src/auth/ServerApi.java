@@ -430,7 +430,7 @@ public class ServerApi{
 		try {
 			HttpURLConnection con = (HttpURLConnection) new URL(NOTES_URL).openConnection();
 			con.setRequestMethod("DELETE");
-			con.setDoOutput(true);
+			//con.setDoOutput(true);
 			con.setUseCaches(false);
 			con.connect();
 			OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
@@ -448,7 +448,7 @@ public class ServerApi{
 		try {
 			HttpURLConnection con = (HttpURLConnection) new URL(MODES_URL).openConnection();
 			con.setRequestMethod("DELETE");
-			con.setDoOutput(true);
+			//con.setDoOutput(true);
 			con.setUseCaches(false);
 			con.connect();
 			OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
@@ -466,7 +466,7 @@ public class ServerApi{
 		try {
 			HttpURLConnection con = (HttpURLConnection) new URL(PLACES_URL).openConnection();
 			con.setRequestMethod("DELETE");
-			con.setDoOutput(true);
+			//con.setDoOutput(true);
 			con.setUseCaches(false);
 			con.connect();
 			OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
@@ -484,7 +484,7 @@ public class ServerApi{
 		try {
 			HttpURLConnection con = (HttpURLConnection) new URL(PHOTOS_URL).openConnection();
 			con.setRequestMethod("DELETE");
-			con.setDoOutput(true);
+			//con.setDoOutput(true);
 			con.setUseCaches(false);
 			con.connect();
 			OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
