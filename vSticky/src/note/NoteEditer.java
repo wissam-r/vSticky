@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import com.example.layoutt.MyDialog;
 import com.example.layoutt.Notepad;
@@ -140,7 +141,22 @@ public class NoteEditer extends Activity {
 
 						//						Cursor cursor = Notepad.getDb().getPhotoByPath(mCurrentPhoto.getAbsolutePath()) ;
 						//						int photo_ID = cursor.getInt(0) ;
-						Notepad.getDb().insertTagedNote(t1.getText().toString(), t2.getText().toString(), photo_ID , place_ID , mode_ID ) ;
+						Random roro = new Random() ;
+						int x = roro.nextInt() ;
+						Cursor testIDC = Notepad.getDb().getAllNotes() ;
+						int i = 0;
+						while(i < testIDC.getCount()){
+							i++ ;
+							if (testIDC.getInt(0)==Math.abs(x) + 1){
+								x +=1 ;
+								i= 0 ;
+								testIDC.moveToFirst() ;
+							}
+							else
+								testIDC.moveToNext() ;
+						}
+						Notepad.getDb().insertTagedNote(Math.abs(x) + 1 ,t1.getText().toString(), t2.getText().toString(), photo_ID , place_ID , mode_ID ) ;
+
 						Cursor cursor   = Notepad.getDb().getAllNotes() ;
 						Cursor cursor2 = Notepad.getDb().getModeById(cursor.getInt(4)) ;
 
@@ -638,7 +654,7 @@ class NewModeAdder implements OnClickListener{
 
 	}
 
-	private List<onAddListener> listeners = new LinkedList<>();
+	private List<onAddListener> listeners = new LinkedList<onAddListener>();
 
 	public static interface onAddListener{
 		void onAdd(Mode mode);
@@ -739,7 +755,7 @@ class NewPlaceAdder implements OnClickListener{
 
 	}
 	
-	private List<onAddListener> listeners = new LinkedList<>();
+	private List<onAddListener> listeners = new LinkedList<onAddListener>();
 
 	public static interface onAddListener{
 		void onAdd(Place place);

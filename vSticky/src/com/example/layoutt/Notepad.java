@@ -3,7 +3,10 @@ package com.example.layoutt;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Scanner;
+
+import org.opencv.core.Mat;
 
 import com.example.layoutt.R.menu;
 
@@ -58,6 +61,7 @@ public class Notepad extends Activity{
 	private Integer place_ID =-1;
 	private Integer photo_ID =-1 ;
 	MyDialog myDa ;
+	ListView listView1;
 
 	//TODO fill this objects
 	final int DETECTE_NOTE = 1;
@@ -75,7 +79,6 @@ public class Notepad extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_note_pado);
-
 
 		myDa = new MyDialog(Notepad.this, R.layout.search_tags_layout) ;
 
@@ -259,7 +262,7 @@ public class Notepad extends Activity{
 			MyDialog dialog1 = new MyDialog(Notepad.this, R.layout.modes_places) ;
 			TextView title1 = (TextView) dialog1.getDialoglayout().findViewById(R.id.dialog_name) ;
 			title1.setText("Modes") ;
-			ListView listView1 = (ListView) dialog1.getDialoglayout().findViewById(R.id.modes_place_list) ;
+			listView1 = (ListView) dialog1.getDialoglayout().findViewById(R.id.modes_place_list) ;
 			Cursor cursor1 = getDb().getAllModes() ;
 			ArrayList<String> values1 =  new ArrayList<String>() ;
 			int qi= 0;

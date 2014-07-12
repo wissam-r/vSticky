@@ -4,6 +4,9 @@ package dp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
+
+import com.example.layoutt.Notepad;
 
 import android.R.integer;
 import android.content.ContentValues;
@@ -29,13 +32,16 @@ public class NotesDbAdapter {
 	public static final String NOTE_BODY = "note_body";
 	public static final String NOTE_ID = "note_id";
 	public static final String NOTE_DATE = "note_date";
+	public static final String USER_ID = "user_id" ;
+	public static final String USER_NAME = "user_name" ;
+	public static final String USER_TOKEN = "user_token" ;
 
 	public static final String TAG = NotesDbAdapter.class.getSimpleName();
 	private DatabaseHelper mDbHelper;
 	private SQLiteDatabase mDb;
 
 	private static final String DATABASE_NAME = "notes.db";
-	private static final String TABLE_NAME[] = {"modes", "photos", "gps","notes"};
+	private static final String TABLE_NAME[] = {"modes", "photos", "gps","notes","users"};
 	private static final String TABLE_SYNC_NAME[] = {"notes_delete_sync","notes_update_sync"} ;
 
 	private static final int DATABASE_VERSION = 1;
@@ -54,18 +60,22 @@ public class NotesDbAdapter {
 					+PHOTO_ID+" integer references "+TABLE_NAME[1]+" ("+ PHOTO_ID+"),"
 					+MODE_ID+" integer references "+TABLE_NAME[0]+" ("+ MODE_ID+"),"
 					+GPS_ID+" integer references "+TABLE_NAME[2]+" ("+ GPS_ID+"));";
+	private static final String Create_User_Table  = "create table "+TABLE_NAME[4]+" ("+USER_ID+" integer primary key , "
+			+USER_NAME+" text not null , "+USER_TOKEN+" real not null );" ;
 	private static final String Create_Mode_Table  = "create table "+TABLE_NAME[0]+" ("+MODE_ID+" integer primary key autoincrement, "
 			+MODE_NAME+" text not null );" ;
 	private static final String Create_Photos_Table  = "create table "+TABLE_NAME[1]+" ("+PHOTO_ID+" integer primary key autoincrement, "
 			+PHOTO_PATH+" text not null );" ;
 	private static final String Create_GPS_Table  = "create table "+TABLE_NAME[2]+" ("+GPS_ID+" integer primary key autoincrement, "
 			+GPS_long+" real not null, "+GPS_lat+" real not null, "+GPS_NAME+" text not null, "+GPS_RADUIS+" integer not null );" ;
-	private static final String Create_Notes_Table = "create table " + TABLE_NAME[3] + " (" +NOTE_ID+" integer primary key autoincrement, "
+	private static final String Create_Notes_Table = "create table " + TABLE_NAME[3] + " (" +NOTE_ID+" integer primary key, "
 			+NOTE_TITLE+" text not null, "
 			+NOTE_BODY+" text not null, "
 			+NOTE_DATE+" DATETIME not null, "
 			+PHOTO_ID+" integer references "+TABLE_NAME[1]+" ("+ PHOTO_ID+"), "
 			+MODE_ID+" integer references "+TABLE_NAME[0]+" ("+ MODE_ID+"), "
+			+USER_ID+" integer references "+TABLE_NAME[4]+" ("+ USER_ID+"), "
+
 			+GPS_ID+" integer references "+TABLE_NAME[2]+" ( "+ GPS_ID+" ));";
 
 	private static final String Create_Note_Delete_Table = "create table " + TABLE_SYNC_NAME[0] + " (" +NOTE_ID+" integer primary key );" ;
@@ -120,7 +130,7 @@ public class NotesDbAdapter {
 		return true ;
 
 	}
-	
+
 	public boolean createTable(){
 		mDb.execSQL(Create_Mode_Table);	
 		mDb.execSQL(Create_Photos_Table);		
@@ -128,6 +138,7 @@ public class NotesDbAdapter {
 		mDb.execSQL(Create_Notes_Table);		
 		mDb.execSQL(Create_Note_Delete_Table);
 		mDb.execSQL(Create_Note_Update_Table);
+		mDb.execSQL(Create_User_Table) ;
 
 
 		return true ;
@@ -161,10 +172,11 @@ public class NotesDbAdapter {
 		}
 
 	}
-	public boolean insertTagedNote(String title , String text , Integer photo_id , Integer gps_id , Integer mode_id) {
+	public boolean insertTagedNote(int id ,String title , String text , Integer photo_id , Integer gps_id , Integer mode_id) {
 		try {
 			ContentValues values = new ContentValues() ;
 			mDb = mDbHelper.getWritableDatabase();
+			values.put(NOTE_ID, id) ;
 			values.put(NOTE_TITLE, title) ;
 			values.put(NOTE_BODY, text) ;
 			values.put(NOTE_DATE,getDateTime());
@@ -239,14 +251,14 @@ public class NotesDbAdapter {
 	}
 	public boolean deleteNoteByID(int id) 
 	{
-		
+
 		String where = NOTE_ID+" =?";
 		String[] whereArgs = new String[] { String.valueOf(id) };
 		if (mDb.delete(TABLE_NAME[3], where, whereArgs) > 0)  {  
 			insertDeletedNote(id) ;
 			return true ;}
 		return false; 
-		
+
 	}
 
 	public boolean deleteAllNotes(){
@@ -329,7 +341,7 @@ public class NotesDbAdapter {
 		String[] FROM = {GPS_ID,GPS_NAME,GPS_long,GPS_lat,GPS_RADUIS};
 		Cursor cursor = mDb.query(TABLE_NAME[2], FROM, null, null, null, null,null);
 		//		mDb.query(table, columns, selection, selectionArgs, groupBy, having, orderBy)
-//		 GPS_NAME+" ASC"
+		//		 GPS_NAME+" ASC"
 		if (cursor.getCount()>0){
 			cursor.moveToFirst() ;
 
@@ -376,7 +388,7 @@ public class NotesDbAdapter {
 		}
 		return cursor ;
 	}
-	
+
 	public Cursor getNoteByModePlace(int mode_ID, int place_ID){
 		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,PHOTO_ID,GPS_ID,MODE_ID};
 		String [] ide = {String.valueOf(mode_ID),String.valueOf(place_ID)} ;
@@ -410,7 +422,7 @@ public class NotesDbAdapter {
 		}
 		return cursor ;
 	}
-	
+
 	public Cursor getNoteByModePlacePhoto(Integer mode_ID2, Integer place_ID ,Integer photo_ID2){
 		String[] FROM = {NOTE_ID,NOTE_TITLE,NOTE_BODY,NOTE_DATE,PHOTO_ID,GPS_ID,MODE_ID};
 		String [] ide = {String.valueOf(mode_ID2),String.valueOf(place_ID),String.valueOf(photo_ID2)} ;
@@ -422,7 +434,7 @@ public class NotesDbAdapter {
 		}
 		return cursor ;
 	}
-	
+
 	public Cursor getPhotoByPath(String path){
 		String[] FROM = {PHOTO_ID,PHOTO_PATH};
 
@@ -548,7 +560,7 @@ public class NotesDbAdapter {
 			if (mDb.update(TABLE_NAME[3], initialValues, where, whereArgs)>0){
 				insertUpdatedNote(id);
 			}
-				
+
 		}
 		catch(Exception ex)
 		{
@@ -567,7 +579,7 @@ public class NotesDbAdapter {
 
 		return cursor ;
 	}
-	
+
 	public Cursor getAllDeletedNotes(){
 		String[] FROM = {NOTE_ID};
 		Cursor cursor = mDb.query(TABLE_SYNC_NAME[0], FROM, null, null, null, null, PHOTO_ID+" ASC");
@@ -579,7 +591,7 @@ public class NotesDbAdapter {
 
 		return cursor ;
 	}
-	
+
 	public boolean insertDeletedNote(int id){
 		try {
 			ContentValues values = new ContentValues() ;
@@ -606,4 +618,21 @@ public class NotesDbAdapter {
 		}
 
 	}
+
+//	Random roro = new Random() ;
+//	int x = roro.nextInt() ;
+//	Cursor testIDC = Notepad.getDb().getAllNotes() ;
+//	int i = 0;
+//	while(i < testIDC.getCount()){
+//		i++ ;
+//		if (testIDC.getInt(0)==Math.abs(x) + 1){
+//			x +=1 ;
+//			i= 0 ;
+//			testIDC.moveToFirst() ;
+//		}
+//		else
+//			testIDC.moveToNext() ;
+//	}
+//	Notepad.getDb().insertTagedNote(Math.abs(x) + 1 ,t1.getText().toString(), t2.getText().toString(), photo_ID , place_ID , mode_ID ) ;
+
 }
