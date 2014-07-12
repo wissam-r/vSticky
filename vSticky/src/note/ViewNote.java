@@ -172,8 +172,8 @@ public class ViewNote extends Activity{
 		mode_TV.setText("Mode : "+mode_name) ;
 		TextView place_TV = (TextView) myD.getDialoglayout().findViewById(R.id.place_d) ;
 		place_TV.setText("place : "+place_name + "\n" + 
-		"Latitude : " + latitude + "\n" +  
-		"Longitude : "+ longitude) ;
+		"	Latitude : " + latitude + "\n" +  
+		"	Longitude : "+ longitude) ;
 		myD.getAlertDialog().show() ;
 	}
 	

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 
+import com.example.layoutt.R.menu;
+
 import note.Mode;
 import note.Note;
 import note.NoteEditer;
@@ -19,6 +21,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -31,11 +34,13 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
+import android.widget.PopupWindow;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -76,8 +81,8 @@ public class Notepad extends Activity{
 
 		mDbHelper = new NotesDbAdapter(this);
 		mDbHelper.open();
-		//		mDbHelper.dropTable() ;
-		//		mDbHelper.createTable() ;
+		//				mDbHelper.dropTable() ;
+		//				mDbHelper.createTable() ;
 
 		list = (ListView) findViewById(R.id.note_pad_noteslist);	
 		Button new_note_b  = (Button) findViewById(R.id.note_pad_add);
@@ -121,11 +126,35 @@ public class Notepad extends Activity{
 			return false;
 		}
 	} ;
+	OnItemLongClickListener listItemLongLm = new OnItemLongClickListener() {
+
+		@Override
+		public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+				int arg2, long arg3) {
+			registerForContextMenu(arg0);
+			openContextMenu(arg0);	
+			closeContextMenu();
+			return false;
+		}
+	} ;
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);		
-		getMenuInflater().inflate(R.menu.submenu, menu);
+		super.onCreateContextMenu(menu, v, menuInfo);	
+		switch (v.getId()) {
+
+		case R.id.modes_place_list :
+			Log.d("onlong", "itemse") ;
+			getMenuInflater().inflate(R.menu.remove, menu) ;
+			break ;
+		case R.id.note_pad_noteslist:
+			getMenuInflater().inflate(R.menu.submenu, menu);
+			break;
+
+
+		default:
+			break;
+		}
 
 
 
@@ -133,14 +162,24 @@ public class Notepad extends Activity{
 	}
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
+		Log.d("selected", "entered here ") ;
+
 		return (applyMenuChoice(item));
 
 	}
 	public boolean applyMenuChoice(MenuItem item){
+		Log.d("herherp", "entered here ") ;
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-		Note note  = (Note) mla.getItem(info.position);
+
+		Note note ;
 		switch (item.getItemId()) {
+		case R.id.menu_remove_items :
+			Log.d("delete", "entered here ") ;
+			getDb().deleteModeByname(item.getTitle().toString()) ;
+
+			return true ;
 		case R.id.menu_delete:
+			note = (Note) mla.getItem(info.position);
 			buttons.Buttons.delete(note.getId(), getDb()) ;
 			mla = new listAdap(this, 0);
 			list.setAdapter(mla);
@@ -150,13 +189,17 @@ public class Notepad extends Activity{
 					Toast.LENGTH_LONG).show();
 			return (true) ;
 		case R.id.menu_edit:
+			note = (Note) mla.getItem(info.position);
 			Intent intent = new Intent(Notepad.this, NoteEditer.class);
 			intent.putExtra("mode", "edit") ;
 			intent.putExtra("id", note.getId());
 			startActivity(intent);
 			return true ;
 		case R.id.menu_share :
+			note = (Note) mla.getItem(info.position);
 			buttons.Buttons.share(note.getT(), note.getC(), this) ;
+			return true ;
+
 		default:
 			return super.onContextItemSelected(item);
 		}
@@ -183,11 +226,55 @@ public class Notepad extends Activity{
 		return true;
 	}
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected( MenuItem item) {
 		switch (item.getItemId()) {
+
 		case R.id.menu_remove:
 			Intent intent = new Intent(Notepad.this,Delete_Activity.class);
 			startActivity(intent) ;
+			return true ;
+		case R.id.menu_places:
+			MyDialog dialog = new MyDialog(Notepad.this, R.layout.modes_places) ;
+			TextView title = (TextView) dialog.getDialoglayout().findViewById(R.id.dialog_name) ;
+			title.setText("Places") ;
+			ListView listView = (ListView) dialog.getDialoglayout().findViewById(R.id.modes_place_list) ;
+			Cursor cursor = getDb().getAllPlaces() ;
+			ArrayList<String> values =  new ArrayList<String>() ;
+			int i= 0;
+			while(i<cursor.getCount()){
+				i++ ;
+				values.add(cursor.getString(1)) ;
+				cursor.moveToNext() ;
+
+			}
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, android.R.id.text1, values);
+			listView.setBackgroundColor(Color.LTGRAY) ;
+			listView.setAdapter(adapter); 
+			dialog.getAlertDialog().show() ;
+
+			return true ;
+
+		case R.id.menu_modes :
+			MyDialog dialog1 = new MyDialog(Notepad.this, R.layout.modes_places) ;
+			TextView title1 = (TextView) dialog1.getDialoglayout().findViewById(R.id.dialog_name) ;
+			title1.setText("Modes") ;
+			ListView listView1 = (ListView) dialog1.getDialoglayout().findViewById(R.id.modes_place_list) ;
+			Cursor cursor1 = getDb().getAllModes() ;
+			ArrayList<String> values1 =  new ArrayList<String>() ;
+			int qi= 0;
+			while(qi<cursor1.getCount()){
+				qi++ ;
+				values1.add(cursor1.getString(1)) ;
+				cursor1.moveToNext() ;
+
+			}
+			ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, android.R.id.text1, values1);
+			listView1.setBackgroundColor(Color.LTGRAY) ;
+			listView1.setAdapter(adapter1); 
+			listView1.setOnItemLongClickListener(listItemLongLm) ;
+			dialog1.getAlertDialog().show() ;
 			return true ;
 
 
@@ -195,6 +282,16 @@ public class Notepad extends Activity{
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	OnItemLongClickListener qw = new OnItemLongClickListener() {
+
+		@Override
+		public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+				int arg2, long arg3) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+	};
+
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -204,9 +301,15 @@ public class Notepad extends Activity{
 
 		mla = new listAdap(this, 0);
 		list.setAdapter(mla);
+		try{
 		Cursor cursor = mDbHelper.getNotesByDate();
 		drawNotes(cursor);
 
+		}
+		catch (Exception ex){
+			getDb().dropTable() ;
+			getDb().createTable() ;
+		}
 
 	};
 	@Override
@@ -598,17 +701,31 @@ public class Notepad extends Activity{
 		@Override
 		public void onClick(View arg0){
 			int thisPlace = getGPSID();
-			Log.d("place","getGPSID :: "+thisPlace);
-			if(((place_ID != thisPlace)&&(thisPlace>0))||((place_ID<0)&&(thisPlace==-1))|| mode_ID < 0){
-				if((place_ID < 0)&&(thisPlace==-1)){
-					Toast.makeText(Notepad.this, "unknown place Plz use Internet \n or GPS or Choose palce", Toast.LENGTH_SHORT).show();
-				}else if((place_ID != thisPlace)&&(thisPlace>0)){
-					Toast.makeText(Notepad.this, "you can't search with place you are not in", Toast.LENGTH_SHORT).show();
-				}else if( mode_ID < 0){
-					Toast.makeText(Notepad.this, "you need to chose mode to use the camera", Toast.LENGTH_SHORT).show();
-				}
-				return ;
+			if (place_ID<0 && thisPlace >=0)
+			{
+				place_ID = thisPlace;
 			}
+			if(place_ID < 0){
+				Toast.makeText(Notepad.this, "unknown place Plz use Internet \n or GPS or Choose palce", Toast.LENGTH_SHORT).show();
+				return;
+			}
+			if(mode_ID < 0){
+				Toast.makeText(Notepad.this, "you need to chose mode to use the camera", Toast.LENGTH_SHORT).show();
+				return;
+			}
+
+			//			Log.d("place","getGPSID :: "+thisPlace);
+			//			if(((place_ID != thisPlace)&&(thisPlace>0))||((place_ID<0)&&(thisPlace==-1))|| mode_ID < 0)
+			//			{
+			//				if((place_ID < 0)&&(thisPlace==-1)){
+			//					Toast.makeText(Notepad.this, "unknown place Plz use Internet \n or GPS or Choose palce", Toast.LENGTH_SHORT).show();
+			//				}else if((place_ID != thisPlace)&&(thisPlace>0)){
+			//					Toast.makeText(Notepad.this, "you can't search with place you are not in", Toast.LENGTH_SHORT).show();
+			//				}else if( mode_ID < 0){
+			//					Toast.makeText(Notepad.this, "you need to chose mode to use the camera", Toast.LENGTH_SHORT).show();
+			//				}
+			//				return ;
+			//			}
 
 			Cursor cursor = Notepad.getDb().getNoteByModePlace(mode_ID, place_ID) ;
 			Log.d("soso","   "+ mode_ID+ "    "+place_ID) ;
@@ -755,7 +872,7 @@ public class Notepad extends Activity{
 			placeLocation.setText("Place: "+Notepad.getDb().getPlacesById(thisplace).getString(1));
 		}
 		myDa.getAlertDialog().setOnDismissListener(new OnDismissListener() {
-			
+
 			@Override
 			public void onDismiss(DialogInterface arg0) {
 				// TODO Auto-generated method stub
@@ -763,7 +880,7 @@ public class Notepad extends Activity{
 			}
 		}); 
 		myDa.getAlertDialog().setOnCancelListener(new OnCancelListener() {
-			
+
 			@Override
 			public void onCancel(DialogInterface arg0) {
 				// TODO Auto-generated method stub
@@ -780,6 +897,11 @@ public class Notepad extends Activity{
 		myDa.getAlertDialog().show() ;
 
 	}
+
+	public void placesMenu(){
+
+	}
+
 }
 
 

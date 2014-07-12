@@ -216,6 +216,13 @@ public class NotesDbAdapter {
 		return mDb.delete(TABLE_NAME[0],
 				where, whereArgs) > 0;              
 	}
+	public boolean deleteModeByname(String name) 
+	{
+		String where = MODE_NAME+" =?";
+		String[] whereArgs = new String[] { name };
+		return mDb.delete(TABLE_NAME[0],
+				where, whereArgs) > 0;              
+	}
 	public boolean deletePhoto(int id) 
 	{
 		String where = PHOTO_ID+" =?";

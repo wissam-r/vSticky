@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="about">about</string>
+    <string name="modes">Modes</string>
+    <string name="places">Places</string>
     <string name="mode_d">Mode : </string>
     <string name="place_d">place : </string>
     <string name="clear">Clear</string>

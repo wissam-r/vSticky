@@ -9,5 +9,23 @@
         android:id="@+id/menu_remove"
         android:orderInCategory="100"
         android:title="@string/remove"/>
+    <item
+        android:id="@+id/menu_places"
+        android:orderInCategory="150"
+        android:title="@string/places"/>
+    <item
+        android:id="@+id/menu_modes"
+        android:orderInCategory="150"
+        android:title="@string/modes"/>
+    <item
+        android:id="@+id/menu_about"
+        android:orderInCategory="200"
+        android:title="@string/about">
+        <menu >
+            <item android:id="@+id/test"
+                android:orderInCategory="300"
+                android:title="@string/Add"/>
+        </menu>
+    </item>
 
 </menu>

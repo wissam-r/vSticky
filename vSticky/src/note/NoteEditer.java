@@ -570,6 +570,7 @@ public class NoteEditer extends Activity {
 				if (currentFile==null){
 					mCurrentPhoto = null ;
 					Log.d("current", "null") ;
+					myDImVeiw.setImageBitmap(null) ;
 				}
 				else
 					mCurrentPhoto = currentFile ;
