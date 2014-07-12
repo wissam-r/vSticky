@@ -84,8 +84,7 @@ public class Notepad extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_note_pado);
-		Intent intent ;
-		intent = getIntent() ;
+//TODO here we statrt trying to get the id
 		try{
 			String user_name = getIntent().getExtras().getString("username") ;
 			String user_id = getIntent().getExtras().getString("userId") ;
@@ -96,6 +95,7 @@ public class Notepad extends Activity{
 				i++ ;
 				if (cursor.getString(0).equals(user_id)){
 					user_ID = user_id ;
+					break ;
 				}
 				else
 					cursor.moveToNext() ;
