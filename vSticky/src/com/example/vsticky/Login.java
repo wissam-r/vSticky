@@ -33,6 +33,8 @@ public class Login extends Activity {
 				SessionManager.KEY_USERNAME);
 		String storedToken = sessionManager.getUserDetails().get(
 				SessionManager.KEY_TOKEN);
+		String userId = sessionManager.getUserDetails().get(
+				SessionManager.KEY_USERID);
 		boolean isLoggeIn = sessionManager.isLoggedIn();
 		
 		// If was logged in and authorizator created a token (token and secret
@@ -42,8 +44,10 @@ public class Login extends Activity {
 				&& storedUsername != null
 				&& storedToken != null) {
 			Intent intent = new Intent(getApplicationContext(),Notepad.class);
-			intent.putExtra("Username", storedUsername);
-			intent.putExtra("Token", storedToken);
+			intent.putExtra("username", storedUsername);
+			intent.putExtra("userId", userId);
+			intent.putExtra("token", storedToken);
+			ServerApi.setToken(storedToken);
 			startActivity(intent);
 		} else {
 			// Change layout to activity_main (login) if token not present
@@ -66,24 +70,23 @@ public class Login extends Activity {
 
 						// Check login validity
 						String authToken = "";
-						//try{
 							authToken = ServerApi.authenticate(username, password);
 							if (authToken != null && authToken != "") {
 								// Store username, password and token
 								// credintials to remember
 								if (rememberMe()) {
-									sessionManager.createLoginSession(username,authToken);
+									sessionManager.createLoginSession(username,authToken,ServerApi.userId);
 								}
 								Intent intent = new Intent(Login.this,Notepad.class);
+								intent.putExtra("username", username);
+								intent.putExtra("userId", ServerApi.userId);
+								intent.putExtra("token", authToken);
 								startActivity(intent);
 							} else {
 								Toast.makeText(getApplicationContext(),
 										"Invalid Credentials",
 										Toast.LENGTH_LONG).show();
 							}
-						//} catch (Exception e){
-							//Toast.makeText(getApplicationContext(), "Cannot Connect to Server", Toast.LENGTH_SHORT).show();
-						//}
 					}
 				});
 			((Button) findViewById(R.id.btnSignup))

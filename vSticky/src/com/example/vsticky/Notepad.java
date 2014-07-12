@@ -789,7 +789,7 @@ public class Notepad extends Activity{
 
 
 	public void sync(){
-		//TODO ammar
+		Log.d("MAIN::","START SYNC SERVICE");
 		startService(new Intent(Notepad.this,SyncService.class));
 	}
 

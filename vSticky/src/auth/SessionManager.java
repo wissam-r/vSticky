@@ -37,6 +37,9 @@ public class SessionManager {
 
 	// Token
 	public static final String KEY_TOKEN = "token";
+	
+	// User ID
+	public static final String KEY_USERID = "userid";
 
 	// Token secret
 	//public static final String KEY_TOKEN_SECRET = "tokensecret";
@@ -52,7 +55,7 @@ public class SessionManager {
 	// Create login session
 	//public void createLoginSession(String username, String password,
 	public void createLoginSession(String username,
-		String token) {
+		String token, String userId) {
 		// Storing login value as TRUE
 		editor.putBoolean(IS_LOGGEDIN, true);
 		// Storing username in pref
@@ -64,6 +67,7 @@ public class SessionManager {
 		// Stroing tokenSecret
 		//editor.putString(KEY_TOKEN_SECRET, tokenSecret);
 		// commit changes
+		editor.putString(KEY_USERID, userId);
 		editor.commit();
 	}
 
@@ -91,7 +95,7 @@ public class SessionManager {
 		//user.put(KEY_PASSWORD, pref.getString(KEY_PASSWORD, null));
 		user.put(KEY_TOKEN, pref.getString(KEY_TOKEN, null));
 		//user.put(KEY_TOKEN_SECRET, pref.getString(KEY_TOKEN_SECRET, null));
-
+		user.put(KEY_USERID, pref.getString(KEY_USERID, null));
 		// return user
 		return user;
 	}

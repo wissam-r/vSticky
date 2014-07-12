@@ -93,6 +93,11 @@
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
         </receiver>
+        
+        <service 
+            android:enabled="true"
+            android:name="com.example.vsticky.SyncService">
+        </service>
 
         <activity
             android:name="com.example.vsticky.Login"
