@@ -113,7 +113,7 @@ public class NoteEditer extends Activity {
 							Notepad.getDb().insertPhoto(mCurrentPhoto.getAbsolutePath()) ;
 							cursor = Notepad.getDb().getPhotoByPath(mCurrentPhoto.getAbsolutePath());
 							photo_ID = cursor.getInt(0) ;
-							Toast.makeText(getBaseContext(),"photo_ID = "+ photo_ID , Toast.LENGTH_LONG).show() ;
+//							Toast.makeText(getBaseContext(),"photo_ID = "+ photo_ID , Toast.LENGTH_LONG).show() ;
 						}
 					}
 					if (getIntent().getExtras().getString("mode").equals("edit")) {
@@ -134,7 +134,7 @@ public class NoteEditer extends Activity {
 								Notepad.getDb().insertPhoto(mCurrentPhoto.getAbsolutePath()) ;
 								cursor = Notepad.getDb().getPhotoByPath(mCurrentPhoto.getAbsolutePath());
 								photo_ID = cursor.getInt(0) ;
-								Toast.makeText(getBaseContext(),"photo_ID = "+ photo_ID , Toast.LENGTH_LONG).show() ;
+//								Toast.makeText(getBaseContext(),"photo_ID = "+ photo_ID , Toast.LENGTH_LONG).show() ;
 							}
 						}
 						//						actions.Buttons.save(t1.getText().toString().trim(), t2.getText().toString().trim(),Notepad.getDb());
@@ -156,11 +156,7 @@ public class NoteEditer extends Activity {
 								testIDC.moveToNext() ;
 						}
 						Notepad.getDb().insertTagedNote(Math.abs(x) + 1 ,t1.getText().toString(), t2.getText().toString(), photo_ID , place_ID , mode_ID ) ;
-
-						Cursor cursor   = Notepad.getDb().getAllNotes() ;
-						Cursor cursor2 = Notepad.getDb().getModeById(cursor.getInt(4)) ;
-
-						Toast.makeText(getBaseContext(), cursor.getString(0) +cursor.getString(1)+cursor.getString(2) +cursor.getString(3)+"mode name " +cursor2.getString(1), Toast.LENGTH_LONG).show() ;
+//						Toast.makeText(getBaseContext(), cursor.getString(0) +cursor.getString(1)+cursor.getString(2) +cursor.getString(3)+"mode name " +cursor2.getString(1), Toast.LENGTH_LONG).show() ;
 					}
 				}
 				catch(Exception ex){

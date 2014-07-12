@@ -91,7 +91,7 @@ public class GPSProvider implements LocationListener , GpsStatus.Listener{
 
 		/******** Called when User off Gps *********/
 
-		Toast.makeText(activity.getBaseContext(), provider +" off ", Toast.LENGTH_LONG).show();
+//		Toast.makeText(activity.getBaseContext(), provider +" off ", Toast.LENGTH_LONG).show();
 		textView.setText("GPS OFF") ;
 		GPS_ConToSatil = false ;
 
