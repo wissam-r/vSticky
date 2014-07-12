@@ -55,7 +55,7 @@ public class NotesDbAdapter {
 					+PHOTO_ID+" integer references "+TABLE_NAME[1]+" ("+ PHOTO_ID+"),"
 					+MODE_ID+" integer references "+TABLE_NAME[0]+" ("+ MODE_ID+"),"
 					+GPS_ID+" integer references "+TABLE_NAME[2]+" ("+ GPS_ID+"));";
-	private static final String Create_User_Table  = "create table "+TABLE_NAME[4]+" ("+USER_ID+" integer primary key , "
+	private static final String Create_User_Table  = "create table "+TABLE_NAME[4]+" ("+USER_ID+" text primary key , "
 			+USER_NAME+" text not null , "+USER_TOKEN+" text not null );" ;
 	private static final String Create_Mode_Table  = "create table "+TABLE_NAME[0]+" ("+MODE_ID+" integer primary key autoincrement, "
 			+MODE_NAME+" text not null );" ;
@@ -622,7 +622,7 @@ public class NotesDbAdapter {
 
 	}
 
-	public boolean insertUser(int id ,String name , String token) {
+	public boolean insertUser(String id ,String name , String token) {
 		try {
 			ContentValues values = new ContentValues() ;
 			mDb = mDbHelper.getWritableDatabase();
@@ -637,7 +637,7 @@ public class NotesDbAdapter {
 		}	
 
 	}
-	public boolean insertTagedNoteUser(int id ,String title , String text , Integer photo_id , Integer gps_id , Integer mode_id,int user_id) {
+	public boolean insertTagedNoteUser(int id ,String title , String text , Integer photo_id , Integer gps_id , Integer mode_id,String user_id) {
 		try {
 			ContentValues values = new ContentValues() ;
 			mDb = mDbHelper.getWritableDatabase();
