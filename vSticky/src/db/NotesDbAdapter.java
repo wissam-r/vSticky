@@ -56,7 +56,7 @@ public class NotesDbAdapter {
 					+MODE_ID+" integer references "+TABLE_NAME[0]+" ("+ MODE_ID+"),"
 					+GPS_ID+" integer references "+TABLE_NAME[2]+" ("+ GPS_ID+"));";
 	private static final String Create_User_Table  = "create table "+TABLE_NAME[4]+" ("+USER_ID+" integer primary key , "
-			+USER_NAME+" text not null , "+USER_TOKEN+" real not null );" ;
+			+USER_NAME+" text not null , "+USER_TOKEN+" text not null );" ;
 	private static final String Create_Mode_Table  = "create table "+TABLE_NAME[0]+" ("+MODE_ID+" integer primary key autoincrement, "
 			+MODE_NAME+" text not null );" ;
 	private static final String Create_Photos_Table  = "create table "+TABLE_NAME[1]+" ("+PHOTO_ID+" integer primary key autoincrement, "
@@ -70,7 +70,6 @@ public class NotesDbAdapter {
 			+PHOTO_ID+" integer references "+TABLE_NAME[1]+" ("+ PHOTO_ID+"), "
 			+MODE_ID+" integer references "+TABLE_NAME[0]+" ("+ MODE_ID+"), "
 			+USER_ID+" integer references "+TABLE_NAME[4]+" ("+ USER_ID+"), "
-
 			+GPS_ID+" integer references "+TABLE_NAME[2]+" ( "+ GPS_ID+" ));";
 
 	private static final String Create_Note_Delete_Table = "create table " + TABLE_SYNC_NAME[0] + " (" +NOTE_ID+" integer primary key );" ;
@@ -101,7 +100,12 @@ public class NotesDbAdapter {
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME[0] + 
 					" DROP TABLE IF EXISTS " + TABLE_NAME[1] +
 					" DROP TABLE IF EXISTS " + TABLE_NAME[2] +
-					" DROP TABLE IF EXISTS " + TABLE_NAME[3] );
+					" DROP TABLE IF EXISTS " + TABLE_NAME[3] +
+					" DROP TABLE IF EXISTS " + TABLE_NAME[4] +
+					" DROP TABLE IF EXISTS " + TABLE_SYNC_NAME[0] +
+					" DROP TABLE IF EXISTS " + TABLE_SYNC_NAME[1] 
+					);
+
 			onCreate(db);
 			Log.d(TAG, "onUpdate() database");
 		}
@@ -122,6 +126,10 @@ public class NotesDbAdapter {
 		mDb.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME[1] ) ;
 		mDb.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME[2] ) ;
 		mDb.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME[3] ) ;
+		mDb.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME[4] ) ;
+		mDb.execSQL("DROP TABLE IF EXISTS " + TABLE_SYNC_NAME[0]) ;
+		mDb.execSQL("DROP TABLE IF EXISTS " + TABLE_SYNC_NAME[1]) ;
+
 		return true ;
 
 	}
@@ -613,8 +621,8 @@ public class NotesDbAdapter {
 		}
 
 	}
-	
-	public boolean insertUser(int id ,String name , Double token) {
+
+	public boolean insertUser(int id ,String name , String token) {
 		try {
 			ContentValues values = new ContentValues() ;
 			mDb = mDbHelper.getWritableDatabase();
@@ -622,6 +630,26 @@ public class NotesDbAdapter {
 			values.put(USER_NAME, name) ;
 			values.put(USER_TOKEN, token) ;
 			mDb.insertOrThrow(TABLE_NAME[4], null, values) ;
+			return true ;
+		}
+		catch (Exception ex){
+			return false ;
+		}	
+
+	}
+	public boolean insertTagedNoteUser(int id ,String title , String text , Integer photo_id , Integer gps_id , Integer mode_id,int user_id) {
+		try {
+			ContentValues values = new ContentValues() ;
+			mDb = mDbHelper.getWritableDatabase();
+			values.put(NOTE_ID, id) ;
+			values.put(NOTE_TITLE, title) ;
+			values.put(NOTE_BODY, text) ;
+			values.put(NOTE_DATE,getDateTime());
+			values.put(PHOTO_ID, photo_id); 
+			values.put(MODE_ID, mode_id) ;
+			values.put(GPS_ID, gps_id) ;
+			values.put(USER_ID, user_id) ;
+			mDb.insertOrThrow(TABLE_NAME[3], null, values) ;
 			return true ;
 		}
 		catch (Exception ex){
