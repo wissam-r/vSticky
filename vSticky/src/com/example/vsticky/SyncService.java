@@ -10,12 +10,13 @@ import android.app.Service;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.IBinder;
+import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Toast;
 import auth.ServerApi;
 
 public class SyncService extends Service {
-	private final static String TAG = "SYNC::";
+	private final static String TAG = "SYNC";
 
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -24,6 +25,8 @@ public class SyncService extends Service {
 
 	@Override
 	public void onCreate() {
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+		StrictMode.setThreadPolicy(policy);
 		Log.d(TAG, "onCreate");
 	}
 
@@ -36,6 +39,7 @@ public class SyncService extends Service {
 			cursor1.moveToNext();
 			i++;
 		}
+		Log.d("SyncNotes","Got local notes success");
 		// Get Locally and Server stored notes ids
 		ArrayList<Integer> storedRemotely = ServerApi.getNotesIds();
 		Cursor cursor2 = Notepad.getDb().getAllNotes(Notepad.getUser_ID());
@@ -46,6 +50,7 @@ public class SyncService extends Service {
 			cursor2.moveToNext();
 			i++;
 		}
+		Log.d("SyncNotes","Got remote notes success");
 		ArrayList<Integer> tmp = (ArrayList<Integer>) storedLocally.clone();
 		storedLocally.removeAll(storedRemotely);
 		storedRemotely.removeAll(tmp);

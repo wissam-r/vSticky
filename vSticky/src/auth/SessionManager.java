@@ -52,6 +52,11 @@ public class SessionManager {
 		editor = pref.edit();
 	}
 
+	public SessionManager() {
+		pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+		editor = pref.edit();
+	}
+
 	// Create login session
 	//public void createLoginSession(String username, String password,
 	public void createLoginSession(String username,

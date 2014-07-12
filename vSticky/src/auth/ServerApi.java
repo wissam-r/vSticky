@@ -136,14 +136,8 @@ public class ServerApi{
 	public static ArrayList<Integer> getNotesIds(){
 		JSONArray jArray = null;
 		ArrayList<Integer> result = new ArrayList<Integer>();
-		try {
-			JSONObject response = Json.getJSONFromUrl(NOTES_URL + "/all/" + token);
-			Log.d("API::GetIDs", response.toString());
-			jArray = response.getJSONArray("notes");
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return null;
-		}
+		jArray = Json.getJSONArrayFromUrlGet(NOTES_URL + "/all/" + token);
+		Log.d("API::GetIDs", jArray.toString());
 		if (jArray != null) {
 			for (int i=0;i<jArray.length();i++) { 
 				try {
@@ -158,14 +152,8 @@ public class ServerApi{
 	public static ArrayList<Integer> getModesIds(){
 		JSONArray jArray = null;
 		ArrayList<Integer> result = new ArrayList<Integer>();
-		try {
-			JSONObject response = Json.getJSONFromUrl(MODES_URL + "/all/" + token);
-			Log.d("API::GetIDs", response.toString());
-			jArray = response.getJSONArray("notes");
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return null;
-		}
+		jArray = Json.getJSONArrayFromUrlGet(MODES_URL + "/all/" + token);
+		Log.d("API::GetIDs", jArray.toString());
 		if (jArray != null) {
 			for (int i=0;i<jArray.length();i++) { 
 				try {
@@ -180,14 +168,8 @@ public class ServerApi{
 	public static ArrayList<Integer> getPlacesIds(){
 		JSONArray jArray = null;
 		ArrayList<Integer> result = new ArrayList<Integer>();
-		try {
-			JSONObject response = Json.getJSONFromUrl(PLACES_URL + "/all/" + token);
-			Log.d("API::GetIDs", response.toString());
-			jArray = response.getJSONArray("notes");
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return null;
-		}
+		jArray = Json.getJSONArrayFromUrlGet(PLACES_URL + "/all/" + token);
+		Log.d("API::GetIDs", jArray.toString());
 		if (jArray != null) {
 			for (int i=0;i<jArray.length();i++) { 
 				try {
@@ -202,14 +184,8 @@ public class ServerApi{
 	public static ArrayList<Integer> getPhotosIds(){
 		JSONArray jArray = null;
 		ArrayList<Integer> result = new ArrayList<Integer>();
-		try {
-			JSONObject response = Json.getJSONFromUrl(PHOTOS_URL + "/all/" + token);
-			Log.d("API::GetIDs", response.toString());
-			jArray = response.getJSONArray("notes");
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return null;
-		}
+		jArray = Json.getJSONArrayFromUrlGet(PHOTOS_URL + "/all/" + token);
+		Log.d("API::GetIDs", jArray.toString());
 		if (jArray != null) {
 			for (int i=0;i<jArray.length();i++) { 
 				try {
@@ -397,7 +373,7 @@ public class ServerApi{
 
 	
 	public static Note getNote(Integer id){
-		JSONObject jObject = Json.getJSONFromUrl(NOTES_URL + "/" + id.toString() + "/" + token);
+		JSONObject jObject = Json.getJSONObjectFromUrlGet(NOTES_URL + "/" + id.toString() + "/" + token);
 		try {
 			return new Note(jObject.getInt("_id"),jObject.getString("title"),jObject.getString("body"),jObject.getInt("photoId"),jObject.getInt("placeId"),jObject.getInt("modeId"));
 		} catch (JSONException e) {
@@ -406,7 +382,7 @@ public class ServerApi{
 		return null;
 	}
 	public static Mode getMode(Integer id){
-		JSONObject jObject = Json.getJSONFromUrl(MODES_URL + "/" + id.toString() + "/" + token);
+		JSONObject jObject = Json.getJSONObjectFromUrlGet(MODES_URL + "/" + id.toString() + "/" + token);
 		try {
 			return new Mode(jObject.getInt("_id"), jObject.getString("name"));
 		} catch (JSONException e) {
@@ -415,7 +391,7 @@ public class ServerApi{
 		return null;
 	}
 	public static Place getPlace(Integer id){
-		JSONObject jObject = Json.getJSONFromUrl(PLACES_URL + "/" + id.toString() + "/" + token);
+		JSONObject jObject = Json.getJSONObjectFromUrlGet(PLACES_URL + "/" + id.toString() + "/" + token);
 		try {
 			return new Place(jObject.getInt("_id"),jObject.getString("name"),jObject.getDouble("x"),jObject.getDouble("y"),jObject.getInt("radius"));
 		} catch (JSONException e) {
@@ -424,7 +400,7 @@ public class ServerApi{
 		return null;
 	}
 	public static Photo getPhoto(Integer id){
-		JSONObject jObject = Json.getJSONFromUrl(PHOTOS_URL + "/" + id.toString() + "/" + token);
+		JSONObject jObject = Json.getJSONObjectFromUrlGet(PHOTOS_URL + "/" + id.toString() + "/" + token);
 		try {
 			byte[] decodedString = Base64.decode(jObject.getString("photo"), Base64.DEFAULT);
 			Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
