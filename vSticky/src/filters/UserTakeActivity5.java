@@ -2,6 +2,7 @@ package filters;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
@@ -18,6 +19,7 @@ import com.example.layoutt.R;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -43,6 +45,16 @@ public class UserTakeActivity5 extends Activity implements CvCameraViewListener2
 
 	private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
 
+		public void setResilution(){
+			List<Camera.Size> ress = mOpenCvCameraView.getResolutionList();
+			for(int i=0;i<ress.size();i++){
+				if(ress.get(i).width>=800 && ress.get(i).width<=1200){
+					mOpenCvCameraView.setResolution(ress.get(i));
+					return;
+				}
+			}
+		}
+		
 		@Override
 		public void onManagerConnected(int status) {
 			switch (status) {
@@ -77,10 +89,11 @@ public class UserTakeActivity5 extends Activity implements CvCameraViewListener2
 						}
 					}).start();
 
-
+				
 				/* Now enable camera view to start receiving frames */
 				mOpenCvCameraView.setOnTouchListener(UserTakeActivity5.this);
 				mOpenCvCameraView.enableView();
+				setResilution();
 
 			} break;
 			default:
@@ -189,4 +202,5 @@ public class UserTakeActivity5 extends Activity implements CvCameraViewListener2
 		return false;
 	}
 
+	
 }

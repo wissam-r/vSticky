@@ -510,6 +510,7 @@ public class NoteEditer extends Activity {
 			new_place.setEnabled(false);
 			choose_place.setEnabled(false);
 			usedLocation.setText(Notepad.getDb().getPlacesById(foundPlace).getString(1));
+			place_ID = foundPlace;
 		}else if(foundPlace==-2){//we know our gps locatoin but not where we are
 			choose_place.setEnabled(false);
 		}
