@@ -16,6 +16,8 @@
         </item>
         <item android:id="@+id/sync"
             android:title="@string/sync"></item>
+        <item android:id="@+id/signout"
+            android:title="@string/signout"></item>
     </group>
 
 </menu>

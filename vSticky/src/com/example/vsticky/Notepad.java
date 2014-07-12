@@ -66,7 +66,6 @@ public class Notepad extends Activity{
 	MyDialog myDa ;
 	ListView listView1;
 
-	//TODO fill this objects
 	final int DETECTE_NOTE = 1;
 	ArrayList<String> photoPaths = new ArrayList<String>();
 	ArrayList<Integer> photoIDs = new ArrayList<Integer>();
@@ -314,15 +313,7 @@ public class Notepad extends Activity{
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	OnItemLongClickListener qw = new OnItemLongClickListener() {
 
-		@Override
-		public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-				int arg2, long arg3) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-	};
 
 	@Override
 	protected void onStart() {
@@ -470,6 +461,9 @@ public class Notepad extends Activity{
 					}
 					else if (arg0.getTitle().toString().equals("Sync")){
 						sync();
+					}
+					else if (arg0.getTitle().toString().equals("Signout")){
+						signout() ;
 					}
 					return false;
 				}
@@ -902,7 +896,6 @@ public class Notepad extends Activity{
 
 			@Override
 			public void onCancel(DialogInterface arg0) {
-				// TODO Auto-generated method stub
 				photo_ID = -1 ;
 				mode_ID =-1 ;
 				place_ID = -1 ;
@@ -916,8 +909,8 @@ public class Notepad extends Activity{
 
 	}
 
-	public void placesMenu(){
-
+	public void signout(){
+		//TODO ammar
 	}
 
 }
