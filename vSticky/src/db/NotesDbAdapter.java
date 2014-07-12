@@ -613,6 +613,22 @@ public class NotesDbAdapter {
 		}
 
 	}
+	
+	public boolean insertUser(int id ,String name , Double token) {
+		try {
+			ContentValues values = new ContentValues() ;
+			mDb = mDbHelper.getWritableDatabase();
+			values.put(USER_ID, id) ;
+			values.put(USER_NAME, name) ;
+			values.put(USER_TOKEN, token) ;
+			mDb.insertOrThrow(TABLE_NAME[4], null, values) ;
+			return true ;
+		}
+		catch (Exception ex){
+			return false ;
+		}	
+
+	}
 
 
 }
