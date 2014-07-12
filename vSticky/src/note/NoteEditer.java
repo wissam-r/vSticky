@@ -12,16 +12,13 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-
 import com.example.layoutt.R;
 import com.example.vsticky.MyDialog;
 import com.example.vsticky.Notepad;
-
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
-import android.content.DialogInterface.OnDismissListener;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -313,7 +310,7 @@ public class NoteEditer extends Activity {
 			loc.setLatitude(netGPS.getLatitude());
 			Log.d("place", "find locatoin by net");
 		}else{
-			Toast.makeText(getBaseContext(), "fail", Toast.LENGTH_LONG).show() ;
+//			Toast.makeText(getBaseContext(), "fail", Toast.LENGTH_LONG).show() ;
 			return -1;
 		}
 		Cursor cursor = Notepad.getDb().getAllPlaces() ;
@@ -453,7 +450,7 @@ public class NoteEditer extends Activity {
 					public boolean onMenuItemClick(MenuItem arg1) {	
 						mode_ID = arg1.getItemId() ;
 						((Button)arg0).setText(arg1.getTitle());
-						Toast.makeText(getBaseContext(), mode_ID + "", Toast.LENGTH_LONG).show();
+//						Toast.makeText(getBaseContext(), mode_ID + "", Toast.LENGTH_LONG).show();
 						return false;
 					}
 
@@ -588,14 +585,7 @@ public class NoteEditer extends Activity {
 			}
 		}) ;
 
-		myD.getAlertDialog().setOnDismissListener(new OnDismissListener() {
-
-			@Override
-			public void onDismiss(DialogInterface arg0) {
-				// TODO Auto-generated method stub
-				Toast.makeText(getBaseContext(), "dismiss", Toast.LENGTH_LONG).show() ;
-			}
-		}); 
+	
 		myD.getAlertDialog().setOnCancelListener(new OnCancelListener() {
 
 			@Override
@@ -622,7 +612,6 @@ public class NoteEditer extends Activity {
 				}
 				else
 					mCurrentPhoto = currentFile ;
-				Toast.makeText(getBaseContext(), "cancell", Toast.LENGTH_LONG).show() ;
 
 			}
 		});
@@ -651,7 +640,7 @@ class NewModeAdder implements OnClickListener{
 				if (!mode_name.getText().toString().equals("")){
 					Notepad.getDb().insertMode(mode_name.getText().toString()) ;
 					Cursor cursor = Notepad.getDb().getAllModes() ;
-					Toast.makeText(activity, String.valueOf(cursor.getCount()), Toast.LENGTH_LONG).show();
+//					Toast.makeText(activity, String.valueOf(cursor.getCount()), Toast.LENGTH_LONG).show();
 					myD.getAlertDialog().cancel() ;
 					cursor = Notepad.getDb().getModeByName(mode_name.getText().toString());
 					Mode newmode = new Mode(cursor.getInt(0), cursor.getString(1));
@@ -719,7 +708,7 @@ class NewPlaceAdder implements OnClickListener{
 						return;
 					}
 				}else{
-					Toast.makeText(activity, "fail", Toast.LENGTH_LONG).show() ;
+//					Toast.makeText(activity, "fail", Toast.LENGTH_LONG).show() ;
 					return;
 				}
 

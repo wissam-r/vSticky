@@ -3,12 +3,9 @@ package note;
 import java.io.File;
 
 import com.example.layoutt.R;
-import com.example.vsticky.Delete_Activity;
 import com.example.vsticky.MyDialog;
 import com.example.vsticky.Notepad;
-
 import android.app.Activity;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,7 +18,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 
 public class ViewNote extends Activity{
@@ -82,8 +78,8 @@ public class ViewNote extends Activity{
 		}
 		
 		
-		Toast.makeText(getBaseContext(), "mode : "+mode_ID+"  photo : "
-				+photo_ID+"  palce :  "+place_ID, Toast.LENGTH_LONG).show();
+//		Toast.makeText(getBaseContext(), "mode : "+mode_ID+"  photo : "
+//				+photo_ID+"  palce :  "+place_ID, Toast.LENGTH_LONG).show();
 		
 
 		back.setOnClickListener(new OnClickListener() {
