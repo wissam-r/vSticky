@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="signout">Signout</string>
     <string name="about">about</string>
     <string name="modes">Modes</string>
     <string name="places">Places</string>
