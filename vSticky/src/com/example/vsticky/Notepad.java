@@ -89,6 +89,9 @@ public class Notepad extends Activity{
 			String user_name = getIntent().getExtras().getString("username") ;
 			String user_id = getIntent().getExtras().getString("userId") ;
 			String user_token = getIntent().getExtras().getString("token") ;
+			Log.d("NOTEPAD",user_name);
+			Log.d("NOTEPAD",user_id);
+			Log.d("NOTEPAD",user_token);
 			Cursor cursor  = getDb().getAllUsers() ;
 			int i = 0 ;
 			while (i<cursor.getCount()){
