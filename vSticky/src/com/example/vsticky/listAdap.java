@@ -1,7 +1,8 @@
-package com.example.layoutt;
+package com.example.vsticky;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+
+import com.example.layoutt.R;
 
 import note.Note;
 

@@ -1,27 +1,21 @@
-package com.example.layoutt;
+package com.example.vsticky;
 
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Scanner;
-
-import org.opencv.core.Mat;
-
-import com.example.layoutt.R.menu;
-
+import com.example.layoutt.R;
 import note.Mode;
 import note.Note;
 import note.NoteEditer;
 import note.Place;
 import note.ViewNote;
-import dp.NotesDbAdapter;
+import db.NotesDbAdapter;
 import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -43,7 +37,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
-import android.widget.PopupWindow;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -183,7 +176,7 @@ public class Notepad extends Activity{
 			return true ;
 		case R.id.menu_delete:
 			note = (Note) mla.getItem(info.position);
-			buttons.Buttons.delete(note.getId(), getDb()) ;
+			actions.Buttons.delete(note.getId(), getDb()) ;
 			mla = new listAdap(this, 0);
 			list.setAdapter(mla);
 			Cursor cursor = mDbHelper.getNotesByDate();
@@ -200,7 +193,7 @@ public class Notepad extends Activity{
 			return true ;
 		case R.id.menu_share :
 			note = (Note) mla.getItem(info.position);
-			buttons.Buttons.share(note.getT(), note.getC(), this) ;
+			actions.Buttons.share(note.getT(), note.getC(), this) ;
 			return true ;
 
 		default:
@@ -454,8 +447,6 @@ public class Notepad extends Activity{
 		public void onItemSelected(AdapterView<?> arg0, View arg1,
 				int arg2, long arg3) {
 
-			//			Toast.makeText(getBaseContext(),arg0.getItemAtPosition(arg2).toString() ,
-			//					Toast.LENGTH_LONG).show();
 			if (arg0.getItemAtPosition(arg2).toString().equals("Date")){
 				mla = new listAdap(Notepad.this, 0);
 				list.setAdapter(mla);
@@ -516,16 +507,16 @@ public class Notepad extends Activity{
 			public void onClick(View arg0) {
 				Place newplace ;
 				final int minRaduis = 10;
-				if (((GPSProvider.isGPS_ConToSatil()) && (gps.getLatitude()!=null)&&(gps.getLongitude()!=null))&&((NetworkProvider.isInternet_con()) && (netGPS.getLatitude()!=null)&&(netGPS.getLongitude()!=null)))
-				{
-					Location loc1  = new Location("") ;
-					Location loc2 =  new Location("") ;
-					loc1.setLatitude(gps.getLatitude()); loc1.setLongitude(gps.getLongitude()) ;
-					loc2.setLatitude(netGPS.getLatitude()) ; loc2.setLongitude(netGPS.getLongitude()) ;
-					Toast.makeText(getBaseContext(), "distance : "+loc1.distanceTo(loc2 )+"\n"+
-							"longt : " +(loc2.getLongitude()-loc1.getLongitude()+"\n"+
-									"latt : " +(loc2.getLatitude()-loc1.getLatitude())), Toast.LENGTH_LONG).show() ;
-				}
+//				if (((GPSProvider.isGPS_ConToSatil()) && (gps.getLatitude()!=null)&&(gps.getLongitude()!=null))&&((NetworkProvider.isInternet_con()) && (netGPS.getLatitude()!=null)&&(netGPS.getLongitude()!=null)))
+//				{
+//					Location loc1  = new Location("") ;
+//					Location loc2 =  new Location("") ;
+//					loc1.setLatitude(gps.getLatitude()); loc1.setLongitude(gps.getLongitude()) ;
+//					loc2.setLatitude(netGPS.getLatitude()) ; loc2.setLongitude(netGPS.getLongitude()) ;
+//					Toast.makeText(getBaseContext(), "distance : "+loc1.distanceTo(loc2 )+"\n"+
+//							"longt : " +(loc2.getLongitude()-loc1.getLongitude()+"\n"+
+//									"latt : " +(loc2.getLatitude()-loc1.getLatitude())), Toast.LENGTH_LONG).show() ;
+//				}
 				if ((GPSProvider.isGPS_ConToSatil()) && (gps.getLatitude()!=null)&&(gps.getLongitude()!=null))
 				{
 					try{
@@ -544,7 +535,7 @@ public class Notepad extends Activity{
 						return;
 					}
 				}else{
-					Toast.makeText(getBaseContext(), "fail", Toast.LENGTH_LONG).show() ;
+//					Toast.makeText(getBaseContext(), "fail", Toast.LENGTH_LONG).show() ;
 					return;
 				}
 
@@ -594,8 +585,6 @@ public class Notepad extends Activity{
 
 				if (!mode_name.getText().toString().equals("")){
 					mDbHelper.insertMode(mode_name.getText().toString()) ;
-					Cursor cursor = mDbHelper.getAllModes() ;
-					Toast.makeText(getBaseContext(), String.valueOf(cursor.getCount()), Toast.LENGTH_LONG).show();
 					myD.getAlertDialog().cancel() ;
 
 				}
@@ -632,7 +621,6 @@ public class Notepad extends Activity{
 				@Override
 				public boolean onMenuItemClick(MenuItem arg1) {	
 					mode_ID = arg1.getItemId() ;
-					Toast.makeText(getBaseContext(), mode_ID + "", Toast.LENGTH_LONG).show();
 					((Button) arg0).setText(arg1.getTitle()) ;
 
 					return false;
@@ -732,14 +720,12 @@ public class Notepad extends Activity{
 
 			Cursor cursor = Notepad.getDb().getNoteByModePlace(mode_ID, place_ID) ;
 			Log.d("soso","   "+ mode_ID+ "    "+place_ID) ;
-			Toast.makeText(getBaseContext(),"number of selected notes " + cursor.getCount(), Toast.LENGTH_LONG).show() ;
+			Toast.makeText(getBaseContext(),"Number of selected notes " + cursor.getCount(), Toast.LENGTH_LONG).show() ;
 			int i = 0 ;
 			ArrayList<Integer> photoesID = new ArrayList<Integer>() ;
 
 			while(i <cursor.getCount()){
 				i++ ;
-				//TODO
-				Toast.makeText(getBaseContext(), i+" : photos id " + cursor.getInt(4), Toast.LENGTH_LONG).show() ;
 				photoesID.add(cursor.getInt(4)) ;
 				cursor.moveToNext() ;
 				//						photoPaths.add(cursor.getS)
@@ -821,7 +807,7 @@ public class Notepad extends Activity{
 			loc.setLatitude(netGPS.getLatitude());
 			Log.d("place", "find locatoin by net");
 		}else{
-			Toast.makeText(getBaseContext(), "fail", Toast.LENGTH_LONG).show() ;
+//			Toast.makeText(getBaseContext(), "fail", Toast.LENGTH_LONG).show() ;
 			return -1;
 		}
 		Cursor cursor = Notepad.getDb().getAllPlaces() ;
@@ -874,14 +860,7 @@ public class Notepad extends Activity{
 		}else{
 			placeLocation.setText("Place: "+Notepad.getDb().getPlacesById(thisplace).getString(1));
 		}
-		myDa.getAlertDialog().setOnDismissListener(new OnDismissListener() {
-
-			@Override
-			public void onDismiss(DialogInterface arg0) {
-				// TODO Auto-generated method stub
-				Toast.makeText(getBaseContext(), "dismiss", Toast.LENGTH_LONG).show() ;
-			}
-		}); 
+	
 		myDa.getAlertDialog().setOnCancelListener(new OnCancelListener() {
 
 			@Override
@@ -892,7 +871,6 @@ public class Notepad extends Activity{
 				place_ID = -1 ;
 				choose_mode.setText(getResources().getString(R.string.choose_mode));
 				choose_place.setText(getResources().getString(R.string.choose_place)) ;			
-				Toast.makeText(getBaseContext(), "cancell", Toast.LENGTH_LONG).show() ;
 
 			}
 		});

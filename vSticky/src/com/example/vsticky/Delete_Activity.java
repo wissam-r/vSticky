@@ -1,6 +1,8 @@
-package com.example.layoutt;
+package com.example.vsticky;
 
 import java.util.Scanner;
+
+import com.example.layoutt.R;
 
 
 import note.Note;
@@ -11,7 +13,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class Delete_Activity extends Activity{
 
@@ -44,7 +45,7 @@ public class Delete_Activity extends Activity{
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 
-				buttons.Buttons.done(Delete_Activity.this) ;
+				actions.Buttons.done(Delete_Activity.this) ;
 
 			}
 		});
@@ -57,10 +58,10 @@ public class Delete_Activity extends Activity{
 				for (int i = 0 ; i<mla2.getChecked().size();i++){
 					if (mla2.getChecked().get(i)){
 						Note note  = (Note) mla2.getItem(i);
-						buttons.Buttons.delete(note.getId(), Notepad.getDb()) ;
+						actions.Buttons.delete(note.getId(), Notepad.getDb()) ;
 					}
 				}
-				buttons.Buttons.done(Delete_Activity.this) ;
+				actions.Buttons.done(Delete_Activity.this) ;
 			}
 			
 		}) ;

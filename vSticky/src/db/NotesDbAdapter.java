@@ -1,14 +1,9 @@
-package dp;
+package db;
 
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Random;
-
-import com.example.layoutt.Notepad;
-
-import android.R.integer;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -619,20 +614,5 @@ public class NotesDbAdapter {
 
 	}
 
-//	Random roro = new Random() ;
-//	int x = roro.nextInt() ;
-//	Cursor testIDC = Notepad.getDb().getAllNotes() ;
-//	int i = 0;
-//	while(i < testIDC.getCount()){
-//		i++ ;
-//		if (testIDC.getInt(0)==Math.abs(x) + 1){
-//			x +=1 ;
-//			i= 0 ;
-//			testIDC.moveToFirst() ;
-//		}
-//		else
-//			testIDC.moveToNext() ;
-//	}
-//	Notepad.getDb().insertTagedNote(Math.abs(x) + 1 ,t1.getText().toString(), t2.getText().toString(), photo_ID , place_ID , mode_ID ) ;
 
 }

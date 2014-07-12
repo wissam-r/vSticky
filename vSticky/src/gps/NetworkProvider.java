@@ -58,7 +58,7 @@ public class NetworkProvider extends BroadcastReceiver implements LocationListen
 		} else {
 			internet_con=false ;
 		}
-		Toast.makeText(context, status, Toast.LENGTH_LONG).show();
+//		Toast.makeText(context, status, Toast.LENGTH_LONG).show();
 	}
 	public NetworkProvider(){};
 	public NetworkProvider (Activity activity , TextView textView) {
@@ -117,12 +117,12 @@ public class NetworkProvider extends BroadcastReceiver implements LocationListen
 			internet_con = false ;
 
 		if (internet_con){
-			String str = "Latitude: "+location.getLatitude()+" Longitude: "+location.getLongitude();
+//			String str = "Latitude: "+location.getLatitude()+" Longitude: "+location.getLongitude();
 
 			latitude = location.getLatitude() ;
 			longitude = location.getLongitude() ;
 
-			Toast.makeText(activity.getBaseContext(), "NETWORK : "+str, Toast.LENGTH_LONG).show();
+//			Toast.makeText(activity.getBaseContext(), "NETWORK : "+str, Toast.LENGTH_LONG).show();
 			textView.setText("INTERNET Conected") ;
 			}
 		else

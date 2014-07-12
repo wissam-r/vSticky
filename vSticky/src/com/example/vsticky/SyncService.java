@@ -1,4 +1,4 @@
-package com.example.layoutt;
+package com.example.vsticky;
 
 import android.app.Service;
 import android.content.Intent;

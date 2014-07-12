@@ -1,7 +1,9 @@
-package com.example.layoutt;
+package com.example.vsticky;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import com.example.layoutt.R;
 
 import filters.UserTakeActivity5;
 

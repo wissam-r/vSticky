@@ -1,6 +1,8 @@
-package com.example.layoutt;
+package com.example.vsticky;
 
 import java.util.Scanner;
+
+import com.example.layoutt.R;
 
 import note.Note;
 import note.NoteEditer;
@@ -9,7 +11,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,33 +20,31 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-public class Search_ByTag_Activity extends Activity {
+public class Search_Activity extends Activity {
 
 	ListView list ;
 	listAdap mla = null ;
-	private Integer photo_ID ;
-	private Integer mode_ID ;
-	private Integer place_ID ;
-	
-	
+	static String searchT = "" ;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.search_by_tag) ;
-		
-
-		
-		list = (ListView) findViewById(R.id.listViewSt) ;
-		Button back = (Button) findViewById(R.id.backst) ;
+		setContentView(R.layout.search) ;
+		list = (ListView) findViewById(R.id.listViewS) ;
+		Button back = (Button) findViewById(R.id.backs) ;
+		SearchView search = (SearchView) findViewById(R.id.note_pad_search_sv);
 		list.setOnItemClickListener(listItemL);
 		list.setOnItemLongClickListener(listItemLongL);
 		back.setOnClickListener(backL);
+		search.setOnQueryTextListener(search_l) ;
 	
 		
 	}
@@ -65,8 +64,8 @@ public class Search_ByTag_Activity extends Activity {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
-			
-			Intent intent = new Intent(Search_ByTag_Activity.this, ViewNote.class);
+			// TODO Auto-generated method stub
+			Intent intent = new Intent(Search_Activity.this, ViewNote.class);
 			Note note = (Note) mla.getItem(arg2);
 			intent.putExtra("id", note.getId());
 			startActivity(intent);
@@ -79,17 +78,33 @@ public class Search_ByTag_Activity extends Activity {
 
 		@Override
 		public void onClick(View arg0) {
-			
+			// TODO Auto-generated method stub
 			finish() ;
 		}
 	};
 	
-
+	OnQueryTextListener search_l =  new OnQueryTextListener() {
+	
+				@Override
+				public boolean onQueryTextSubmit(String arg0) {
+					searchT= arg0 ;
+					mla = new listAdap(Search_Activity.this, 0);
+					list.setAdapter(mla);
+					Cursor cursor = Notepad.getDb().getNoteByTitle(arg0);
+					drawNotes(cursor) ;
+					return false;
+				}
+	
+				@Override
+				public boolean onQueryTextChange(String arg0) {
+					return false;
+				}
+			};
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
-		
+		// TODO Auto-generated method stub
 		super.onCreateContextMenu(menu, v, menuInfo);		
 		menu.setHeaderTitle("Menu");
 		getMenuInflater().inflate(R.menu.submenu, menu);
@@ -99,6 +114,7 @@ public class Search_ByTag_Activity extends Activity {
 	}
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
 		return (applyMenuChoice(item));
 
 	}
@@ -107,29 +123,29 @@ public class Search_ByTag_Activity extends Activity {
 		Note note  = (Note) mla.getItem(info.position);
 		switch (item.getItemId()) {
 		case R.id.menu_delete:
-			buttons.Buttons.delete(note.getId(), Notepad.getDb()) ;
+			actions.Buttons.delete(note.getId(), Notepad.getDb()) ;
 			mla = new listAdap(this, 0);
 			list.setAdapter(mla);
-			Cursor cursor = Notepad.getDb().getNoteByModePlacePhoto(mode_ID, place_ID, photo_ID);
+			Cursor cursor = Notepad.getDb().getNoteByTitle(searchT);
 			drawNotes(cursor);
 			Toast.makeText(getApplicationContext(), "Deleted",
 					Toast.LENGTH_LONG).show();
 			return (true) ;
 		case R.id.menu_edit:
-			Intent intent = new Intent(Search_ByTag_Activity.this, NoteEditer.class);
+			Intent intent = new Intent(Search_Activity.this, NoteEditer.class);
 			intent.putExtra("mode", "edit") ;
 			intent.putExtra("id", note.getId());
 			startActivity(intent);
 			return true ;
 		case R.id.menu_share :
-			buttons.Buttons.share(note.getT(), note.getC(), this) ;
+			actions.Buttons.share(note.getT(), note.getC(), this) ;
 		default:
 			return super.onContextItemSelected(item);
 		}
 	}
 
 	public void drawNotes(Cursor cursor){
-		TextView t1 = (TextView) findViewById(R.id.notes_numberst) ;
+		TextView t1 = (TextView) findViewById(R.id.notes_number) ;
 		t1.setText("Memo ("+cursor.getCount()+")");
 		int i =1 ;
 		while(i <= cursor.getCount()){
@@ -148,27 +164,12 @@ public class Search_ByTag_Activity extends Activity {
 		super.onStart();
 		mla = new listAdap(this, 0);
 		list.setAdapter(mla);
-		photo_ID = getIntent().getIntExtra("photo_ID", -1) ;
-		place_ID = getIntent().getIntExtra("place_ID", -1) ;
-		mode_ID = getIntent().getIntExtra("mode_ID", -1) ;
-		
-		Log.d("momo", photo_ID + "  "+place_ID  + "   " + mode_ID ) ;
-		Cursor cursor  ;
-		if ((mode_ID != -1)&&(place_ID !=-1 )&&(photo_ID==-1))
-			cursor = Notepad.getDb().getNoteByModePlace(mode_ID, place_ID);
-		else if ((mode_ID != -1)&&(place_ID !=-1 )&&(photo_ID!=-1))
-			cursor = Notepad.getDb().getNoteByModePlacePhoto(mode_ID, place_ID, photo_ID);
-		else if ((mode_ID != -1)&&(place_ID ==-1 )&&(photo_ID==-1))
-			cursor = Notepad.getDb().getNoteByMode(mode_ID);
-		else if ((mode_ID == -1)&&(place_ID !=-1 )&&(photo_ID==-1))
-			cursor = Notepad.getDb().getNoteByPlace(place_ID);
-		else
-			return ;
-
+		Cursor cursor = Notepad.getDb().getNoteByTitle(searchT);
 		drawNotes(cursor);
 	};
 	@Override
 	protected void onPause() {
+		// TODO Auto-generated method stub
 		super.onPause();
 	}
 	
@@ -180,31 +181,16 @@ public class Search_ByTag_Activity extends Activity {
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
 		switch (item.getItemId()) {
 		case R.id.menu_remove:
-			Intent intent = new Intent(Search_ByTag_Activity.this,Delete_Activity.class);
+			Intent intent = new Intent(Search_Activity.this,Delete_Activity.class);
 			startActivity(intent) ;
 			return true ;
 
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-	}
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		// TODO Auto-generated method stub
-		outState.putInt("photo_ID", photo_ID) ;
-		outState.putInt("mode_ID", mode_ID) ;
-		outState.putInt("place_ID", place_ID) ;
-		super.onSaveInstanceState(outState);
-	}
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onRestoreInstanceState(savedInstanceState);
-		photo_ID = savedInstanceState.getInt("photo_ID");
-		mode_ID = savedInstanceState.getInt("mode_ID") ;
-		place_ID = savedInstanceState.getInt("place_ID");
 	}
 
 }

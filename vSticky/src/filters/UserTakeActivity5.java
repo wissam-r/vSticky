@@ -14,9 +14,6 @@ import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
-
-import com.example.layoutt.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.hardware.Camera;

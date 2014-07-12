@@ -1,8 +1,8 @@
-package buttons;
+package actions;
 
 
 
-import dp.NotesDbAdapter;
+import db.NotesDbAdapter;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,11 +18,11 @@ public class Buttons {
 	}
 
 	public static void save(String t1 , String t2 ,NotesDbAdapter dp){
-//		dp.insertNote(t1, t2);
+//		db.insertNote(t1, t2);
 	}
 
 	public static void save(int id, String t1 , String t2  ,NotesDbAdapter dp){
-		//		dp.updateNote(id, t1, t2);
+		//		db.updateNote(id, t1, t2);
 	}
 
 	public static void done(Activity activity) {

@@ -1,4 +1,6 @@
-package com.example.layoutt;
+package com.example.vsticky;
+
+import com.example.layoutt.R;
 
 import android.app.Activity;
 import android.content.Intent;

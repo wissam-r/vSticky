@@ -1,8 +1,4 @@
-package com.example.layoutt;
-
-import java.io.Serializable;
-
-import org.apache.http.entity.SerializableEntity;
+package com.example.vsticky;
 
 import android.app.Activity;
 import android.app.AlertDialog;

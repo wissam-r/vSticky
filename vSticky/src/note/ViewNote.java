@@ -2,10 +2,10 @@ package note;
 
 import java.io.File;
 
-import com.example.layoutt.Delete_Activity;
-import com.example.layoutt.MyDialog;
-import com.example.layoutt.Notepad;
 import com.example.layoutt.R;
+import com.example.vsticky.Delete_Activity;
+import com.example.vsticky.MyDialog;
+import com.example.vsticky.Notepad;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -91,7 +91,7 @@ public class ViewNote extends Activity{
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				buttons.Buttons.done(ViewNote.this) ;
+				actions.Buttons.done(ViewNote.this) ;
 
 			}
 		}) ;
@@ -100,8 +100,8 @@ public class ViewNote extends Activity{
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				buttons.Buttons.delete(id, Notepad.getDb()) ;
-				buttons.Buttons.done(ViewNote.this) ;
+				actions.Buttons.delete(id, Notepad.getDb()) ;
+				actions.Buttons.done(ViewNote.this) ;
 			}
 		}) ;
 		share.setOnClickListener(new OnClickListener() {
@@ -109,7 +109,7 @@ public class ViewNote extends Activity{
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				buttons.Buttons.share(title.getText().toString(), body.getText().toString(), ViewNote.this) ;
+				actions.Buttons.share(title.getText().toString(), body.getText().toString(), ViewNote.this) ;
 
 			}
 		}) ;

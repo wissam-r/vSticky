@@ -13,9 +13,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import com.example.layoutt.MyDialog;
-import com.example.layoutt.Notepad;
 import com.example.layoutt.R;
+import com.example.vsticky.MyDialog;
+import com.example.vsticky.Notepad;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -54,6 +54,9 @@ public class NoteEditer extends Activity {
 	private Integer mode_ID =null ;
 	private Integer place_ID =null;
 	private Integer photo_ID =null ;
+	int modee_ID ;
+	int placee_ID ;
+	File currentFile ;
 
 	int foundPlace ;
 
@@ -117,7 +120,7 @@ public class NoteEditer extends Activity {
 						}
 					}
 					if (getIntent().getExtras().getString("mode").equals("edit")) {
-						//						buttons.Buttons.save(getIntent().getExtras().getInt("id"), t1.getText().toString().trim(), t2.getText().toString().trim(),Notepad.getDb());
+						//						actions.Buttons.save(getIntent().getExtras().getInt("id"), t1.getText().toString().trim(), t2.getText().toString().trim(),Notepad.getDb());
 						Notepad.getDb().updateTagedNote(getIntent().getExtras().getInt("id"),t1.getText().toString(), t2.getText().toString(), photo_ID , place_ID , mode_ID ) ;
 						Log.d("update", "id : "+getIntent().getExtras().getInt("id") + " title : " + t1.getText().toString() + " body : "+  t2.getText().toString()
 								+" photo : "+ photo_ID + " palce : "+place_ID+ " mode : "+mode_ID) ;
@@ -137,7 +140,7 @@ public class NoteEditer extends Activity {
 								Toast.makeText(getBaseContext(),"photo_ID = "+ photo_ID , Toast.LENGTH_LONG).show() ;
 							}
 						}
-						//						buttons.Buttons.save(t1.getText().toString().trim(), t2.getText().toString().trim(),Notepad.getDb());
+						//						actions.Buttons.save(t1.getText().toString().trim(), t2.getText().toString().trim(),Notepad.getDb());
 
 						//						Cursor cursor = Notepad.getDb().getPhotoByPath(mCurrentPhoto.getAbsolutePath()) ;
 						//						int photo_ID = cursor.getInt(0) ;
@@ -167,11 +170,11 @@ public class NoteEditer extends Activity {
 					ex.printStackTrace() ;
 					Toast.makeText(getApplicationContext(), "Error",
 							Toast.LENGTH_LONG).show();
-					buttons.Buttons.done(NoteEditer.this) ;
+					actions.Buttons.done(NoteEditer.this) ;
 				}
 				Toast.makeText(getApplicationContext(), "Saved",
 						Toast.LENGTH_LONG).show();
-				buttons.Buttons.done(NoteEditer.this) ;
+				actions.Buttons.done(NoteEditer.this) ;
 			}
 		});
 
@@ -179,7 +182,7 @@ public class NoteEditer extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				buttons.Buttons.done(NoteEditer.this) ;
+				actions.Buttons.done(NoteEditer.this) ;
 			}
 		});
 
@@ -187,7 +190,7 @@ public class NoteEditer extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				buttons.Buttons.share(t1.getText().toString(), t2.getText().toString(),NoteEditer.this);
+				actions.Buttons.share(t1.getText().toString(), t2.getText().toString(),NoteEditer.this);
 			}
 		});
 
@@ -195,17 +198,24 @@ public class NoteEditer extends Activity {
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		if (myD.getAlertDialog().isShowing())
+		if (myD.getAlertDialog().isShowing()){
+			
 			outState.putBoolean("myD", true) ;
+		}
 		else
 			outState.putBoolean("myD", false) ;
 		outState.putString("title", t1.getText().toString()) ;
 		outState.putString("body", t2.getText().toString()) ;
-		outState.putSerializable("currentFile", mCurrentPhoto) ;
+		outState.putSerializable("currentPic", mCurrentPhoto) ;
 		//		outState.putSerializable("photo_ID", photo_ID);
 		outState.putSerializable("place_ID", place_ID);
 		outState.putSerializable("mode_ID", mode_ID);
 		outState.putSerializable("pickedPlace", pickedPlace) ;
+		outState.putSerializable("placee_ID", placee_ID);
+		outState.putSerializable("modee_ID", modee_ID);
+		outState.putSerializable("curentFile", currentFile);
+		
+		
 
 
 
@@ -221,7 +231,10 @@ public class NoteEditer extends Activity {
 		place_ID = (Integer) savedInstanceState.getSerializable("place_ID") ;
 		mode_ID = (Integer) savedInstanceState.getSerializable("mode_ID") ;
 		pickedPlace = savedInstanceState.getBoolean("pickedPlace") ;
-		mCurrentPhoto = (File) savedInstanceState.getSerializable("currentFile") ;
+		mCurrentPhoto = (File) savedInstanceState.getSerializable("currentPic") ;
+		placee_ID = (Integer) savedInstanceState.getSerializable("placee_ID") ;
+		modee_ID = (Integer) savedInstanceState.getSerializable("modee_ID") ;
+		currentFile = (File) savedInstanceState.getSerializable("currentFile") ;
 		if (savedInstanceState.getBoolean("myD")){
 			Log.d("restor", "myd") ;
 			myDL() ;	
@@ -332,9 +345,7 @@ public class NoteEditer extends Activity {
 		//			return ;
 		//			myD = new MyDialog(NoteEditer.this, R.layout.tags_layout) ;
 		//TODO here u have to declire the text view and add listener to it
-		final int modee_ID ;
-		final int placee_ID ;
-		final File currentFile ; 
+		 
 		if (mode_ID==null)
 			modee_ID =-1;
 		else

@@ -33,7 +33,7 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
         <activity
-            android:name="com.example.layoutt.Notepad"
+            android:name="com.example.vsticky.Notepad"
             android:label="@string/app_name" 
             >
             <intent-filter>
@@ -53,19 +53,19 @@
             android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name="com.example.layoutt.Delete_Activity"
+            android:name="com.example.vsticky.Delete_Activity"
             android:label="@string/noto" >
         </activity>
         <activity
-            android:name="com.example.layoutt.Search_ByTag_Activity"
+            android:name="com.example.vsticky.Search_ByTag_Activity"
             android:label="@string/noto" >
         </activity>
         <activity
-            android:name="com.example.layoutt.Search_Activity"
+            android:name="com.example.vsticky.Search_Activity"
             android:label="@string/noto" >
         </activity>
         <activity
-            android:name="com.example.layoutt.CameraPhotoCapture"
+            android:name="com.example.vsticky.CameraPhotoCapture"
             android:label="@string/noto" >
         </activity>
         <activity
@@ -77,7 +77,7 @@
             android:label="@string/noto" >
         </activity>
         <activity
-            android:name="com.example.layoutt.menu"
+            android:name="com.example.vsticky.menu"
             android:label="@string/menu" >
         </activity>
         <activity
@@ -95,13 +95,13 @@
         </receiver>
 
         <activity
-            android:name="com.example.layoutt.Login"
+            android:name="com.example.vsticky.Login"
             android:label="@string/title_activity_login"
             android:noHistory="true"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.example.layoutt.Signup"
+            android:name="com.example.vsticky.Signup"
             android:label="@string/title_activity_signup"
             android:screenOrientation="portrait" >
         </activity>

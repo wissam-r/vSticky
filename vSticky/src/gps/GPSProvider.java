@@ -30,7 +30,6 @@ public class GPSProvider implements LocationListener , GpsStatus.Listener{
 	private static boolean GPS_ConToSatil  ;
 	private static boolean GPS_on ;
 	private LocationManager locationManager;
-	private Location myLocationGPS , myLocationNetwork ;
 	Activity activity = null ;
 	TextView textView ;
 
@@ -52,13 +51,6 @@ public class GPSProvider implements LocationListener , GpsStatus.Listener{
 
 		locationManager.addGpsStatusListener(this);
 		GPS_on = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ;
-		try{
-			myLocationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		}
-		catch(NullPointerException ex){
-			Toast.makeText(activity.getBaseContext(), "NO Place", Toast.LENGTH_LONG).show() ;
-		}
-
 
 		/* CAL METHOD requestLocationUpdates */
 
@@ -87,10 +79,10 @@ public class GPSProvider implements LocationListener , GpsStatus.Listener{
 	@Override
 	public void onLocationChanged(Location location) {
 
-		String str = "Latitude: "+location.getLatitude()+" Longitude: "+location.getLongitude();
+//		String str = "Latitude: "+location.getLatitude()+" Longitude: "+location.getLongitude();
 		latitude = location.getLatitude() ;
 		longitude = location.getLongitude() ;
-		Toast.makeText(activity.getBaseContext(), "Place : "+str, Toast.LENGTH_LONG).show();
+//		Toast.makeText(activity.getBaseContext(), "Place : "+str, Toast.LENGTH_LONG).show();
 		textView.setText("GPS Conected") ;
 	}
 
