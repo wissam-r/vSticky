@@ -666,7 +666,7 @@ public class NotesDbAdapter {
 	public Cursor getAllUsers(){
 		String[] FROM = {USER_ID};
 		
-		Cursor cursor = mDb.query(TABLE_SYNC_NAME[4], FROM, null, null, null, null, USER_ID+" ASC");
+		Cursor cursor = mDb.query(TABLE_NAME[4], FROM, null, null, null, null, USER_ID+" ASC");
 		//		mDb.query(table, columns, selection, selectionArgs, groupBy, having, orderBy)
 		if (cursor.getCount()>0){
 			cursor.moveToFirst() ;

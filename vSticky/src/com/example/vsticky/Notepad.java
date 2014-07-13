@@ -45,7 +45,7 @@ import gps.*;
 
 public class Notepad extends Activity{
 
-	private static String user_ID = "-1" ;
+	private static String user_ID = "hoho" ;
 
 	public static String getUser_ID() {
 		return user_ID;
@@ -91,6 +91,8 @@ public class Notepad extends Activity{
 			String user_name = getIntent().getStringExtra("username") ;
 			String user_id = getIntent().getStringExtra("userId") ;
 			String user_token = getIntent().getStringExtra("token") ;
+			Log.d("LOCK HERE AMMAR", "username  : " + user_name +
+					" userID : " +user_id + "userToken : " + user_token ) ;
 			Cursor cursor  = getDb().getAllUsers() ;
 			int i = 0 ;
 			while (i<cursor.getCount()){
