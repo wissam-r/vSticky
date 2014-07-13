@@ -25,6 +25,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -137,11 +138,11 @@ public class ServerApi{
 		JSONArray jArray = null;
 		ArrayList<Integer> result = new ArrayList<Integer>();
 		jArray = Json.getJSONArrayFromUrlGet(NOTES_URL + "/all/" + token);
-		Log.d("API::GetIDs", jArray.toString());
+		Log.d("API::GetNotesIDs", jArray.toString());
 		if (jArray != null) {
 			for (int i=0;i<jArray.length();i++) { 
 				try {
-					result.add(Integer.parseInt(jArray.get(i).toString()));
+					result.add(new JSONObject(jArray.get(i).toString()).getInt("_id"));
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -153,11 +154,11 @@ public class ServerApi{
 		JSONArray jArray = null;
 		ArrayList<Integer> result = new ArrayList<Integer>();
 		jArray = Json.getJSONArrayFromUrlGet(MODES_URL + "/all/" + token);
-		Log.d("API::GetIDs", jArray.toString());
+		Log.d("API::GetModesIDs", jArray.toString());
 		if (jArray != null) {
 			for (int i=0;i<jArray.length();i++) { 
 				try {
-					result.add(Integer.parseInt(jArray.get(i).toString()));
+					result.add(new JSONObject(jArray.get(i).toString()).getInt("_id"));
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -169,11 +170,11 @@ public class ServerApi{
 		JSONArray jArray = null;
 		ArrayList<Integer> result = new ArrayList<Integer>();
 		jArray = Json.getJSONArrayFromUrlGet(PLACES_URL + "/all/" + token);
-		Log.d("API::GetIDs", jArray.toString());
+		Log.d("API::GetPlacesIDs", jArray.toString());
 		if (jArray != null) {
 			for (int i=0;i<jArray.length();i++) { 
 				try {
-					result.add(Integer.parseInt(jArray.get(i).toString()));
+					result.add(new JSONObject(jArray.get(i).toString()).getInt("_id"));
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -185,11 +186,11 @@ public class ServerApi{
 		JSONArray jArray = null;
 		ArrayList<Integer> result = new ArrayList<Integer>();
 		jArray = Json.getJSONArrayFromUrlGet(PHOTOS_URL + "/all/" + token);
-		Log.d("API::GetIDs", jArray.toString());
+		Log.d("API::GetPhotosIDs", jArray.toString());
 		if (jArray != null) {
 			for (int i=0;i<jArray.length();i++) { 
 				try {
-					result.add(Integer.parseInt(jArray.get(i).toString()));
+					result.add(new JSONObject(jArray.get(i).toString()).getInt("_id"));
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -427,7 +428,7 @@ public class ServerApi{
 	}
 
 	public static void delNote(Integer id) {
-		try {
+		/*try {
 			HttpURLConnection con = (HttpURLConnection) new URL(NOTES_URL).openConnection();
 			con.setRequestMethod("DELETE");
 			//con.setDoOutput(true);
@@ -442,7 +443,7 @@ public class ServerApi{
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	public static void delMode(Integer id) {
 		try {
@@ -481,7 +482,7 @@ public class ServerApi{
 		}
 	}
 	public static void delPhoto(Integer id) {
-		try {
+		/*try {
 			HttpURLConnection con = (HttpURLConnection) new URL(PHOTOS_URL).openConnection();
 			con.setRequestMethod("DELETE");
 			//con.setDoOutput(true);
@@ -496,7 +497,7 @@ public class ServerApi{
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	public static void setToken(String storedToken) {
 		token = storedToken;

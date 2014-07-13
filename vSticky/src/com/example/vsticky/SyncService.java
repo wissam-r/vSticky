@@ -2,6 +2,8 @@ package com.example.vsticky;
 
 import java.util.ArrayList;
 
+import org.apache.http.client.methods.HttpDelete;
+
 import note.Mode;
 import note.Note;
 import note.Photo;
@@ -42,6 +44,7 @@ public class SyncService extends Service {
 		Log.d("SyncNotes","Got local notes success");
 		// Get Locally and Server stored notes ids
 		ArrayList<Integer> storedRemotely = ServerApi.getNotesIds();
+		
 		Cursor cursor2 = Notepad.getDb().getAllNotes(Notepad.getUser_ID());
 		ArrayList<Integer> storedLocally = new ArrayList<Integer>();
 		i = 0;
@@ -178,9 +181,9 @@ public class SyncService extends Service {
 	public void onStart(Intent intent, int startId) {
 		Toast.makeText(this, "Sync Started !", Toast.LENGTH_LONG).show();
 		syncNotes();
-		syncPlaces();
-		syncModes();
-		syncPhotos();
+		//syncPlaces();
+		//syncModes();
+		//syncPhotos();
 		Log.d(TAG, "onStart");
 	}
 
