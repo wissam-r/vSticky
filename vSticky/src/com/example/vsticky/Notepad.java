@@ -100,13 +100,13 @@ public class Notepad extends Activity{
 			Cursor cursor  = getDb().getAllUsers() ;
 			int i = 0 ;
 			while (i<cursor.getCount()){
-				i++ ;
 				if (cursor.getString(0).equals(user_id)){
 					user_ID = user_id ;
 					break ;
 				}
 				else
 					cursor.moveToNext() ;
+				i++;
 			}
 			if (i==cursor.getCount()){
 				getDb().insertUser(user_id, user_name, user_token) ;
@@ -114,6 +114,7 @@ public class Notepad extends Activity{
 			}
 		}
 		catch (Exception ex){
+			Log.d("users",ex.toString());
 			if (user_ID.equals("-1"))
 				Toast.makeText(getBaseContext(), "no user", Toast.LENGTH_LONG).show() ;
 			}
