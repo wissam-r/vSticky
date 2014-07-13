@@ -48,7 +48,7 @@ import gps.*;
 
 public class Notepad extends Activity{
 
-	private static String user_ID = "-1" ;
+	private static String user_ID = "hoho" ;
 
 	public static String getUser_ID() {
 		return user_ID;
@@ -118,8 +118,8 @@ public class Notepad extends Activity{
 			if (user_ID.equals("-1"))
 				Toast.makeText(getBaseContext(), "no user", Toast.LENGTH_LONG).show() ;
 			}
-								mDbHelper.dropTable() ;
-								mDbHelper.createTable() ;
+//								mDbHelper.dropTable() ;
+//								mDbHelper.createTable() ;
 
 		list = (ListView) findViewById(R.id.note_pad_noteslist);	
 		Button new_note_b  = (Button) findViewById(R.id.note_pad_add);
