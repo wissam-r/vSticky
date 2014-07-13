@@ -111,8 +111,8 @@ public class Notepad extends Activity{
 			if (user_ID.equals("-1"))
 				Toast.makeText(getBaseContext(), "no user", Toast.LENGTH_LONG).show() ;
 			}
-		//						mDbHelper.dropTable() ;
-		//						mDbHelper.createTable() ;
+								mDbHelper.dropTable() ;
+								mDbHelper.createTable() ;
 
 		list = (ListView) findViewById(R.id.note_pad_noteslist);	
 		Button new_note_b  = (Button) findViewById(R.id.note_pad_add);
