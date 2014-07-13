@@ -82,10 +82,15 @@ public class Notepad extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_note_pado);
 //TODO here we statrt trying to get the id
-//		try{
-			String user_name = getIntent().getExtras().getString("username") ;
-			String user_id = getIntent().getExtras().getString("userId") ;
-			String user_token = getIntent().getExtras().getString("token") ;
+		
+		myDa = new MyDialog(Notepad.this, R.layout.search_tags_layout) ;
+
+		mDbHelper = new NotesDbAdapter(this);
+		mDbHelper.open();
+		try{
+			String user_name = getIntent().getStringExtra("username") ;
+			String user_id = getIntent().getStringExtra("userId") ;
+			String user_token = getIntent().getStringExtra("token") ;
 			Cursor cursor  = getDb().getAllUsers() ;
 			int i = 0 ;
 			while (i<cursor.getCount()){
@@ -101,15 +106,11 @@ public class Notepad extends Activity{
 				getDb().insertUser(user_id, user_name, user_token) ;
 				user_ID = user_id ;
 			}
-//		}
-//		catch (Exception ex){
+		}
+		catch (Exception ex){
 			if (user_ID.equals("-1"))
 				Toast.makeText(getBaseContext(), "no user", Toast.LENGTH_LONG).show() ;
-//			}
-		myDa = new MyDialog(Notepad.this, R.layout.search_tags_layout) ;
-
-		mDbHelper = new NotesDbAdapter(this);
-		mDbHelper.open();
+			}
 		//						mDbHelper.dropTable() ;
 		//						mDbHelper.createTable() ;
 
