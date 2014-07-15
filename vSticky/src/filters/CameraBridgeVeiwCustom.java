@@ -1,6 +1,7 @@
 package filters;
 
 import java.io.FileOutputStream;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.opencv.android.JavaCameraView;
@@ -47,7 +48,14 @@ public class CameraBridgeVeiwCustom extends JavaCameraView implements PictureCal
     }
 
     public List<Size> getResolutionList() {
-        return mCamera.getParameters().getSupportedPreviewSizes();
+    	List<Camera.Size> sizes = mCamera.getParameters().getSupportedPreviewSizes();
+    	for(int i=0;i<sizes.size();i++){
+    		if(sizes.get(i).height > getHeight() || sizes.get(i).width > getWidth()){
+    			sizes.remove(i);
+    			--i;
+    		}
+    	}
+        return sizes;
     }
 
     public void setResolution(Size resolution) {
@@ -59,7 +67,6 @@ public class CameraBridgeVeiwCustom extends JavaCameraView implements PictureCal
     
     public void setPictureSize(Size size){
     	mCamera.getParameters().setPictureSize(size.width, size.height);
-    	
     }
 
     public Size getResolution() {
