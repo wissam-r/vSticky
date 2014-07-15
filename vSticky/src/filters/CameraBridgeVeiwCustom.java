@@ -4,6 +4,8 @@ import java.io.FileOutputStream;
 import java.util.List;
 
 import org.opencv.android.JavaCameraView;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +14,7 @@ import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.Size;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 
 public class CameraBridgeVeiwCustom extends JavaCameraView implements PictureCallback {
 
@@ -92,5 +95,17 @@ public class CameraBridgeVeiwCustom extends JavaCameraView implements PictureCal
             Log.e("PictureDemo", "Exception in photoCallback", e);
         }
 
+    }
+
+    public Point getLocInMat(MotionEvent event){
+    	Point loc = new Point();
+    	if(mScale != 0){
+    		loc.x = (event.getX()-(getWidth()-mScale*mFrameWidth)/2)/mScale;
+    		loc.y = (event.getY()-(getHeight()-mScale*mFrameHeight)/2)/mScale;
+    	}else{
+    		loc.x = event.getX()-(getWidth()-mFrameWidth)/2;
+    		loc.y = event.getY()-(getHeight()-mFrameHeight)/2;
+    	}
+    	return loc;    	
     }
 }

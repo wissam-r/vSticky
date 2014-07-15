@@ -3,6 +3,7 @@ package filters;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
@@ -12,14 +13,19 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
+import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.SubMenu;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -37,20 +43,14 @@ public class UserTakeActivity5 extends Activity implements CvCameraViewListener2
 	private final String IDS = "IDS";
 	private ArrayList<String> paths;
 	private final String PATHS = "PATHS"; 
+	
+	private List<Camera.Size> mResolutionList;
+	private MenuItem[] mResolutionMenuItems;
+	private SubMenu mResolutionMenu;
 
 	//private Mat lastMat;
 
 	private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
-
-		public void setResilution(){
-			List<Camera.Size> ress = mOpenCvCameraView.getResolutionList();
-			for(int i=0;i<ress.size();i++){
-				if(ress.get(i).width>=800 && ress.get(i).width<=1200){
-					mOpenCvCameraView.setResolution(ress.get(i));
-					return;
-				}
-			}
-		}
 		
 		@Override
 		public void onManagerConnected(int status) {
@@ -65,9 +65,9 @@ public class UserTakeActivity5 extends Activity implements CvCameraViewListener2
 					move = Utils.loadResource(UserTakeActivity5.this,android.R.drawable.ic_media_play, Highgui.CV_LOAD_IMAGE_COLOR);
 					Imgproc.cvtColor(move, move, Imgproc.COLOR_BGR2RGBA);
 					//filter = new DetectionFilter(rgb, move);
-					filter = new DetectionFilterThreading(rgb, move);
+					//filter = new DetectionFilterThreading(rgb, move);
 					//filter = new DetectionFilterThreading(new HistogramEqualizer(), rgb, move);
-					//filter = new DetectionFilterThreading(new GaussianBlurFilter(new Size(3, 3)), rgb, move);
+					filter = new DetectionFilterThreading(new GaussianBlurFilter(new Size(3, 3)), rgb, move);
 				} catch (IOException e) {
 					e.printStackTrace();
 					finish();
@@ -90,7 +90,6 @@ public class UserTakeActivity5 extends Activity implements CvCameraViewListener2
 				/* Now enable camera view to start receiving frames */
 				mOpenCvCameraView.setOnTouchListener(UserTakeActivity5.this);
 				mOpenCvCameraView.enableView();
-				setResilution();
 
 			} break;
 			default:
@@ -122,6 +121,41 @@ public class UserTakeActivity5 extends Activity implements CvCameraViewListener2
 		mOpenCvCameraView.enableFpsMeter();
 
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		
+		
+		mResolutionMenu = menu.addSubMenu("Resolution");
+		mResolutionList = mOpenCvCameraView.getResolutionList();
+        mResolutionMenuItems = new MenuItem[mResolutionList.size()];
+
+        ListIterator<Camera.Size> resolutionItr = mResolutionList.listIterator();
+        int idx = 0;
+        while(resolutionItr.hasNext()) {
+        	Camera.Size element = resolutionItr.next();
+            mResolutionMenuItems[idx] = mResolutionMenu.add(1, idx, Menu.NONE,
+                    Integer.valueOf(element.width).toString() + "x" + Integer.valueOf(element.height).toString());
+            idx++;
+        }
+        
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {        
+        if (item.getGroupId() == 1)
+        {
+            int id = item.getItemId();
+            Camera.Size resolution = mResolutionList.get(id);
+            mOpenCvCameraView.setResolution(resolution);
+            resolution = mOpenCvCameraView.getResolution();
+            String caption = Integer.valueOf(resolution.width).toString() + "x" + Integer.valueOf(resolution.height).toString();
+            Toast.makeText(this, caption, Toast.LENGTH_SHORT).show();
+        }
+
+        return true;
+    }
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -183,7 +217,7 @@ public class UserTakeActivity5 extends Activity implements CvCameraViewListener2
 		Log.d(TAG, "motion event : "+event.getActionMasked());
 		switch(event.getActionMasked()){
 		case MotionEvent.ACTION_DOWN:
-			int id = filter.getTracked(new Point(event.getX(), event.getY()));
+			int id = filter.getTracked(mOpenCvCameraView.getLocInMat(event));
 			if(id!=-1){
 				Toast.makeText(this,  "you want note "+id, Toast.LENGTH_SHORT).show();
 				Intent data = new Intent();
